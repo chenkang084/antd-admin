@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Table,message} from 'antd'
+import {Table, message} from 'antd'
 import './DataTable.less';
 import lodash from 'lodash';
 import {fetch} from "../../services/restfulService";
@@ -77,15 +77,12 @@ class DataTable extends React.Component {
     }
   };
 
-  render() {
-
-    this.checkRefresh();
-
-    const tableProps = {
+  init = () => {
+    this.tableProps = {
       columns: this.props.columns,
       ...this.state
     };
-    let pagination = {
+    this.pagination = {
       showSizeChanger: true,
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
@@ -96,26 +93,34 @@ class DataTable extends React.Component {
       current: this.state.current
     };
 
-    const rowSelection = {
+    this.rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        this.setState({selectedRowKeys: selectedRows});
         this.props.handleSelectItems(selectedRows);
       },
       getCheckboxProps: record => ({
         disabled: record.name === 'Disabled User',    // Column configuration not to be checked
       }),
     };
+  };
+
+  render() {
+
+    this.checkRefresh();
+
+    this.init();
 
     return (
       <div>
         <Filter {...this.filterProps} />
         <Table
           ref="DataTable"
-          rowSelection={rowSelection}
+          rowSelection={this.rowSelection}
           bordered
           onChange={this.handleTableChange}
-          {...tableProps}
-          pagination={pagination}
+          {...this.tableProps}
+          pagination={this.pagination}
         />
       </div>
     )
@@ -126,7 +131,7 @@ class DataTable extends React.Component {
 DataTable.propTypes = {
   columns: PropTypes.array,
   dataSource: PropTypes.array,
-  fetchData:PropTypes.object
+  fetchData: PropTypes.object
 };
 
 export default DataTable
