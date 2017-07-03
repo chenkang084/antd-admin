@@ -144,6 +144,7 @@ class HostPage extends React.Component {
         url: 'host',
         params: null,
       },
+      errorMsg:`get host table error`,
       refresh: this.props.host.refresh,
       handleSelectItems: (selectedRows) => {
         this.props.dispatch({type: 'host/updateSelectItems', payload: selectedRows})

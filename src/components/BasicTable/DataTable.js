@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Table, message} from 'antd'
+import {Table, notification} from 'antd'
 import './DataTable.less';
 import lodash from 'lodash';
 import {fetch} from "../../services/restfulService";
@@ -32,6 +32,14 @@ class DataTable extends React.Component {
           dataSource: result.data,
           dataSourceBack: lodash.cloneDeep(result.data),
           loading: false
+        });
+      })
+      .catch((error) => {
+        this.setState({loading: false});
+        notification.open({
+          message: this.props.errorMsg,
+          duration: 0,
+          type: 'error'
         });
       })
   };
