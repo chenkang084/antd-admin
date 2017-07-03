@@ -2,7 +2,8 @@
  * Created by chenkang1 on 2017/7/2.
  */
 import React from 'react';
-import {Modal, Button} from 'antd';
+import {Modal, notification} from 'antd';
+import {fetch} from "../../services/restfulService";
 
 class BatchModal extends React.Component {
   constructor(props) {
@@ -13,19 +14,27 @@ class BatchModal extends React.Component {
 
   }
 
-
-  handleOk = (e) => {
-    console.log(e);
-    // this.setState({
-    //   visible: false,
-    // });
-  }
-  handleCancel = (e) => {
-    console.log(e);
-    // this.setState({
-    //   visible: false,
-    // });
-  }
+  // onOk = () => {
+  //   let {url, method} = this.props.fetchData;
+  //   this.props.selectedItems.forEach((item) => {
+  //     fetch({
+  //       url: url,
+  //       method: method,
+  //       params: {ids: item.id}
+  //     })
+  //       .then((result) => {
+  //         console.log(result)
+  //
+  //         notification.open({
+  //           message: 'Notification Title',
+  //           description: 'I will never close automatically. I will be close automatically. I will never close automatically.',
+  //           duration: 0,
+  //           type:'success'
+  //         });
+  //
+  //       })
+  //   })
+  // };
 
   render() {
     return (
@@ -33,11 +42,11 @@ class BatchModal extends React.Component {
         <Modal
           title={this.props.title}
           visible={this.props.visible}
-          onOk={this.props.handleOk}
+          onOk={this.props.onOk}
           onCancel={this.props.onCancel}
         >
           {
-            this.props.selectedItems.map((item)=> (<p>{item.name}</p>))
+            this.props.selectedItems.map((item) => (<p>{item.name}</p>))
           }
         </Modal>
       </div>
@@ -47,8 +56,6 @@ class BatchModal extends React.Component {
 }
 
 
-BatchModal.propTypes = {
-
-};
+BatchModal.propTypes = {};
 
 export default BatchModal
