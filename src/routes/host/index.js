@@ -5,10 +5,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'dva';
 import DataTable from '../../components/BasicTable/DataTable';
-import {Modal, Row, Col, Card, Button} from 'antd';
+import {Modal, Row, Col, Card, Button,notification} from 'antd';
 import {Link} from 'dva/router';
 import DropOption from "../../components/DropOption/DropOption";
 import BatchModal from '../../components/modals/BatchModal';
+import {fetch, fetchAndNotification} from "../../services/restfulService";
 
 const confirm = Modal.confirm;
 
@@ -140,7 +141,7 @@ class HostPage extends React.Component {
         },
       ],
       fetchData: {
-        url: 'cluster',
+        url: 'host',
         params: null,
       },
       refresh: this.props.host.refresh,
@@ -155,8 +156,24 @@ class HostPage extends React.Component {
       title: `Batch Action Modal`,
       wrapClassName: 'vertical-center-modal',
       selectedItems:this.props.host.selectedItems,
+      fetchData: {
+        url: 'host',
+        method: 'delete',
+      },
       onOk: (data) => {
-        console.log(data)
+        this.batchModalProps.onCancel();
+        this.props.host.selectedItems.forEach((item)=>{
+          fetchAndNotification({
+            url: 'host',
+            method: 'delete',
+            params: {ids: item.id},
+            notifications:{
+              title:`batch Action`,
+              success:`${item.name} 操作成功！`,
+              error:`${item.name} 操作失败！`
+            }
+          })
+        })
       },
       onCancel: () => {
         let {dispatch} = this.props;
@@ -181,7 +198,7 @@ class HostPage extends React.Component {
             <Card title="远程数据">
               <div className='action-btn-container'>
                 <Button type="primary" onClick={this.refresh} icon="reload"/>
-                <Button type="primary" onClick={this.showBatchModal}>Batch Action</Button>
+                <Button type="primary" onClick={this.showBatchModal} disabled={this.props.host.selectedItems.length === 0}>Batch Action</Button>
               </div>
               <DataTable
                 {...this.tableDataProps}
