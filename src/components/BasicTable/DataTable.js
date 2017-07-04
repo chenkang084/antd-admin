@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Table, message} from 'antd'
+import {Table, notification} from 'antd'
 import './DataTable.less';
 import lodash from 'lodash';
 import {fetch} from "../../services/restfulService";
-import {delay, sortJsonArr} from "../../utils/dataUtils";
+import {delay, getSessionStorage, setSessionStorage, sortJsonArr} from "../../utils/dataUtils";
 import Filter from "./Filter";
 
 class DataTable extends React.Component {
@@ -12,7 +12,7 @@ class DataTable extends React.Component {
     super(props);
     this.state = {
       loading: true,
-      current: 1,
+      current: getSessionStorage('pagination')[window.location.pathname],
       dataSourceBack: [],
       pageSize: 5,
     }
@@ -34,6 +34,14 @@ class DataTable extends React.Component {
           loading: false
         });
       })
+      .catch((error) => {
+        this.setState({loading: false});
+        notification.open({
+          message: this.props.errorMsg,
+          duration: 0,
+          type: 'error'
+        });
+      })
   };
 
   handleTableChange = (pagination, filters, sorter) => {
@@ -42,7 +50,8 @@ class DataTable extends React.Component {
         let orderType = sorter.order === 'descend' ? 'desc' : 'asc';
         sortJsonArr(this.state.dataSource, sorter.field, orderType);
       }
-      this.setState({current: pagination.current, pageSize: pagination.pageSize})
+      this.setState({current: pagination.current, pageSize: pagination.pageSize});
+      setSessionStorage('pagination', {[window.location.pathname]: pagination.current})
     })
   };
 

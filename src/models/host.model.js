@@ -12,6 +12,7 @@ export default {
     ...model.state,
     modalVisible: false,
     batchModalVisible:false,
+    createModalVisible:false,
   },
 
   effects: {

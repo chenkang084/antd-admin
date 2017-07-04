@@ -14,28 +14,6 @@ class BatchModal extends React.Component {
 
   }
 
-  // onOk = () => {
-  //   let {url, method} = this.props.fetchData;
-  //   this.props.selectedItems.forEach((item) => {
-  //     fetch({
-  //       url: url,
-  //       method: method,
-  //       params: {ids: item.id}
-  //     })
-  //       .then((result) => {
-  //         console.log(result)
-  //
-  //         notification.open({
-  //           message: 'Notification Title',
-  //           description: 'I will never close automatically. I will be close automatically. I will never close automatically.',
-  //           duration: 0,
-  //           type:'success'
-  //         });
-  //
-  //       })
-  //   })
-  // };
-
   render() {
     return (
       <div>
