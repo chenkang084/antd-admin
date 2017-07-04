@@ -76,6 +76,16 @@ module.exports = {
     } else {
       res.status(500).end()
     }
+  },
+
+  [`POST ${apiPrefix}/create`](req, res){
+    const params = req.body;
+
+    console.log(params);
+
+    res.status(204).end();
   }
+
+
 
 }

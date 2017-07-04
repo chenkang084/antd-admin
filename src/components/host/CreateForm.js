@@ -1,7 +1,8 @@
 /**
  * Created by chenkang1 on 2017/7/4.
  */
-import {Form, Icon, Input, Button, Checkbox, Modal} from 'antd';
+import {Form, Icon, Input, Button, Modal} from 'antd';
+import {fetchAndNotification} from "../../services/restfulService";
 const FormItem = Form.Item;
 
 function hasErrors(fieldsError) {
@@ -20,12 +21,20 @@ class NormalLoginForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+
+        this.props.onCancel();
+        fetchAndNotification({
+          url: 'create',
+          method: 'post',
+          params: values,
+          notifications: {
+            title: `create Action`,
+            success: `创建${values.userName} 操作成功！`,
+            error: `创建${values.userName} 操作失败！`
+          }
+        })
       }
     });
-  };
-
-  onCreate = ()=>{
-    console.log(this)
   };
 
   render() {
@@ -43,7 +52,7 @@ class NormalLoginForm extends React.Component {
         okText="Create"
         footer={null}
         onCancel={this.props.onCancel}
-        onOk={this.onCreate}
+        // onOk={this.onCreate}
       >
         <Form layout="vertical" onSubmit={this.handleSubmit}>
           <FormItem
