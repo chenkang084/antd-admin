@@ -5,11 +5,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'dva';
 import DataTable from '../../components/BasicTable/DataTable';
-import {Modal, Row, Col, Card, Button,notification} from 'antd';
+import {Modal, Row, Col, Card, Button} from 'antd';
 import {Link} from 'dva/router';
 import DropOption from "../../components/DropOption/DropOption";
 import BatchModal from '../../components/modals/BatchModal';
-import {fetch, fetchAndNotification} from "../../services/restfulService";
+import {fetchAndNotification} from "../../services/restfulService";
+import CreateModal, {CollectionCreateForm, CollectionsPage} from "../../components/host/CreateModal";
 
 const confirm = Modal.confirm;
 
@@ -45,15 +46,15 @@ class HostPage extends React.Component {
     }
   };
 
-  showBatchModal = () => {
+  showModal = (key) => {
     let {dispatch} = this.props;
     dispatch({
       type: 'host/showModal',
       payload: {
-        key: 'batchModalVisible',
+        key
       },
     })
-  }
+  };
 
   refresh = () => {
     this.props.dispatch({type: 'host/refresh'})
@@ -144,7 +145,7 @@ class HostPage extends React.Component {
         url: 'host',
         params: null,
       },
-      errorMsg:`get host table error`,
+      errorMsg: `get host table error`,
       refresh: this.props.host.refresh,
       handleSelectItems: (selectedRows) => {
         this.props.dispatch({type: 'host/updateSelectItems', payload: selectedRows})
@@ -156,22 +157,22 @@ class HostPage extends React.Component {
       maskClosable: true,
       title: `Batch Action Modal`,
       wrapClassName: 'vertical-center-modal',
-      selectedItems:this.props.host.selectedItems,
+      selectedItems: this.props.host.selectedItems,
       fetchData: {
         url: 'host',
         method: 'delete',
       },
       onOk: (data) => {
         this.batchModalProps.onCancel();
-        this.props.host.selectedItems.forEach((item)=>{
+        this.props.host.selectedItems.forEach((item) => {
           fetchAndNotification({
             url: 'host',
             method: 'delete',
             params: {ids: item.id},
-            notifications:{
-              title:`batch Action`,
-              success:`${item.name} 操作成功！`,
-              error:`${item.name} 操作失败！`
+            notifications: {
+              title: `batch Action`,
+              success: `${item.name} 操作成功！`,
+              error: `${item.name} 操作失败！`
             }
           })
         })
@@ -182,6 +183,42 @@ class HostPage extends React.Component {
           type: 'host/hideModal',
           payload: {
             key: 'batchModalVisible'
+          }
+        })
+      }
+    };
+
+    this.createModalProps = {
+      visible: this.props.host.createModalVisible,
+      maskClosable: true,
+      title: `Batch Action Modal`,
+      wrapClassName: 'vertical-center-modal',
+      selectedItems: this.props.host.selectedItems,
+      fetchData: {
+        url: 'host',
+        method: 'delete',
+      },
+      onOk: (data) => {
+        this.batchModalProps.onCancel();
+        this.props.host.selectedItems.forEach((item) => {
+          fetchAndNotification({
+            url: 'host',
+            method: 'delete',
+            params: {ids: item.id},
+            notifications: {
+              title: `batch Action`,
+              success: `${item.name} 操作成功！`,
+              error: `${item.name} 操作失败！`
+            }
+          })
+        })
+      },
+      onCancel: () => {
+        let {dispatch} = this.props;
+        dispatch({
+          type: 'host/hideModal',
+          payload: {
+            key: 'createModalVisible'
           }
         })
       }
@@ -199,7 +236,9 @@ class HostPage extends React.Component {
             <Card title="远程数据">
               <div className='action-btn-container'>
                 <Button type="primary" onClick={this.refresh} icon="reload"/>
-                <Button type="primary" onClick={this.showBatchModal} disabled={this.props.host.selectedItems.length === 0}>Batch Action</Button>
+                <Button type="primary" onClick={this.showModal.bind(this,'batchModalVisible')}
+                        disabled={this.props.host.selectedItems.length === 0}>Batch Action</Button>
+                <CollectionsPage/>
               </div>
               <DataTable
                 {...this.tableDataProps}
@@ -215,10 +254,9 @@ class HostPage extends React.Component {
 }
 
 
-function mapStateToProps({host, loading}) {
+function mapStateToProps({host}) {
   return {
-    host,
-    loading
+    host
   }
 }
 
