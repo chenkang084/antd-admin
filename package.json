@@ -50,9 +50,9 @@
   ],
   "scripts": {
     "dev_linux": "BROWSER=none HOST=0.0.0.0 roadhog server",
-    "start": "set BROWSER=none&&set HOST=0.0.0.0&&roadhog server",
+    "start": "node ./build/runServer.js",
     "lint": "eslint --fix --ext .js src",
-    "build": "roadhog build",
+    "build": "node ./build/build.js",
     "build:dll": "npm run clean && roadhog buildDll",
     "clean": "rimraf ./node_modules/roadhog-dlls/*"
   }

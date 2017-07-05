@@ -145,7 +145,7 @@ exports.default = function(config, cwd) {
       new _systemBellWebpackPlugin2.default(),
       new HtmlWebpackPlugin({
         filename: "./index.html",
-        template: path.resolve(__dirname, "../../src/index.html") //packed js append to index.html,set index.html path
+        template: require('path').resolve(__dirname, "../../src/index.html") //packed js append to index.html,set index.html path
       })
     ]
       .concat(
