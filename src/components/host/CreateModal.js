@@ -1,7 +1,7 @@
 /**
  * Created by chenkang1 on 2017/7/4.
  */
-import {Form, Icon, Input, Button, Checkbox, Modal} from 'antd';
+import {Form, Button} from 'antd';
 import CollectionCreateForm from './CreateForm';
 const FormItem = Form.Item;
 
