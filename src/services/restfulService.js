@@ -56,7 +56,7 @@ export async function fetch({url, params = null, method = 'get'}) {
   })
 }
 
-export async function fetchAndNotification({url, params = null, method = 'get', notifications}) {
+export async function fetchAndNotification({url, params = null, method = 'get', notifications = {}}) {
   request({
     url: url,
     method: method,
