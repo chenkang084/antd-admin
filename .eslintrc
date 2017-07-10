@@ -35,7 +35,7 @@
     "no-eval": 0,
     "react/jsx-no-bind": 0,
     "no-unused-vars": [
-      2,
+      1,
       {
         "ignoreRestSiblings": true
       }

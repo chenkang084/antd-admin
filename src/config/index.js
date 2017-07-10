@@ -1,14 +1,14 @@
 /**
  * Created by chenkang1 on 2017/6/29.
  */
-let config;
+let config
 switch (env) {
   case 'development':
     config = require('./config.local.js').config
-    break;
+    break
   case 'prod':
     config = require('./config.prod.js').config
-    break;
+    break
   default:
     config = require('./config.local.js').config
 }

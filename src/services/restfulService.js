@@ -12,9 +12,9 @@ let instance = axios.create({
 })
 
 // Add a request interceptor
-instance.interceptors.request.use((config) => {
+instance.interceptors.request.use((_config) => {
   // Do something before request is sent
-  return config
+  return _config
 }, (error) => {
   // Do something with request error
   return Promise.reject(error)
@@ -44,7 +44,9 @@ function request ({ method, url, params }) {
     case 'patch':
       return instance.patch(url, params)
     default:
-      return instance(options)
+      return instance.get(url, {
+        params,
+      })
   }
 }
 
@@ -62,7 +64,7 @@ export async function fetchAndNotification ({ url, params = null, method = 'get'
     method,
     params,
   })
-    .then((result) => {
+    .then(() => {
       notification.open({
         message: notifications.title,
         description: notifications.success,
@@ -70,7 +72,7 @@ export async function fetchAndNotification ({ url, params = null, method = 'get'
         type: 'success',
       })
     })
-    .catch((error) => {
+    .catch(() => {
       notification.open({
         message: notifications.title,
         description: notifications.error,

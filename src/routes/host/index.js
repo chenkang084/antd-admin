@@ -10,14 +10,14 @@ import { Link } from 'dva/router'
 import DropOption from '../../components/DropOption/DropOption'
 import BatchModal from '../../components/modals/BatchModal'
 import { fetchAndNotification } from '../../services/restfulService'
-import CreateModal, { CollectionCreateForm, CollectionsPage } from '../../components/host/CreateModal'
+import { CollectionsPage } from '../../components/host/CreateModal'
 
 const confirm = Modal.confirm
 
 class HostPage extends React.Component {
-  constructor (props) {
-    super(props)
-  }
+  // constructor (props) {
+  //   super(props)
+  // }
 
   componentDidMount () {
 
@@ -264,6 +264,7 @@ HostPage.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
+  host: PropTypes.object,
 }
 
 export default connect(mapStateToProps)(HostPage)
