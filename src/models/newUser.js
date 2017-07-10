@@ -1,12 +1,12 @@
 import modelExtend from 'dva-model-extend'
-import {query} from '../services/newUser'
-import {pageFrontModel} from './commonFrontPage'
+import { query } from '../services/newUser'
+import { pageFrontModel } from './commonFrontPage'
 
 export default modelExtend(pageFrontModel, {
 
   namespace: 'newUser',
 
-  reducers:{
+  reducers: {
     showModal (state, { payload }) {
       return { ...state, ...payload, modalVisible: false }
     },
@@ -17,11 +17,11 @@ export default modelExtend(pageFrontModel, {
   },
 
   subscriptions: {
-    setup ({dispatch, history}) {
+    setup ({ dispatch, history }) {
       history.listen(location => {
         if (location.pathname === '/newUser') {
           dispatch({
-            type: 'query', payload: {}
+            type: 'query', payload: {},
           })
         }
       })
@@ -29,7 +29,7 @@ export default modelExtend(pageFrontModel, {
   },
 
   effects: {
-    *query ({payload,}, {call, put}) {
+    *query ({ payload }, { call, put }) {
       // throw new Error('haha')
       const data = yield call(query, payload)
       if (data.success) {
@@ -39,7 +39,7 @@ export default modelExtend(pageFrontModel, {
             list: data.data,
             pagination: {
               current: 1,
-              total: Number(data.data.length) ,
+              total: Number(data.data.length),
             },
           },
         })

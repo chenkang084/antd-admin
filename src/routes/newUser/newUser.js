@@ -1,25 +1,24 @@
-import React from 'react';
-import {connect} from 'dva';
-import {Table, Popconfirm} from 'antd';
-import styles from './newUser.less';
+import React from 'react'
+import { connect } from 'dva'
+import { Table, Popconfirm } from 'antd'
+import styles from './newUser.less'
 
 
-const List = ({...tableProps, dispatch, sortedInfo, selectedRowKeys}) => {
-
-  sortedInfo = sortedInfo || {};
-  const hasSelected = selectedRowKeys.length > 0;
+const List = ({ ...tableProps, dispatch, sortedInfo, selectedRowKeys }) => {
+  sortedInfo = sortedInfo || {}
+  const hasSelected = selectedRowKeys.length > 0
   // filteredInfo = filteredInfo || {};
 
-  function deleteHandler(id) {
+  function deleteHandler (id) {
     console.log(id)
   }
 
-  function handleChange(pagination, filters, sorter) {
+  function handleChange (pagination, filters, sorter) {
     // console.log('Various parameters', pagination, filters, sorter);
     dispatch({
-        type: 'newUser/change',
-        payload: {pagination, filters, sorter}
-      }
+      type: 'newUser/change',
+      payload: { pagination, filters, sorter },
+    }
     )
   }
 
@@ -28,15 +27,15 @@ const List = ({...tableProps, dispatch, sortedInfo, selectedRowKeys}) => {
     onChange: (selectedRowKeys, selectedRows) => {
       // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
       dispatch({
-          type: 'newUser/updateState',
-          payload: {selectedRowKeys}
-        }
+        type: 'newUser/updateState',
+        payload: { selectedRowKeys },
+      }
       )
     },
     getCheckboxProps: record => ({
       disabled: record.name === 'Leanne Graham',    // Column configuration not to be checked
     }),
-  };
+  }
 
 
   const columns = [
@@ -74,7 +73,7 @@ const List = ({...tableProps, dispatch, sortedInfo, selectedRowKeys}) => {
       key: 'operation',
       width: 150,
       fixed: 'right',
-      render: (text, {id}) => (
+      render: (text, { id }) => (
         <span className={styles.operation}>
           <a href="">Edit</a>
           <Popconfirm title="Confirm to delete?" onConfirm={deleteHandler.bind(null, id)}>
@@ -83,7 +82,7 @@ const List = ({...tableProps, dispatch, sortedInfo, selectedRowKeys}) => {
         </span>
       ),
     },
-  ];
+  ]
 
   return (
 
@@ -91,7 +90,7 @@ const List = ({...tableProps, dispatch, sortedInfo, selectedRowKeys}) => {
       <Table
         {...tableProps}
         bordered
-        scroll={{x: 1200}}
+        scroll={{ x: 1200 }}
         columns={columns}
         simple
         className={styles.table}

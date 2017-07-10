@@ -1,49 +1,51 @@
 /**
  * Created by chenkang1 on 2017/7/4.
  */
-import {Form, Icon, Input, Button, Modal} from 'antd';
-import {fetchAndNotification} from "../../services/restfulService";
-const FormItem = Form.Item;
+import React from 'react'
+import { Form, Icon, Input, Button, Modal } from 'antd'
+import PropTypes from 'prop-types'
+import { fetchAndNotification } from '../../services/restfulService'
+const FormItem = Form.Item
 
-function hasErrors(fieldsError) {
-  return Object.keys(fieldsError).some(field => fieldsError[field]);
+function hasErrors (fieldsError) {
+  return Object.keys(fieldsError).some(field => fieldsError[field])
 }
 
 class NormalLoginForm extends React.Component {
 
-  componentDidMount() {
+  componentDidMount () {
     // To disabled submit button at the beginning.
-    this.props.form.validateFields();
+    this.props.form.validateFields()
   }
 
   handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log('Received values of form: ', values)
 
-        this.props.onCancel();
+        this.props.onCancel()
         fetchAndNotification({
           url: 'create',
           method: 'post',
           params: values,
           notifications: {
-            title: `create Action`,
+            title: 'create Action',
             success: `创建${values.userName} 操作成功！`,
-            error: `创建${values.userName} 操作失败！`
-          }
+            error: `创建${values.userName} 操作失败！`,
+          },
         })
       }
-    });
+    })
   };
 
-  render() {
-    const {getFieldDecorator, getFieldsError, getFieldError, isFieldTouched} = this.props.form;
+  render () {
+    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form
 
     // Only show error after a field is touched.
-    const userNameError = isFieldTouched('userName') && getFieldError('userName');
-    const passwordError = isFieldTouched('password') && getFieldError('password');
-    const emailError = isFieldTouched('email') && getFieldError('email');
+    const userNameError = isFieldTouched('userName') && getFieldError('userName')
+    const passwordError = isFieldTouched('password') && getFieldError('password')
+    const emailError = isFieldTouched('email') && getFieldError('email')
 
     return (
       <Modal
@@ -61,10 +63,10 @@ class NormalLoginForm extends React.Component {
           >
             {getFieldDecorator('userName', {
               rules: [
-                {required: true, message: 'Please input your username!'},
+                { required: true, message: 'Please input your username!' },
               ],
             })(
-              <Input prefix={<Icon type="user" style={{fontSize: 13}}/>} placeholder="Username"/>
+              <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
             )}
           </FormItem>
           <FormItem
@@ -72,9 +74,9 @@ class NormalLoginForm extends React.Component {
             help={passwordError || ''}
           >
             {getFieldDecorator('password', {
-              rules: [{required: true, message: 'Please input your Password!'}],
+              rules: [{ required: true, message: 'Please input your Password!' }],
             })(
-              <Input prefix={<Icon type="lock" style={{fontSize: 13}}/>} type="password" placeholder="Password"/>
+              <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
             )}
           </FormItem>
           <FormItem
@@ -83,11 +85,11 @@ class NormalLoginForm extends React.Component {
           >
             {getFieldDecorator('email', {
               rules: [
-                {required: true, message: 'Please input your Password!'},
-                {type: 'email', message: 'The input is not valid E-mail!',}
+                { required: true, message: 'Please input your Password!' },
+                { type: 'email', message: 'The input is not valid E-mail!' },
               ],
             })(
-              <Input prefix={<Icon type="lock" style={{fontSize: 13}}/>} type="text" placeholder="Email"/>
+              <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="text" placeholder="Email" />
             )}
           </FormItem>
           <FormItem>
@@ -101,10 +103,16 @@ class NormalLoginForm extends React.Component {
           </FormItem>
         </Form>
       </Modal>
-    );
+    )
   }
 }
 
-let CollectionCreateForm = Form.create()(NormalLoginForm);
+NormalLoginForm.propTypes = {
+  form: PropTypes.object,
+  onCancel: PropTypes.function,
+  visible: PropTypes.boolean,
+}
 
-export default CollectionCreateForm;
+const CollectionCreateForm = Form.create()(NormalLoginForm)
+
+export default CollectionCreateForm

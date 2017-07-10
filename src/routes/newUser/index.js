@@ -3,17 +3,17 @@
  */
 
 import React from 'react'
-import {connect} from 'dva'
-import {Tabs,Modal} from 'antd'
-import {routerRedux} from 'dva/router'
+import { connect } from 'dva'
+import { Tabs, Modal } from 'antd'
+import { routerRedux } from 'dva/router'
 import PropTypes from 'prop-types'
 import List from './newUser'
 import Filter from './Filter'
 
-const Index = ({newUser, dispatch, location, loading}) => {
-  const {listFiltered, pagination, sortedInfo, filter,modalVisible} = newUser;
-  let {selectedRowKeys} =newUser;
-  const hasSelected = selectedRowKeys.length > 0;
+const Index = ({ newUser, dispatch, location, loading }) => {
+  const { listFiltered, pagination, sortedInfo, filter, modalVisible } = newUser
+  let { selectedRowKeys } = newUser
+  const hasSelected = selectedRowKeys.length > 0
 
   const listProps = {
     scroll: true,
@@ -24,24 +24,24 @@ const Index = ({newUser, dispatch, location, loading}) => {
     selectedRowKeys,
   }
 
-  const refresh =() =>{
+  const refresh = () => {
     dispatch({
-      type: 'newUser/query', payload: {}
+      type: 'newUser/query', payload: {},
     })
-    selectedRowKeys = [];
+    selectedRowKeys = []
   }
 
   const filterProps = {
     loading: loading.effects['newUser/query'],
-    filter: filter,
+    filter,
     hasSelected,
     selectedRowKeys,
     onFilterChange (value) {
       dispatch(
-        {type: 'newUser/filter', payload: {filter:value.text}}
+        { type: 'newUser/filter', payload: { filter: value.text } }
       )
     },
-    onAdd(){
+    onAdd () {
       dispatch({
         type: 'newUser/showModal',
         payload: {
@@ -49,20 +49,20 @@ const Index = ({newUser, dispatch, location, loading}) => {
         },
       })
     },
-    refresh
-  };
+    refresh,
+  }
 
   const modalProps = {
     visible: modalVisible,
     maskClosable: false,
-  };
+  }
 
   return (<div className="content-inner">
     <Filter {...filterProps} />
-    <List {...listProps}/>
+    <List {...listProps} />
     {modalVisible && <Modal {...modalProps} />}
   </div>)
-};
+}
 
 Index.propTypes = {
   post: PropTypes.object,
@@ -71,4 +71,4 @@ Index.propTypes = {
   dispatch: PropTypes.func,
 }
 
-export default connect(({newUser, loading}) => ({newUser, loading}))(Index)
+export default connect(({ newUser, loading }) => ({ newUser, loading }))(Index)

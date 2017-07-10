@@ -3,13 +3,13 @@
  */
 
 import modelExtend from 'dva-model-extend'
-import {config} from '../utils'
+import { config } from '../utils'
 
-const {pageSize} = config
+const { pageSize } = config
 
 const model = {
   reducers: {
-    updateState (state, {payload}) {
+    updateState (state, { payload }) {
       return {
         ...state,
         ...payload,
@@ -24,10 +24,10 @@ const pageFrontModel = modelExtend(model, {
     listFiltered: [],
     list: [],
     pagination: {
-      pageSize: pageSize,
+      pageSize,
       showSizeChanger: true,
       showQuickJumper: true,
-      pageSizeOptions: ["3", "4", "5", "6"],
+      pageSizeOptions: ['3', '4', '5', '6'],
       showTotal: total => `Total ${total} Items`,
       current: 1,
       total: 0,
@@ -40,8 +40,8 @@ const pageFrontModel = modelExtend(model, {
   },
 
   reducers: {
-    querySuccess (state, {payload}) {
-      const {list, pagination} = payload
+    querySuccess (state, { payload }) {
+      const { list, pagination } = payload
       return {
         ...state,
         list,
@@ -53,7 +53,7 @@ const pageFrontModel = modelExtend(model, {
         selectedRowKeys: [],
       }
     },
-    change(state, {payload}){
+    change (state, { payload }) {
       return {
         ...state,
         pagination: payload.pagination,
@@ -61,8 +61,8 @@ const pageFrontModel = modelExtend(model, {
         filteredInfo: payload.filters,
       }
     },
-    filter(state, {payload}){
-      let listFiltered = payload.filter.length ? state.list.filter(filterForAnyField(payload.filter)) : state.list;
+    filter (state, { payload }) {
+      let listFiltered = payload.filter.length ? state.list.filter(filterForAnyField(payload.filter)) : state.list
       return {
         ...state,
         listFiltered,
@@ -72,20 +72,20 @@ const pageFrontModel = modelExtend(model, {
           total: listFiltered.length,
         },
       }
-    }
+    },
   },
 
 })
 
 const filterForAnyField = (text) => function (item) {
-  const searchingString = String(text);
+  const searchingString = String(text)
   for (let value of Object.values(item)) {
-    if (typeof(value)=="string" && value.indexOf(searchingString) > -1){
+    if (typeof(value) === 'string' && value.indexOf(searchingString) > -1) {
       return true
     }
   }
   return false
-};
+}
 
 
 module.exports = {

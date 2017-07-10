@@ -6,7 +6,7 @@ export const config = {
   uri: {
     base: '/',
     host: '/',
-    api: "http://localhost:8000/api/v1/"
+    api: 'http://localhost:8000/api/v1/',
   },
   debug: true,
-};
+}

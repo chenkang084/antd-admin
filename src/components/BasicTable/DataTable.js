@@ -1,15 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Table, notification} from 'antd'
-import './DataTable.less';
-import lodash from 'lodash';
-import {fetch} from "../../services/restfulService";
-import {delay, getSessionStorage, setSessionStorage, sortJsonArr} from "../../utils/dataUtils";
-import Filter from "./Filter";
+import { Table, notification } from 'antd'
+import './DataTable.less'
+import lodash from 'lodash'
+import { fetch } from '../../services/restfulService'
+import { delay, getSessionStorage, setSessionStorage, sortJsonArr } from '../../utils/dataUtils'
+import Filter from './Filter'
 
 class DataTable extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       loading: true,
       current: getSessionStorage('pagination')[window.location.pathname],
@@ -18,69 +18,68 @@ class DataTable extends React.Component {
     }
   }
 
-  componentDidMount() {
-
-    this.getTableData();
+  componentDidMount () {
+    this.getTableData()
   }
 
   getTableData = () => {
-    const {fetchData} = this.props;
-    this.setState({loading: true});
+    const { fetchData } = this.props
+    this.setState({ loading: true })
     fetch(fetchData)
       .then((result) => {
         this.setState({
           dataSource: result.data.data,
           dataSourceBack: lodash.cloneDeep(result.data.data),
-          loading: false
-        });
+          loading: false,
+        })
       })
-      .catch((error) => {
-        this.setState({loading: false});
+      .catch(() => {
+        this.setState({ loading: false })
         notification.open({
           message: this.props.errorMsg,
           duration: 0,
-          type: 'error'
-        });
+          type: 'error',
+        })
       })
   };
 
   handleTableChange = (pagination, filters, sorter) => {
     delay.call(this).then(() => {
       if (sorter.order) {
-        let orderType = sorter.order === 'descend' ? 'desc' : 'asc';
-        sortJsonArr(this.state.dataSource, sorter.field, orderType);
+        let orderType = sorter.order === 'descend' ? 'desc' : 'asc'
+        sortJsonArr(this.state.dataSource, sorter.field, orderType)
       }
-      this.setState({current: pagination.current, pageSize: pagination.pageSize});
-      setSessionStorage('pagination', {[window.location.pathname]: pagination.current})
+      this.setState({ current: pagination.current, pageSize: pagination.pageSize })
+      setSessionStorage('pagination', { [window.location.pathname]: pagination.current })
     })
   };
 
   filterProps = {
-    onFilterChange: ({name: keyword}) => {
+    onFilterChange: ({ name: keyword }) => {
       delay.call(this).then(() => {
-        let result = [];
-        let list = lodash.cloneDeep(this.state.dataSourceBack);
+        let result = []
+        let list = lodash.cloneDeep(this.state.dataSourceBack)
         if (keyword) {
           if (list && list.length > 0) {
             result = list.filter((row) => {
               return Object.values(row).filter(item => item && String(item).toLowerCase().indexOf(keyword.toLowerCase()) > -1).length > 0
-            });
+            })
           }
         } else {
-          result = this.state.dataSourceBack;
+          result = this.state.dataSourceBack
         }
-        this.setState({dataSource: result})
+        this.setState({ dataSource: result })
       })
-    }
+    },
   };
 
   checkRefresh = () => {
-    let refresh = this.state.refresh;
+    let refresh = this.state.refresh
     if (!refresh) {
-      this.setState({refresh: this.props.refresh})
+      this.setState({ refresh: this.props.refresh })
     } else {
       if (this.props.refresh !== refresh) {
-        this.setState({refresh: this.props.refresh});
+        this.setState({ refresh: this.props.refresh })
         this.getTableData()
       }
     }
@@ -89,8 +88,8 @@ class DataTable extends React.Component {
   init = () => {
     this.tableProps = {
       columns: this.props.columns,
-      ...this.state
-    };
+      ...this.state,
+    }
     this.pagination = {
       showSizeChanger: true,
       showQuickJumper: true,
@@ -99,26 +98,25 @@ class DataTable extends React.Component {
       pageSize: this.state.pageSize,
       defaultPageSize: 5,
       pageSizeOptions: ['5', '20', '30', '40'],
-      current: this.state.current
-    };
+      current: this.state.current,
+    }
 
     this.rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        this.setState({selectedRowKeys: selectedRows});
-        this.props.handleSelectItems(selectedRows);
+        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
+        this.setState({ selectedRowKeys: selectedRows })
+        this.props.handleSelectItems(selectedRows)
       },
       getCheckboxProps: record => ({
         disabled: record.name === 'Disabled User',    // Column configuration not to be checked
       }),
-    };
+    }
   };
 
-  render() {
+  render () {
+    this.checkRefresh()
 
-    this.checkRefresh();
-
-    this.init();
+    this.init()
 
     return (
       <div>
@@ -140,7 +138,10 @@ class DataTable extends React.Component {
 DataTable.propTypes = {
   columns: PropTypes.array,
   dataSource: PropTypes.array,
-  fetchData: PropTypes.object
-};
+  fetchData: PropTypes.object,
+  errorMsg: PropTypes.string,
+  refresh: PropTypes.function,
+  handleSelectItems: PropTypes.function,
+}
 
 export default DataTable
