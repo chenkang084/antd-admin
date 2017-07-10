@@ -20,13 +20,6 @@ module.exports = [
     router: '/post',
   },
   {
-    id: 8,
-    bpid: 1,
-    name: 'NewUser',
-    icon: 'skin',
-    router: '/newUser',
-  },
-  {
     id: 21,
     mpid: -1,
     bpid: 2,
