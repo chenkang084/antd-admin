@@ -1,33 +1,31 @@
 /**
  * Created by chenkang1 on 2017/6/30.
  */
-import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'dva';
-import DataTable from '../../components/BasicTable/DataTable';
-import {Modal, Row, Col, Card, Button} from 'antd';
-import {Link} from 'dva/router';
-import DropOption from "../../components/DropOption/DropOption";
-import BatchModal from '../../components/modals/BatchModal';
-import {fetchAndNotification} from "../../services/restfulService";
-import CreateModal, {CollectionCreateForm, CollectionsPage} from "../../components/host/CreateModal";
+import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'dva'
+import DataTable from '../../components/BasicTable/DataTable'
+import { Modal, Row, Col, Card, Button } from 'antd'
+import { Link } from 'dva/router'
+import DropOption from '../../components/DropOption/DropOption'
+import BatchModal from '../../components/modals/BatchModal'
+import { fetchAndNotification } from '../../services/restfulService'
+import { CollectionsPage } from '../../components/host/CreateModal'
 
-const confirm = Modal.confirm;
+const confirm = Modal.confirm
 
 class HostPage extends React.Component {
-  constructor(props) {
-    super(props);
+  // constructor (props) {
+  //   super(props)
+  // }
 
-
-  }
-
-  componentDidMount() {
+  componentDidMount () {
 
   }
 
   handleMenuClick = (record, e) => {
     if (e.key === '1') {
-      let {dispatch} = this.props;
+      let { dispatch } = this.props
       dispatch({
         type: 'host/showModal',
         payload: {
@@ -35,7 +33,6 @@ class HostPage extends React.Component {
         },
 
       })
-
     } else if (e.key === '2') {
       confirm({
         title: 'Are you sure delete this record?',
@@ -47,38 +44,38 @@ class HostPage extends React.Component {
   };
 
   showModal = (key) => {
-    let {dispatch} = this.props;
+    let { dispatch } = this.props
     dispatch({
       type: 'host/showModal',
       payload: {
-        key
+        key,
       },
     })
   };
 
   refresh = () => {
-    this.props.dispatch({type: 'host/refresh'})
+    this.props.dispatch({ type: 'host/refresh' })
   };
 
   init = () => {
     this.modalProps = {
       visible: this.props.host.modalVisible,
       maskClosable: true,
-      title: `test`,
+      title: 'test',
       wrapClassName: 'vertical-center-modal',
       onOk: (data) => {
         console.log(data)
       },
       onCancel: () => {
-        let {dispatch} = this.props;
+        let { dispatch } = this.props
         dispatch({
           type: 'host/hideModal',
           payload: {
-            key: 'modalVisible'
-          }
+            key: 'modalVisible',
+          },
         })
-      }
-    };
+      },
+    }
 
     this.tableDataProps = {
       columns: [
@@ -87,7 +84,7 @@ class HostPage extends React.Component {
           dataIndex: 'avatar',
           key: 'avatar',
           // width: 64,
-          render: (text) => <img alt={'avatar'} width={24} src={text}/>,
+          render: (text) => <img alt={'avatar'} width={24} src={text} />,
         }, {
           title: 'Name',
           dataIndex: 'name',
@@ -136,8 +133,9 @@ class HostPage extends React.Component {
           key: 'operation',
           width: 100,
           render: (text, record) => {
-            return <DropOption onMenuClick={e => this.handleMenuClick(record, e)}
-                               menuOptions={[{key: '1', name: 'Update'}, {key: '2', name: 'Delete'}]}/>
+            return (<DropOption onMenuClick={e => this.handleMenuClick(record, e)}
+              menuOptions={[{ key: '1', name: 'Update' }, { key: '2', name: 'Delete' }]}
+            />)
           },
         },
       ],
@@ -145,17 +143,17 @@ class HostPage extends React.Component {
         url: 'host',
         params: null,
       },
-      errorMsg: `get host table error`,
+      errorMsg: 'get host table error',
       refresh: this.props.host.refresh,
       handleSelectItems: (selectedRows) => {
-        this.props.dispatch({type: 'host/updateSelectItems', payload: selectedRows})
-      }
-    };
+        this.props.dispatch({ type: 'host/updateSelectItems', payload: selectedRows })
+      },
+    }
 
     this.batchModalProps = {
       visible: this.props.host.batchModalVisible,
       maskClosable: true,
-      title: `Batch Action Modal`,
+      title: 'Batch Action Modal',
       wrapClassName: 'vertical-center-modal',
       selectedItems: this.props.host.selectedItems,
       fetchData: {
@@ -163,35 +161,35 @@ class HostPage extends React.Component {
         method: 'delete',
       },
       onOk: (data) => {
-        this.batchModalProps.onCancel();
+        this.batchModalProps.onCancel()
         this.props.host.selectedItems.forEach((item) => {
           fetchAndNotification({
             url: 'host',
             method: 'delete',
-            params: {ids: item.id},
+            params: { ids: item.id },
             notifications: {
-              title: `batch Action`,
+              title: 'batch Action',
               success: `${item.name} 操作成功！`,
-              error: `${item.name} 操作失败！`
-            }
+              error: `${item.name} 操作失败！`,
+            },
           })
         })
       },
       onCancel: () => {
-        let {dispatch} = this.props;
+        let { dispatch } = this.props
         dispatch({
           type: 'host/hideModal',
           payload: {
-            key: 'batchModalVisible'
-          }
+            key: 'batchModalVisible',
+          },
         })
-      }
-    };
+      },
+    }
 
     this.createModalProps = {
       visible: this.props.host.createModalVisible,
       maskClosable: true,
-      title: `Batch Action Modal`,
+      title: 'Batch Action Modal',
       wrapClassName: 'vertical-center-modal',
       selectedItems: this.props.host.selectedItems,
       fetchData: {
@@ -199,46 +197,47 @@ class HostPage extends React.Component {
         method: 'delete',
       },
       onOk: (data) => {
-        this.batchModalProps.onCancel();
+        this.batchModalProps.onCancel()
         this.props.host.selectedItems.forEach((item) => {
           fetchAndNotification({
             url: 'host',
             method: 'delete',
-            params: {ids: item.id},
+            params: { ids: item.id },
             notifications: {
-              title: `batch Action`,
+              title: 'batch Action',
               success: `${item.name} 操作成功！`,
-              error: `${item.name} 操作失败！`
-            }
+              error: `${item.name} 操作失败！`,
+            },
           })
         })
       },
       onCancel: () => {
-        let {dispatch} = this.props;
+        let { dispatch } = this.props
         dispatch({
           type: 'host/hideModal',
           payload: {
-            key: 'createModalVisible'
-          }
+            key: 'createModalVisible',
+          },
         })
-      }
-    };
+      },
+    }
   };
 
 
-  render() {
-    this.init();
+  render () {
+    this.init()
 
     return (
       <div className="content-inner">
         <Row gutter={32}>
           <Col lg={24} md={24}>
             <Card title="远程数据">
-              <div className='action-btn-container'>
-                <Button type="primary" onClick={this.refresh} icon="reload"/>
-                <Button type="primary" onClick={this.showModal.bind(this,'batchModalVisible')}
-                        disabled={this.props.host.selectedItems.length === 0}>Batch Action</Button>
-                <CollectionsPage/>
+              <div className="action-btn-container">
+                <Button type="primary" onClick={this.refresh} icon="reload" />
+                <Button type="primary" onClick={this.showModal.bind(this, 'batchModalVisible')}
+                  disabled={this.props.host.selectedItems.length === 0}
+                >Batch Action</Button>
+                <CollectionsPage />
               </div>
               <DataTable
                 {...this.tableDataProps}
@@ -247,16 +246,16 @@ class HostPage extends React.Component {
           </Col>
         </Row>
         {this.props.host.modalVisible && <Modal {...this.modalProps} />}
-        {this.props.host.batchModalVisible && <BatchModal {...this.batchModalProps}/>}
+        {this.props.host.batchModalVisible && <BatchModal {...this.batchModalProps} />}
       </div>
     )
   }
 }
 
 
-function mapStateToProps({host}) {
+function mapStateToProps ({ host }) {
   return {
-    host
+    host,
   }
 }
 
@@ -265,8 +264,8 @@ HostPage.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
-};
+  host: PropTypes.object,
+}
 
 export default connect(mapStateToProps)(HostPage)
-
 

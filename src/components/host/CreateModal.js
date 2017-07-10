@@ -1,38 +1,37 @@
 /**
  * Created by chenkang1 on 2017/7/4.
  */
-import {Form, Button} from 'antd';
-import CollectionCreateForm from './CreateForm';
-const FormItem = Form.Item;
-
+import React from 'react'
+import { Button } from 'antd'
+import CollectionCreateForm from './CreateForm'
 
 export class CollectionsPage extends React.Component {
   state = {
     visible: false,
   };
   showModal = () => {
-    this.setState({visible: true});
+    this.setState({ visible: true })
   };
   handleCancel = () => {
-    this.setState({visible: false});
+    this.setState({ visible: false })
   };
   handleCreate = () => {
-    const form = this.form;
+    const form = this.form
     form.validateFields((err, values) => {
       if (err) {
-        return;
+        return
       }
 
-      console.log('Received values of form: ', values);
-      form.resetFields();
-      this.setState({visible: false});
-    });
+      console.log('Received values of form: ', values)
+      form.resetFields()
+      this.setState({ visible: false })
+    })
   };
   saveFormRef = (form) => {
-    this.form = form;
+    this.form = form
   };
 
-  render() {
+  render () {
     return (
       <span>
         <Button type="primary" onClick={this.showModal}>Create</Button>
@@ -43,6 +42,6 @@ export class CollectionsPage extends React.Component {
           onCreate={this.handleCreate}
         />
       </span>
-    );
+    )
   }
 }

@@ -1,28 +1,28 @@
 import axios from 'axios'
 import qs from 'qs'
-import {YQL, CORS} from './config'
+import { YQL, CORS } from './config'
 import jsonp from 'jsonp'
 import lodash from 'lodash'
 import pathToRegexp from 'path-to-regexp'
-import {message} from 'antd'
+import { message } from 'antd'
 
 // Add a request interceptor
-axios.interceptors.request.use(function (config) {
+axios.interceptors.request.use((config) => {
   // Do something before request is sent
-  return config;
-}, function (error) {
+  return config
+}, (error) => {
   // Do something with request error
-  return Promise.reject(error);
-});
+  return Promise.reject(error)
+})
 
 // Add a response interceptor
-axios.interceptors.response.use(function (response) {
+axios.interceptors.response.use((response) => {
   // Do something with response data
-  return response;
-}, function (error) {
+  return response
+}, (error) => {
   // Do something with response error
-  return Promise.reject(error);
-});
+  return Promise.reject(error)
+})
 
 const fetch = (options) => {
   let {
@@ -62,7 +62,7 @@ const fetch = (options) => {
         if (error) {
           reject(error)
         }
-        resolve({statusText: 'OK', status: 200, data: result})
+        resolve({ statusText: 'OK', status: 200, data: result })
       })
     })
   } else if (fetchType === 'YQL') {
@@ -90,7 +90,7 @@ const fetch = (options) => {
   }
 }
 
-export default function request(options) {
+export default function request (options) {
   if (options.url && options.url.indexOf('//') > -1) {
     const origin = `${options.url.split('//')[0]}//${options.url.split('//')[1].split('/')[0]}`
     if (window.location.origin !== origin) {
@@ -105,10 +105,10 @@ export default function request(options) {
   }
 
   return fetch(options).then((response) => {
-    const {statusText, status} = response
+    const { statusText, status } = response
     let data = options.fetchType === 'YQL' ? response.data.query.results.json : response.data
     if (data instanceof Array) {
-      data = {data};
+      data = { data }
     }
     // console.log(data)
     return Promise.resolve({
@@ -118,17 +118,17 @@ export default function request(options) {
       ...data,
     })
   }).catch((error) => {
-    const {response} = error
+    const { response } = error
     let msg
     let statusCode
     if (response && response instanceof Object) {
-      const {data, statusText} = response
+      const { data, statusText } = response
       statusCode = response.status
       msg = data.message || statusText
     } else {
       statusCode = 600
       msg = error.message || 'Network Error'
     }
-    return Promise.reject({success: false, statusCode, message: msg})
+    return Promise.reject({ success: false, statusCode, message: msg })
   })
 }

@@ -129,6 +129,6 @@ module.exports = {
   },
 
   [`GET ${apiPrefix}/hehe`] (req, res) {
-    res.json({a:1})
+    res.json({ a: 1 })
   },
 }

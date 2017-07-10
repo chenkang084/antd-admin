@@ -1,10 +1,10 @@
 /**
  * Created by chenkang1 on 2017/7/3.
  */
-const qs = require('qs')
+// const qs = require('qs')
 const Mock = require('mockjs')
 const config = require('../utils/config')
-const {apiPrefix} = config
+const { apiPrefix } = config
 
 let usersListData = Mock.mock({
   'data|50-100': [
@@ -32,8 +32,8 @@ let database = usersListData.data
 module.exports = {
 
   [`GET ${apiPrefix}/host`] (req, res) {
-    const {query} = req
-    let {pageSize, page, ...other} = query
+    const { query } = req
+    let { pageSize, page, ...other } = query
     pageSize = pageSize || 10
     page = page || 1
 
@@ -67,8 +67,8 @@ module.exports = {
     })
   },
 
-  [`DELETE ${apiPrefix}/host`](req, res){
-    const {ids} = req.body
+  [`DELETE ${apiPrefix}/host`] (req, res) {
+    const { ids } = req.body
     // console.log(req.body)
     // console.log(ids)
     if (ids && ids % 2 === 0) {
@@ -78,14 +78,13 @@ module.exports = {
     }
   },
 
-  [`POST ${apiPrefix}/create`](req, res){
-    const params = req.body;
+  [`POST ${apiPrefix}/create`] (req, res) {
+    const params = req.body
 
-    console.log(params);
+    console.log(params)
 
-    res.status(204).end();
-  }
-
+    res.status(204).end()
+  },
 
 
 }

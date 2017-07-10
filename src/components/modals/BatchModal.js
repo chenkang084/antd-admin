@@ -1,20 +1,20 @@
 /**
  * Created by chenkang1 on 2017/7/2.
  */
-import React from 'react';
-import {Modal, notification} from 'antd';
-import {fetch} from "../../services/restfulService";
+import React from 'react'
+import { Modal } from 'antd'
+import PropTypes from 'prop-types'
 
 class BatchModal extends React.Component {
-  constructor(props) {
-    super(props);
+  // constructor (props) {
+  //   super(props)
+  // }
+
+  componentDidMount () {
+
   }
 
-  componentDidMount() {
-
-  }
-
-  render() {
+  render () {
     return (
       <div>
         <Modal
@@ -28,12 +28,18 @@ class BatchModal extends React.Component {
           }
         </Modal>
       </div>
-    );
+    )
   }
 
 }
 
 
-BatchModal.propTypes = {};
+BatchModal.propTypes = {
+  title: PropTypes.string,
+  visible: PropTypes.boolean,
+  onOk: PropTypes.function,
+  onCancel: PropTypes.function,
+  selectedItems: PropTypes.array,
+}
 
 export default BatchModal

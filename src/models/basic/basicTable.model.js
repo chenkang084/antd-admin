@@ -10,23 +10,23 @@ export default {
   effects: {},
 
   reducers: {
-    showModal (state, {payload: {key: key}}) {
-      return {...state, [key]: true}
+    showModal (state, { payload: { key: key } }) {
+      return { ...state, [key]: true }
     },
-    hideModal (state, {payload: {key: key}}) {
-      return {...state, [key]: false}
+    hideModal (state, { payload: { key: key } }) {
+      return { ...state, [key]: false }
     },
-    updateSelectItems(state, {payload: selectedItems}){
+    updateSelectItems (state, { payload: selectedItems }) {
       return {
         ...state,
-        selectedItems
+        selectedItems,
       }
     },
-    refresh(state){
+    refresh (state) {
       return {
         ...state,
-        refresh: ++state.refresh
+        refresh: ++state.refresh,
       }
-    }
-  }
+    },
+  },
 }
