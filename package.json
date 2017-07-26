@@ -43,13 +43,16 @@
     "rc-tween-one": "^1.0.0",
     "redbox-react": "^1.2.10",
     "rimraf": "^2.5.4",
-    "roadhog": "^0.6.0"
+    "roadhog": "^0.6.0",
+    "shelljs": "^0.7.8"
   },
   "pre-commit": [
     "lint"
   ],
   "scripts": {
     "dev_linux": "BROWSER=none HOST=0.0.0.0 roadhog server",
+    "presetup": "cnpm i",
+    "setup": "node ./build/setup.js",
     "start": "node ./build/runServer.js",
     "lint": "eslint --fix --ext .js src",
     "build": "node ./build/build.js",
