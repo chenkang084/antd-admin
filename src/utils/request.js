@@ -129,6 +129,7 @@ export default function request (options) {
       statusCode = 600
       msg = error.message || 'Network Error'
     }
+    console.log(msg);
     return Promise.reject({ success: false, statusCode, message: msg })
   })
 }
