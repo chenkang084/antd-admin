@@ -24,9 +24,9 @@ const Bread = ({menu}) => {
     }
   }
 
-  if (!current) {
-    pathArray.push(menu[0])
-    pathArray.push({
+  if (!current ) {
+    pathArray.push(menu[0]);
+    !pathToRegexp("/").exec(location.pathname) && pathArray.push({
       id: 404,
       name: 'Not Found',
     })
@@ -41,7 +41,7 @@ const Bread = ({menu}) => {
         ? <Icon type={item.icon} style={{marginRight: 4}}/>
         : ''}{item.name}</span>
     );
-
+    //如果有router，并且不是最后一个，则显示link，可以跳转
     if (item.router && (pathArray.length - 1) !== key) {
       return (
         <Breadcrumb.Item key={key}>
