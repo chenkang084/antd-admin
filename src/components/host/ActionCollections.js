@@ -3,12 +3,19 @@
  */
 import React from 'react'
 import { Button } from 'antd'
-import CollectionCreateForm from './CreateForm'
+import ModalForm from './ModalForm'
 
-export class CollectionsPage extends React.Component {
-  state = {
-    visible: false,
-  };
+/**
+ * action collections
+ */
+export class ActionCollections extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      visible: false,
+    };
+  }
+
   showModal = () => {
     this.setState({ visible: true })
   };
@@ -21,7 +28,6 @@ export class CollectionsPage extends React.Component {
       if (err) {
         return
       }
-
       console.log('Received values of form: ', values)
       form.resetFields()
       this.setState({ visible: false })
@@ -35,11 +41,12 @@ export class CollectionsPage extends React.Component {
     return (
       <span>
         <Button type="primary" onClick={this.showModal}>Create</Button>
-        <CollectionCreateForm
+        <ModalForm
           ref={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
+          refresh={this.props.refresh}
         />
       </span>
     )

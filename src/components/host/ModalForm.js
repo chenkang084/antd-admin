@@ -23,7 +23,7 @@ class NormalLoginForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
-
+        this.props.form.resetFields()
         this.props.onCancel()
         fetchAndNotification({
           url: 'create',
@@ -34,6 +34,9 @@ class NormalLoginForm extends React.Component {
             success: `创建${values.userName} 操作成功！`,
             error: `创建${values.userName} 操作失败！`,
           },
+        }).then((result)=>{
+          //when the fetch successfully ,refresh the table
+          this.props.refresh()
         })
       }
     })
@@ -111,8 +114,6 @@ NormalLoginForm.propTypes = {
   form: PropTypes.object,
   onCancel: PropTypes.function,
   visible: PropTypes.boolean,
-}
+};
 
-const CollectionCreateForm = Form.create()(NormalLoginForm)
-
-export default CollectionCreateForm
+export default Form.create()(NormalLoginForm)

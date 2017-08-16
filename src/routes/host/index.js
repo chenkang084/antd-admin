@@ -10,7 +10,7 @@ import { Link } from "dva/router";
 import DropOption from "../../components/DropOption/DropOption";
 import BatchModal from "../../components/modals/BatchModal";
 import { fetchAndNotification } from "../../services/restfulService";
-import { CollectionsPage } from "../../components/host/CreateModal";
+import { ActionCollections } from "../../components/host/ActionCollections";
 import Mytest from './test.js'
 
 const confirm = Modal.confirm;
@@ -241,6 +241,11 @@ class HostPage extends React.Component {
     };
   };
 
+  //define common props of actions btn
+  actionCollectionsProps = {
+    refresh:this.refresh
+  };
+
   render() {
     this.init();
 
@@ -262,7 +267,8 @@ class HostPage extends React.Component {
                 >
                   Batch Action
                 </Button>
-                <CollectionsPage />
+                {/*list a sort of actions*/}
+                <ActionCollections {...this.actionCollectionsProps}/>
               </div>
               <DataTable {...this.tableDataProps} />
             </Card>
