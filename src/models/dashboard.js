@@ -191,7 +191,7 @@ export default {
   subscriptions: {
     setup ({ dispatch }) {
       dispatch({ type: 'query' })
-      dispatch({ type: 'queryWeather' })
+      // dispatch({ type: 'queryWeather' })
     },
   },
   effects: {
@@ -199,7 +199,7 @@ export default {
       payload,
     }, { call, put }) {
       const data = yield call(query, parse(payload))
-      // yield put({ type: 'queryWeather', payload: { ...data } })
+      yield put({ type: 'queryWeather', payload: { ...data } })
     },
     *queryWeather ({
       payload,
