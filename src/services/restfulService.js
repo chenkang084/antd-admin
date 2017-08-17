@@ -51,7 +51,7 @@ function request ({ method, url, params }) {
 }
 
 export async function fetch ({ url, params = null, method = 'get' }) {
-  return request({
+  return await request({
     url,
     method,
     params,
@@ -59,26 +59,28 @@ export async function fetch ({ url, params = null, method = 'get' }) {
 }
 
 export async function fetchAndNotification ({ url, params = null, method = 'get', notifications = {} }) {
-  request({
+  return await request({
     url,
     method,
     params,
   })
-    .then(() => {
+    .then((result) => {
       notification.open({
         message: notifications.title,
         description: notifications.success,
         duration: 0,
         type: 'success',
-      })
+      });
+      return result;
     })
-    .catch(() => {
+    .catch((result) => {
       notification.open({
         message: notifications.title,
         description: notifications.error,
         duration: 0,
         type: 'error',
-      })
+      });
+      return result;
     })
 }
 
