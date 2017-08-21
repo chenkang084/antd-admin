@@ -158,6 +158,13 @@ module.exports = [
     router: '/host',
     icon: 'setting',
   },
+  {
+    id: 624,
+    mpid: -1,
+    bpid: 2,
+    name: 'Host Detail',
+    router: '/host/:id',
+  },
 
 
 ]

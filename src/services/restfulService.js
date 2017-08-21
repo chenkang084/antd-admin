@@ -2,7 +2,7 @@
  * Created by chenkang1 on 2017/6/29.
  */
 import config from '../config'
-import { notification } from 'antd'
+import {notification} from 'antd'
 import axios from 'axios'
 
 let instance = axios.create({
@@ -29,14 +29,14 @@ instance.interceptors.response.use((response) => {
   return Promise.reject(error)
 })
 
-function request ({ method, url, params }) {
+function request({method, url, params}) {
   switch (method.toLowerCase()) {
     case 'get':
       return instance.get(url, {
         params,
       })
     case 'delete':
-      return instance.delete(url, { data: params })
+      return instance.delete(url, {data: params})
     case 'post':
       return instance.post(url, params)
     case 'put':
@@ -50,7 +50,7 @@ function request ({ method, url, params }) {
   }
 }
 
-export async function fetch ({ url, params = null, method = 'get' }) {
+export async function fetch({url, params = null, method = 'get'}) {
   return await request({
     url,
     method,
@@ -58,28 +58,32 @@ export async function fetch ({ url, params = null, method = 'get' }) {
   })
 }
 
-export async function fetchAndNotification ({ url, params = null, method = 'get', notifications = {} }) {
+export async function fetchAndNotification({url, params = null, method = 'get', notifications = {}}) {
   return await request({
     url,
     method,
     params,
   })
     .then((result) => {
-      notification.open({
-        message: notifications.title,
-        description: notifications.success,
-        duration: 0,
-        type: 'success',
-      });
+      if (notifications.success) {
+        notification.open({
+          message: notifications.title,
+          description: notifications.success,
+          duration: 0,
+          type: 'success',
+        });
+      }
       return result;
     })
     .catch((result) => {
-      notification.open({
-        message: notifications.title,
-        description: notifications.error,
-        duration: 0,
-        type: 'error',
-      });
+      if (notifications.error) {
+        notification.open({
+          message: notifications.title,
+          description: notifications.error,
+          duration: 0,
+          type: 'error',
+        });
+      }
       return result;
     })
 }
