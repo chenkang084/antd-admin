@@ -90,7 +90,7 @@ class HostPage extends React.Component {
           key: "name",
           // width: 120,
           render: (text, record) =>
-            <Link to={`user/${record.id}`}>
+            <Link to={`host/${record.id}`}>
               {text}
             </Link>
         },

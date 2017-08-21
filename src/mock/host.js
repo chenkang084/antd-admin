@@ -79,11 +79,18 @@ module.exports = {
   },
 
   [`POST ${apiPrefix}/create`] (req, res) {
-    const params = req.body
+    res.status(204).end()
+  },
+
+  [`GET ${apiPrefix}/host/:id`] (req, res) {
+    const params = req.params
 
     console.log(params)
 
-    res.status(204).end()
+    res.json({
+      name:'jack',
+      age:10
+    })
   },
 
 
