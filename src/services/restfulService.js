@@ -4,10 +4,12 @@
 import config from '../config'
 import {notification} from 'antd'
 import axios from 'axios'
+import qs from 'qs'
 
 let instance = axios.create({
   baseURL: config.uri.api,
-  timeout: 1000,
+  // withCredentials: true
+  // timeout: 1000,
   // headers: {'X-Custom-Header': 'foobar'}
 })
 
@@ -33,8 +35,12 @@ function request({method, url, params}) {
   switch (method.toLowerCase()) {
     case 'get':
       return instance.get(url, {
-        params,
-      })
+          params,
+          'paramsSerializer': function (params) {
+            return qs.stringify(params, {arrayFormat: 'repeat'})
+          },
+        },
+      )
     case 'delete':
       return instance.delete(url, {data: params})
     case 'post':
