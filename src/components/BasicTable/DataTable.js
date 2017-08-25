@@ -4,7 +4,7 @@ import { Table, notification } from 'antd'
 import './DataTable.less'
 import lodash from 'lodash'
 import { fetch } from '../../services/restfulService'
-import { delay, getSessionStorage, setSessionStorage, sortJsonArr } from '../../utils/dataUtils'
+import { stateDelay, getSessionStorage, setSessionStorage, sortJsonArr } from '../../utils/dataUtils'
 import Filter from './Filter'
 
 class DataTable extends React.Component {
@@ -44,7 +44,7 @@ class DataTable extends React.Component {
   };
 
   handleTableChange = (pagination, filters, sorter) => {
-    delay.call(this).then(() => {
+    stateDelay.call(this).then(() => {
       if (sorter.order) {
         let orderType = sorter.order === 'descend' ? 'desc' : 'asc'
         sortJsonArr(this.state.dataSource, sorter.field, orderType)
@@ -56,7 +56,7 @@ class DataTable extends React.Component {
 
   filterProps = {
     onFilterChange: ({ name: keyword }) => {
-      delay.call(this).then(() => {
+      stateDelay.call(this).then(() => {
         let result = []
         let list = lodash.cloneDeep(this.state.dataSourceBack)
         if (keyword) {

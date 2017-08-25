@@ -11,16 +11,13 @@ export default {
   "theme": "./theme.config.js",
   // 接口代理示例
   "proxy": {
-    "/apinew": {
-    "target": "http://jsonplaceholder.typicode.com/",
-    "changeOrigin": true,
-    "pathRewrite": { "^/apinew" : "" }
-  },
-    // "/api/v2": {
-    //   "target": "http://192.168.0.110",
-    //   "changeOrigin": true,
-    //   "pathRewrite": { "^/api/v2" : "/api/v2" }
-    // }
+    "/api": {
+      "target": "http://10.104.208.19:8888/",
+      // "target": "http://10.104.208.19:8888/",
+      "changeOrigin": true,
+      secure: false,
+      // "pathRewrite": { "^/apinew" : "" }
+    },
   },
   "env": {
     "development": {
