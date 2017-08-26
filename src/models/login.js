@@ -7,17 +7,24 @@ export default {
   state: {
     loginLoading: false,
   },
+  subscriptions: {
 
+    setup ({ dispatch }) {
+      console.log("xxxxxxxxxxxxxxxxxxx")
+      // dispatch({type:'login'})
+    },
+
+  },
   effects: {
     *login ({
       payload,
     }, { put, call }) {
       yield put({ type: 'showLoginLoading' })
-      const data = yield call(login, payload)
+      const result = yield call(login, payload)
       yield put({ type: 'hideLoginLoading' })
-      if (data.success) {
+      if (result.data.type === 'success') {
         const from = queryURL('from')
-        yield put({ type: 'app/query' })
+        // yield put({ type: 'app/query' })
         if (from) {
           yield put(routerRedux.push(from))
         } else {

@@ -5,54 +5,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="stylesheet" href="/index.css" />
+  <link rel="stylesheet" href="/index.css"/>
   <!--[if lte IE 10]>
-      <script
-        src="https://as.alipayobjects.com/g/component/??console-polyfill/0.2.2/index.js,media-match/2.0.2/media.match.min.js"></script>
+  <script
+    <!--src="https://as.alipayobjects.com/g/component/??console-polyfill/0.2.2/index.js,media-match/2.0.2/media.match.min.js"></script>-->
   <![endif]-->
+
+  <style>
+    #loading > div {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      /*opacity: 0;*/
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      /*animation: loading 1s ease-out;*/
+    }
+
+    @keyframes loading {
+      0% {
+        opacity: 0;
+      }
+      /*90% {*/
+        /*opacity: 0.5;*/
+      /*}*/
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <div id="loading" style="width: 100%;height: 100%;margin: 0 auto;">
-
-    <svg width="200px"  height="200px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-blank" style="background: none;">
-      <circle cx="50" cy="50" fill="none" ng-attr-r="{{config.r3}}" ng-attr-stroke="{{config.c3}}" ng-attr-stroke-width="{{config.width}}" r="46" stroke="#facd9e" stroke-width="5">
-        <animate attributeName="stroke-dasharray" calcMode="linear" values="0 0 0 144.51326206513048 0 144.51326206513048;0 0 144.51326206513048 0 0 144.51326206513048;0 0 144.51326206513048 0 0 144.51326206513048;0 144.51326206513048 0 144.51326206513048 0 144.51326206513048;0 144.51326206513048 0 144.51326206513048 0 144.51326206513048" keyTimes="0;0.2;0.4;0.6;1" dur="1" begin="-1s" repeatCount="indefinite"></animate>
-      </circle>
-      <circle cx="50" cy="50" fill="none" ng-attr-r="{{config.r2}}" ng-attr-stroke="{{config.c2}}" ng-attr-stroke-width="{{config.width}}" r="40" stroke="#389798" stroke-width="5">
-        <animate attributeName="stroke-dasharray" calcMode="linear" values="0 0 0 125.66370614359172 0 125.66370614359172;0 0 125.66370614359172 0 0 125.66370614359172;0 0 125.66370614359172 0 0 125.66370614359172;0 125.66370614359172 0 125.66370614359172 0 125.66370614359172;0 125.66370614359172 0 125.66370614359172 0 125.66370614359172" keyTimes="0;0.2;0.4;0.6;1" dur="1" begin="-0.92s" repeatCount="indefinite"></animate>
-      </circle>
-      <circle cx="50" cy="50" fill="none" ng-attr-r="{{config.r1}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-width="{{config.width}}" r="34" stroke="#459448" stroke-width="5">
-        <animate attributeName="stroke-dasharray" calcMode="linear" values="0 0 0 106.81415022205297 0 106.81415022205297;0 0 106.81415022205297 0 0 106.81415022205297;0 0 106.81415022205297 0 0 106.81415022205297;0 106.81415022205297 0 106.81415022205297 0 106.81415022205297;0 106.81415022205297 0 106.81415022205297 0 106.81415022205297" keyTimes="0;0.2;0.4;0.6;1" dur="1" begin="-0.84s" repeatCount="indefinite"></animate>
-      </circle>
-      <g transform="rotate(180 50 50)">
-        <circle cx="50" cy="50" fill="none" ng-attr-r="{{config.r3}}" ng-attr-stroke="{{config.c3}}" ng-attr-stroke-width="{{config.width}}" r="46" stroke="#facd9e" stroke-width="5">
-          <animate attributeName="stroke-dasharray" calcMode="linear" values="0 0 0 144.51326206513048 0 144.51326206513048;0 0 144.51326206513048 0 0 144.51326206513048;0 0 144.51326206513048 0 0 144.51326206513048;0 144.51326206513048 0 144.51326206513048 0 144.51326206513048;0 144.51326206513048 0 144.51326206513048 0 144.51326206513048" keyTimes="0;0.2;0.4;0.6;1" dur="1" begin="-0.43999999999999995s" repeatCount="indefinite"></animate>
-        </circle>
-        <circle cx="50" cy="50" fill="none" ng-attr-r="{{config.r2}}" ng-attr-stroke="{{config.c2}}" ng-attr-stroke-width="{{config.width}}" r="40" stroke="#389798" stroke-width="5">
-          <animate attributeName="stroke-dasharray" calcMode="linear" values="0 0 0 125.66370614359172 0 125.66370614359172;0 0 125.66370614359172 0 0 125.66370614359172;0 0 125.66370614359172 0 0 125.66370614359172;0 125.66370614359172 0 125.66370614359172 0 125.66370614359172;0 125.66370614359172 0 125.66370614359172 0 125.66370614359172" keyTimes="0;0.2;0.4;0.6;1" dur="1" begin="-0.52s" repeatCount="indefinite"></animate>
-        </circle>
-        <circle cx="50" cy="50" fill="none" ng-attr-r="{{config.r1}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-width="{{config.width}}" r="34" stroke="#459448" stroke-width="5">
-          <animate attributeName="stroke-dasharray" calcMode="linear" values="0 0 0 106.81415022205297 0 106.81415022205297;0 0 106.81415022205297 0 0 106.81415022205297;0 0 106.81415022205297 0 0 106.81415022205297;0 106.81415022205297 0 106.81415022205297 0 106.81415022205297;0 106.81415022205297 0 106.81415022205297 0 106.81415022205297" keyTimes="0;0.2;0.4;0.6;1" dur="1" begin="-0.64s" repeatCount="indefinite"></animate>
-        </circle>
-      </g>
-    </svg>
-  </div>
-  <div id="root"></div>
-  <script type="text/javascript">
-    (function() {
-      var __oldConsoleError = window.console.error.bind(console)
-      window.console.error = function(message, b) {
-        if (message === "Warning: Accessing PropTypes via the main React package is deprecated. Use the prop-types package from npm instead." ||
-          "Warning: A Component: React.createClass is deprecated and will be removed in version 16. Use plain JavaScript classes instead. If you're not yet ready to migrate, create-react-class is available on npm as a drop-in replacement.") {
-          return false
-        }
-        __oldConsoleError(message)
+<div id="root"></div>
+<script type="text/javascript">
+  (function () {
+    var __oldConsoleError = window.console.error.bind(console)
+    window.console.error = function (message, b) {
+      if (message === "Warning: Accessing PropTypes via the main React package is deprecated. Use the prop-types package from npm instead." ||
+        "Warning: A Component: React.createClass is deprecated and will be removed in version 16. Use plain JavaScript classes instead. If you're not yet ready to migrate, create-react-class is available on npm as a drop-in replacement.") {
+        return false
       }
-    })()
-  </script>
-  <script src="./roadhog.dll.js"></script>
-  <!--<script src="/index.js"></script>-->
+      __oldConsoleError(message)
+    }
+  })()
+</script>
+<script src="./roadhog.dll.js"></script>
+<!--<script src="/index.js"></script>-->
 </body>
 
 </html>
