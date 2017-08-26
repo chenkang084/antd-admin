@@ -1,4 +1,5 @@
 import { request, config } from '../utils'
+import {fetchAndNotification} from "./restfulService";
 const { api } = config
 const { dashboard } = api
 
@@ -17,7 +18,7 @@ export async function queryWeather (params) {
 }
 
 export async function query (params) {
-  return request({
+  return fetchAndNotification({
     url: dashboard,
     method: 'get',
     data: params,

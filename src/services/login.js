@@ -1,11 +1,9 @@
-import { request, config } from '../utils'
-const { api } = config
-const { userLogin } = api
+import {fetchAndNotification} from "./restfulService";
 
-export async function login (data) {
-  return request({
-    url: userLogin,
+export async function login(params) {
+  return fetchAndNotification({
+    url: 'auth/signId',
     method: 'post',
-    data,
+    params,
   })
 }

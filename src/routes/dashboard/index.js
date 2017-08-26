@@ -13,11 +13,15 @@ const bodyStyle = {
   },
 }
 
-function Dashboard ({ dashboard }) {
+function Dashboard ({ dashboard,app }) {
   const { weather, sales, quote, numbers, recentSales, comments, completed, browser, cpu, user } = dashboard
   const numberCards = numbers.map((item, key) => <Col key={key} lg={6} md={12}>
     <NumberCard {...item} />
   </Col>)
+
+  if (!app.signStatus){
+    return null;
+  }
 
   return (
     <Row gutter={24}>
@@ -91,4 +95,12 @@ Dashboard.propTypes = {
   dashboard: PropTypes.object,
 }
 
-export default connect(({ dashboard }) => ({ dashboard }))(Dashboard)
+// function mapStateToProps({ dashboard,app }) {
+//   return {
+//     dashboard,
+//     app
+//   };
+// }
+
+export default connect(({ dashboard,app }) => ({ dashboard,app }))(Dashboard)
+// export default connect(mapStateToProps)(Dashboard)

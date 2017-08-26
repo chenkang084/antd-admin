@@ -161,7 +161,7 @@ module.exports = [
   {
     id: 624,
     mpid: -1,
-    bpid: 2,
+    bpid: 623,
     name: 'Host Detail',
     router: '/host/:id',
   },

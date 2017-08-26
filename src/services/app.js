@@ -1,4 +1,5 @@
 import { request, config } from '../utils'
+import {fetch, fetchAndNotification} from "./restfulService";
 const { api } = config
 const { user, userLogout, userLogin } = api
 
@@ -19,8 +20,8 @@ export async function logout (params) {
 }
 
 export async function query (params) {
-  return request({
-    url: user.replace('/:id', ''),
+  return await fetch({
+    url: "/auth",
     method: 'get',
     data: params,
   })

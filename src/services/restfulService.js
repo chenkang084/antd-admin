@@ -1,10 +1,11 @@
 /**
  * Created by chenkang1 on 2017/6/29.
  */
-import config from '../config'
-import {notification} from 'antd'
 import axios from 'axios'
 import qs from 'qs'
+import config from '../config'
+import {notification} from 'antd'
+
 
 let instance = axios.create({
   baseURL: config.uri.api,
@@ -82,6 +83,7 @@ export async function fetchAndNotification({url, params = null, method = 'get', 
       return result;
     })
     .catch((result) => {
+      signStatusCheck(result);
       if (notifications.error) {
         notification.open({
           message: notifications.title,
@@ -94,3 +96,8 @@ export async function fetchAndNotification({url, params = null, method = 'get', 
     })
 }
 
+const signStatusCheck = (result) => {
+  if (result && result.response && result.response.status === 401){
+    // window.location.href = `${window.location.origin}/login`;
+  }
+};
