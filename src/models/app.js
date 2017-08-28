@@ -59,9 +59,12 @@ export default {
                   paylaod
                 }, {call, put}){
       try {
+        console.log("cccccccccc")
         const data = yield call(query)
+        console.log("xxxxxxxxxxxxxxxxxxx")
         yield put({type:'setSignStatus',payload:true})
       } catch (error) {
+        console.log("dddddddddddddd")
         yield put({type:'setSignStatus',payload:false})
         yield put(routerRedux.push("/login"))
 

@@ -10,7 +10,7 @@ export default {
   subscriptions: {
 
     setup ({ dispatch }) {
-      console.log("xxxxxxxxxxxxxxxxxxx")
+      // console.log("xxxxxxxxxxxxxxxxxxx")
       // dispatch({type:'login'})
     },
 
