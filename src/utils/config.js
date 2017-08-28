@@ -1,4 +1,4 @@
-const APIV1 = '/api/v1'
+const APIV1 = 'inner'
 const APIV2 = '/api/v2'
 const APINEW = '/apinew'
 
@@ -13,7 +13,7 @@ module.exports = {
   YQL: ['http://www.zuimeitianqi.com'],
   CORS: ['http://localhost:7000'],
   openPages: ['/login'],
-  apiPrefix: '/api/v1',
+  apiPrefix: '/inner',
   api: {
     userLogin: `${APIV1}/user/login`,
     userLogout: `${APIV1}/user/logout`,

@@ -19,7 +19,7 @@ export async function logout (params) {
   })
 }
 
-export async function query (params) {
+export async function auth (params) {
   return await fetch({
     url: "/auth",
     method: 'get',
