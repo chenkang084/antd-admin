@@ -12,8 +12,8 @@ export default {
   // 接口代理示例
   "proxy": {
     "/api": {
-      // "target": "http://10.104.208.19:8888/",
-      "target": "http://192.168.0.120:8888/",
+      "target": "http://10.104.208.19:8888/",
+      // "target": "http://192.168.0.120:8888/",
       "changeOrigin": true,
       secure: false,
       // "pathRewrite": { "^/apinew" : "" }

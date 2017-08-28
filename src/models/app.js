@@ -19,7 +19,6 @@ export default {
 
     setup ({dispatch,history}) {
 
-      dispatch({type: 'signStatus'})
       let tid
       window.onresize = () => {
         clearTimeout(tid)
@@ -29,13 +28,16 @@ export default {
       }
 
       history.listen(location => {
-        console.log(location.query)
+        // console.log(location.query)
+        // if(window.location.pathname !== "/login"){
+        //   dispatch({type: 'signStatus'})
+        // }
+        dispatch({type:'signRoute'})
       })
     },
 
   },
   effects: {
-
     // *query ({
     //           payload,
     //         }, {call, put}) {
@@ -55,25 +57,27 @@ export default {
     //     }
     //   }
     // },
-    *signStatus({
-                  paylaod
-                }, {call, put}){
+    *signStatus({}, {call, put,select}){
       try {
-        console.log("cccccccccc")
-        const data = yield call(query)
-        console.log("xxxxxxxxxxxxxxxxxxx")
-        yield put({type:'setSignStatus',payload:true})
-      } catch (error) {
-        console.log("dddddddddddddd")
-        yield put({type:'setSignStatus',payload:false})
-        yield put(routerRedux.push("/login"))
 
+        const setSignStatus = select(state =>state.app.signStatus);
+        if(setSignStatus){
+          yield put({type:'setSignStatus',payload:true});
+        }else{
+          const data = yield call(query);
+          console.log(data)
+          yield put({type:'setSignStatus',payload:true});
+        }
+      } catch (error) {
+        // redirect to login page
+        yield put({type:'setSignStatus',payload:false});
+        yield put(routerRedux.push("/login"))
       }
     },
     *logout ({
                payload,
              }, {call, put}) {
-      const data = yield call(logout, parse(payload))
+      const data = yield call(logout, parse(payload));
       if (data.success) {
         yield put({type: 'query'})
       } else {
@@ -89,6 +93,14 @@ export default {
         yield put({type: 'handleNavbar', payload: isNavbar})
       }
     },
+    *signRoute({},{call,put,select}){
+
+      const signStatus = yield select(state => state.app.signStatus)
+      if (window.location.pathname !== "/login" && !signStatus){
+        yield put({type:'signStatus'})
+      }
+      // console.log(signStatus)
+    }
 
   },
   reducers: {
@@ -100,7 +112,7 @@ export default {
     },
 
     switchSider (state) {
-      localStorage.setItem(`${prefix}siderFold`, !state.siderFold)
+      localStorage.setItem(`${prefix}siderFold`, !state.app.siderFold)
       return {
         ...state,
         siderFold: !state.siderFold,
@@ -143,4 +155,6 @@ export default {
       }
     }
   },
+
+
 }

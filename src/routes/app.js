@@ -8,17 +8,13 @@ import '../themes/index.less'
 import './app.less'
 import NProgress from 'nprogress'
 const { prefix } = config
-import {routerRedux} from 'dva/router'
+
 const { Header, Bread, Footer, Sider, styles } = Layout
 let lastHref
 
 class App extends React.Component{
   constructor(props){
     super(props)
-
-    if (!this.props.app.signStatus){
-      // this.props.dispatch(routerRedux.push("/login"))
-    }
   }
 
 
@@ -76,10 +72,12 @@ class App extends React.Component{
       menu,
     }
 
+    //only show login form
     if (config.openPages && config.openPages.indexOf(location.pathname) > -1) {
       return <div>{this.props.children}</div>
     }
 
+    //loading git
     if (!this.props.app.signStatus){
       return (
         <div id="loading">
@@ -100,7 +98,7 @@ class App extends React.Component{
           {iconFontCSS && <link rel="stylesheet" href={iconFontCSS} />}
         </Helmet>
 
-        <div style={{display:!signStatus?"-none":"none"}} className={classnames(styles.layout, { [styles.fold]: isNavbar ? false : siderFold }, { [styles.withnavbar]: isNavbar })}>
+        <div className={classnames(styles.layout, { [styles.fold]: isNavbar ? false : siderFold }, { [styles.withnavbar]: isNavbar })}>
           {!isNavbar ? <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
             <Sider {...siderProps} />
           </aside> : ''}
