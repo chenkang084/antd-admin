@@ -6,6 +6,7 @@ export default {
   state: {
     // the selected items of table
     selectedItems: [],
+    selectedRowKeys:[],
     // calculate the refresh count
     refresh: 1,
   },
@@ -20,10 +21,11 @@ export default {
       return { ...state, [key]: false }
     },
     //update selected items of the table
-    updateSelectItems (state, { payload: selectedItems }) {
+    updateSelectItems (state, { payload: {selectedRowKeys,selectedItems} }) {
       return {
         ...state,
         selectedItems,
+        selectedRowKeys
       }
     },
     //refresh the table data

@@ -3,14 +3,14 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "dva";
+import {connect} from "dva";
 import DataTable from "../../components/BasicTable/DataTable";
-import { Modal, Row, Col, Card, Button } from "antd";
-import { Link } from "dva/router";
+import {Modal, Row, Col, Card, Button} from "antd";
+import {Link} from "dva/router";
 import DropOption from "../../components/DropOption/DropOption";
 import BatchModal from "../../components/modals/BatchModal";
-import { fetchAndNotification } from "../../services/restfulService";
-import { ActionCollections } from "../../components/host/ActionCollections";
+import {fetchAndNotification} from "../../services/restfulService";
+import {ActionCollections} from "../../components/host/ActionCollections";
 import Mytest from './test.js'
 
 const confirm = Modal.confirm;
@@ -20,11 +20,12 @@ class HostPage extends React.Component {
   //   super(props)
   // }
 
-  componentDidMount() {}
+  componentDidMount() {
+  }
 
   handleMenuClick = (record, e) => {
     if (e.key === "1") {
-      let { dispatch } = this.props;
+      let {dispatch} = this.props;
       dispatch({
         type: "host/showModal",
         payload: {
@@ -42,7 +43,7 @@ class HostPage extends React.Component {
   };
 
   showModal = key => {
-    let { dispatch } = this.props;
+    let {dispatch} = this.props;
     dispatch({
       type: "host/showModal",
       payload: {
@@ -52,7 +53,7 @@ class HostPage extends React.Component {
   };
 
   refresh = () => {
-    this.props.dispatch({ type: "host/refresh" });
+    this.props.dispatch({type: "host/refresh"});
   };
 
   init = () => {
@@ -65,7 +66,7 @@ class HostPage extends React.Component {
         console.log(data);
       },
       onCancel: () => {
-        let { dispatch } = this.props;
+        let {dispatch} = this.props;
         dispatch({
           type: "host/hideModal",
           payload: {
@@ -82,7 +83,7 @@ class HostPage extends React.Component {
           dataIndex: "avatar",
           key: "avatar",
           // width: 64,
-          render: text => <img alt={"avatar"} width={24} src={text} />
+          render: text => <img alt={"avatar"} width={24} src={text}/>
         },
         {
           title: "Name",
@@ -146,8 +147,8 @@ class HostPage extends React.Component {
               <DropOption
                 onMenuClick={e => this.handleMenuClick(record, e)}
                 menuOptions={[
-                  { key: "1", name: "Update" },
-                  { key: "2", name: "Delete" }
+                  {key: "1", name: "Update"},
+                  {key: "2", name: "Delete"}
                 ]}
               />
             );
@@ -155,15 +156,18 @@ class HostPage extends React.Component {
         }
       ],
       fetchData: {
-        url: "host",
+        url: "v1/host",
         params: null
       },
       errorMsg: "get host table error",
       refresh: this.props.modelProps.refresh,
-      handleSelectItems: selectedRows => {
+      handleSelectItems: (selectedRowKeys, selectedItems) => {
         this.props.dispatch({
           type: "host/updateSelectItems",
-          payload: selectedRows
+          payload: {
+            selectedRowKeys,
+            selectedItems
+          }
         });
       }
     };
@@ -184,7 +188,7 @@ class HostPage extends React.Component {
           fetchAndNotification({
             url: "host",
             method: "delete",
-            params: { ids: item.id },
+            params: {ids: item.id},
             notifications: {
               title: "batch Action",
               success: `${item.name} 操作成功！`,
@@ -194,7 +198,7 @@ class HostPage extends React.Component {
         });
       },
       onCancel: () => {
-        let { dispatch } = this.props;
+        let {dispatch} = this.props;
         dispatch({
           type: "host/hideModal",
           payload: {
@@ -220,7 +224,7 @@ class HostPage extends React.Component {
           fetchAndNotification({
             url: "host",
             method: "delete",
-            params: { ids: item.id },
+            params: {ids: item.id},
             notifications: {
               title: "batch Action",
               success: `${item.name} 操作成功！`,
@@ -230,7 +234,7 @@ class HostPage extends React.Component {
         });
       },
       onCancel: () => {
-        let { dispatch } = this.props;
+        let {dispatch} = this.props;
         dispatch({
           type: "host/hideModal",
           payload: {
@@ -243,7 +247,7 @@ class HostPage extends React.Component {
 
   //define common props of actions btn
   actionCollectionsProps = {
-    refresh:this.refresh
+    refresh: this.refresh
   };
 
   render() {
@@ -252,14 +256,14 @@ class HostPage extends React.Component {
     return (
       <div className="content-inner">
         {/*<Mytest>*/}
-          {/*<div>hehe</div>*/}
-          {/*my*/}
+        {/*<div>hehe</div>*/}
+        {/*my*/}
         {/*</Mytest>*/}
         <Row gutter={32}>
           <Col lg={24} md={24}>
             <Card title="远程数据">
               <div className="action-btn-container">
-                <Button type="primary" onClick={this.refresh} icon="reload" />
+                <Button type="primary" onClick={this.refresh} icon="reload"/>
                 <Button
                   type="primary"
                   onClick={this.showModal.bind(this, "batchModalVisible")}
@@ -276,13 +280,13 @@ class HostPage extends React.Component {
         </Row>
         {this.props.modelProps.modalVisible && <Modal {...this.modalProps} />}
         {this.props.modelProps.batchModalVisible &&
-          <BatchModal {...this.batchModalProps} />}
+        <BatchModal {...this.batchModalProps} />}
       </div>
     );
   }
 }
 
-function mapStateToProps({ host }) {
+function mapStateToProps({host}) {
   return {
     modelProps: host
   };
