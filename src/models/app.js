@@ -1,4 +1,4 @@
-import {query, logout} from '../services/app'
+import {auth, logout} from '../services/app'
 import {routerRedux} from 'dva/router'
 import {parse} from 'qs'
 import {config} from '../utils'
@@ -17,7 +17,7 @@ export default {
   },
   subscriptions: {
 
-    setup ({dispatch,history}) {
+    setup ({dispatch, history}) {
 
       let tid
       window.onresize = () => {
@@ -28,11 +28,8 @@ export default {
       }
 
       history.listen(location => {
-        // console.log(location.query)
-        // if(window.location.pathname !== "/login"){
-        //   dispatch({type: 'signStatus'})
-        // }
-        dispatch({type:'signRoute'})
+        // check sign status
+        dispatch({type: 'signRoute'})
       })
     },
 
@@ -57,20 +54,18 @@ export default {
     //     }
     //   }
     // },
-    *signStatus({}, {call, put,select}){
+    *signStatus({signStatus}, {call, put}){
       try {
-
-        const setSignStatus = select(state =>state.app.signStatus);
-        if(setSignStatus){
-          yield put({type:'setSignStatus',payload:true});
-        }else{
+        if (signStatus) {
+          yield put({type: 'setSignStatus', payload: true});
+        } else {
           const data = yield call(query);
           console.log(data)
-          yield put({type:'setSignStatus',payload:true});
+          yield put({type: 'setSignStatus', payload: true});
         }
       } catch (error) {
         // redirect to login page
-        yield put({type:'setSignStatus',payload:false});
+        yield put({type: 'setSignStatus', payload: false});
         yield put(routerRedux.push("/login"))
       }
     },
@@ -93,15 +88,25 @@ export default {
         yield put({type: 'handleNavbar', payload: isNavbar})
       }
     },
-    *signRoute({},{call,put,select}){
+    *signRoute({}, {call, put, select}){
 
-      const signStatus = yield select(state => state.app.signStatus)
-      if (window.location.pathname !== "/login" && !signStatus){
-        yield put({type:'signStatus'})
+
+
+      try{
+        const signStatus = yield select(state => state.app.signStatus)
+        console.log(signStatus)
+        // not is login page and signStatus = false
+        if (window.location.pathname !== "/login" && !signStatus) {
+          const data = yield call(auth);
+          console.log(data)
+          yield put({type: 'setSignStatus', payload: true});
+        }
+      }catch (error){
+        // redirect to login page
+        yield put({type: 'setSignStatus', payload: false});
+        yield put(routerRedux.push("/login"))
       }
-      // console.log(signStatus)
     }
-
   },
   reducers: {
     querySuccess (state, {payload: user}) {
@@ -148,7 +153,7 @@ export default {
       }
     },
 
-    setSignStatus(state,{payload:signStatus}){
+    setSignStatus(state, {payload: signStatus}){
       return {
         ...state,
         signStatus
