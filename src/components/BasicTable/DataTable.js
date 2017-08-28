@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Table, notification } from 'antd'
+import {Table, notification} from 'antd'
 import './DataTable.less'
 import lodash from 'lodash'
-import { fetch } from '../../services/restfulService'
-import { stateDelay, getSessionStorage, setSessionStorage, sortJsonArr } from '../../utils/dataUtils'
+import {fetch} from '../../services/restfulService'
+import {stateDelay, getSessionStorage, setSessionStorage, sortJsonArr} from '../../utils/dataUtils'
 import Filter from './Filter'
 
 class DataTable extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       loading: true,
@@ -18,13 +18,13 @@ class DataTable extends React.Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getTableData()
   }
 
   getTableData = () => {
-    const { fetchData } = this.props
-    this.setState({ loading: true })
+    const {fetchData} = this.props
+    this.setState({loading: true})
     fetch(fetchData)
       .then((result) => {
         this.setState({
@@ -34,7 +34,7 @@ class DataTable extends React.Component {
         })
       })
       .catch(() => {
-        this.setState({ loading: false })
+        this.setState({loading: false})
         notification.open({
           message: this.props.errorMsg,
           duration: 0,
@@ -49,13 +49,13 @@ class DataTable extends React.Component {
         let orderType = sorter.order === 'descend' ? 'desc' : 'asc'
         sortJsonArr(this.state.dataSource, sorter.field, orderType)
       }
-      this.setState({ current: pagination.current, pageSize: pagination.pageSize })
-      setSessionStorage('pagination', { [window.location.pathname]: pagination.current })
+      this.setState({current: pagination.current, pageSize: pagination.pageSize})
+      setSessionStorage('pagination', {[window.location.pathname]: pagination.current})
     })
   };
 
   filterProps = {
-    onFilterChange: ({ name: keyword }) => {
+    onFilterChange: ({name: keyword}) => {
       stateDelay.call(this).then(() => {
         let result = []
         let list = lodash.cloneDeep(this.state.dataSourceBack)
@@ -68,7 +68,7 @@ class DataTable extends React.Component {
         } else {
           result = this.state.dataSourceBack
         }
-        this.setState({ dataSource: result })
+        this.setState({dataSource: result})
       })
     },
   };
@@ -76,10 +76,10 @@ class DataTable extends React.Component {
   checkRefresh = () => {
     let refresh = this.state.refresh
     if (!refresh) {
-      this.setState({ refresh: this.props.refresh })
+      this.setState({refresh: this.props.refresh})
     } else {
       if (this.props.refresh !== refresh) {
-        this.setState({ refresh: this.props.refresh })
+        this.setState({refresh: this.props.refresh})
         this.getTableData()
       }
     }
@@ -104,8 +104,8 @@ class DataTable extends React.Component {
     this.rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
-        this.setState({ selectedRowKeys: selectedRows })
-        this.props.handleSelectItems(selectedRows)
+        this.setState({selectedRowKeys, selectedRows})
+        this.props.handleSelectItems(selectedRowKeys,selectedRows)
       },
       getCheckboxProps: record => ({
         disabled: record.name === 'Disabled User',    // Column configuration not to be checked
@@ -113,7 +113,7 @@ class DataTable extends React.Component {
     }
   };
 
-  render () {
+  render() {
     this.checkRefresh()
 
     this.init()
