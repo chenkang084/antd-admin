@@ -6,7 +6,7 @@ export default {
   state: {
     // the selected items of table
     selectedItems: [],
-    selectedRowKeys:[],
+    selectedRowKeys: [],
     // calculate the refresh count
     refresh: 1,
   },
@@ -14,14 +14,14 @@ export default {
   effects: {},
 
   reducers: {
-    showModal (state, { payload: { key: key } }) {
-      return { ...state, [key]: true }
+    showModal (state, {payload: {key}}) {
+      return {...state, [key]: true}
     },
-    hideModal (state, { payload: { key: key } }) {
-      return { ...state, [key]: false }
+    hideModal (state, {payload: {key}}) {
+      return {...state, [key]: false}
     },
     //update selected items of the table
-    updateSelectItems (state, { payload: {selectedRowKeys,selectedItems} }) {
+    updateSelectItems (state, {payload: {selectedRowKeys, selectedItems}}) {
       return {
         ...state,
         selectedItems,

@@ -42,6 +42,7 @@ class App extends React.Component {
         this.props.dispatch({type: 'app/switchMenuPopver'})
       },
       logout: () => {
+        NProgress.start()
         this.props.dispatch({type: 'app/signOut'})
       },
       switchSider: () => {
@@ -58,10 +59,10 @@ class App extends React.Component {
       darkTheme,
       location,
       navOpenKeys,
-      changeTheme () {
+      changeTheme: () => {
         this.props.dispatch({type: 'app/switchTheme'})
       },
-      changeOpenKeys (openKeys) {
+      changeOpenKeys: (openKeys) => {
         localStorage.setItem(`${prefix}navOpenKeys`, JSON.stringify(openKeys))
         this.props.dispatch({type: 'app/handleNavOpenKeys', payload: {navOpenKeys: openKeys}})
       },

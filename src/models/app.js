@@ -13,7 +13,7 @@ export default {
     darkTheme: localStorage.getItem(`${prefix}darkTheme`) === 'true',
     isNavbar: document.body.clientWidth < 769,
     navOpenKeys: JSON.parse(localStorage.getItem(`${prefix}navOpenKeys`)) || [],
-    signStatus: false
+    signStatus: localStorage.getItem(`loadingStatus`) === "true"
   },
   subscriptions: {
 
@@ -54,24 +54,9 @@ export default {
     //     }
     //   }
     // },
-    *signStatus({signStatus}, {call, put}){
-      try {
-        if (signStatus) {
-          yield put({type: 'setSignStatus', payload: true});
-        } else {
-          const data = yield call(query);
-          console.log(data)
-          yield put({type: 'setSignStatus', payload: true});
-        }
-      } catch (error) {
-        // redirect to login page
-        yield put({type: 'setSignStatus', payload: false});
-        yield put(routerRedux.push("/login"))
-      }
-    },
     *signOut ({
-               payload,
-             }, {call, put}) {
+                payload,
+              }, {call, put}) {
       const data = yield call(logout, parse(payload));
       console.log(data)
       if (data.status === 200) {
@@ -89,17 +74,17 @@ export default {
         yield put({type: 'handleNavbar', payload: isNavbar})
       }
     },
+
     *checkSignStatus({}, {call, put, select}){
-      try{
+      try {
         const signStatus = yield select(state => state.app.signStatus)
-        console.log(signStatus)
         // not is login page and signStatus = false
         if (window.location.pathname !== "/login" && !signStatus) {
           const data = yield call(auth);
           console.log(data)
           yield put({type: 'setSignStatus', payload: true});
         }
-      }catch (error){
+      } catch (error) {
         // redirect to login page
         yield put({type: 'setSignStatus', payload: false});
         yield put(routerRedux.push("/login"))
@@ -115,7 +100,7 @@ export default {
     },
 
     switchSider (state) {
-      localStorage.setItem(`${prefix}siderFold`, !state.app.siderFold)
+      localStorage.setItem(`${prefix}siderFold`, !state.siderFold)
       return {
         ...state,
         siderFold: !state.siderFold,
@@ -152,6 +137,7 @@ export default {
     },
 
     setSignStatus(state, {payload: signStatus}){
+      localStorage.setItem(`loadingStatus`,signStatus);
       return {
         ...state,
         signStatus
