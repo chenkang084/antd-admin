@@ -1,6 +1,6 @@
-import { login } from '../services/login'
-import { routerRedux } from 'dva/router'
-import { queryURL } from '../utils'
+import {login} from '../services/login'
+import {routerRedux} from 'dva/router'
+import {queryURL} from '../utils'
 
 export default {
   namespace: 'login',
@@ -9,7 +9,7 @@ export default {
   },
   subscriptions: {
 
-    setup ({ dispatch }) {
+    setup ({dispatch}) {
       // console.log("xxxxxxxxxxxxxxxxxxx")
       // dispatch({type:'login'})
     },
@@ -17,14 +17,14 @@ export default {
   },
   effects: {
     *login ({
-      payload,
-    }, { put, call }) {
-      yield put({ type: 'showLoginLoading' })
+              payload,
+            }, {put, call}) {
+      yield put({type: 'showLoginLoading'})
       const result = yield call(login, payload)
-      yield put({ type: 'hideLoginLoading' })
+      yield put({type: 'hideLoginLoading'})
       if (result.data.type === 'success') {
         const from = queryURL('from')
-        // yield put({ type: 'app/query' })
+        yield put({type: 'app/setSignStatus', payload: {signStatus: true}});
         if (from) {
           yield put(routerRedux.push(from))
         } else {

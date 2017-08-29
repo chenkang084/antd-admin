@@ -13,7 +13,7 @@ export default {
   "proxy": {
     "/api": {
       "target": "http://10.104.208.19:8888/",
-      // "target": "http://192.168.0.120:8888/",
+      // "target": "http://localhost:8888/",
       "changeOrigin": true,
       secure: false,
       // "pathRewrite": { "^/apinew" : "" }

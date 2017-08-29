@@ -29,7 +29,7 @@ export default {
 
       history.listen(location => {
         // check sign status
-        dispatch({type: 'signRoute'})
+        dispatch({type: 'checkSignStatus'})
       })
     },
 
@@ -69,12 +69,13 @@ export default {
         yield put(routerRedux.push("/login"))
       }
     },
-    *logout ({
+    *signOut ({
                payload,
              }, {call, put}) {
       const data = yield call(logout, parse(payload));
-      if (data.success) {
-        yield put({type: 'query'})
+      console.log(data)
+      if (data.status === 200) {
+        yield put(routerRedux.push("/login"))
       } else {
         throw (data)
       }
@@ -88,10 +89,7 @@ export default {
         yield put({type: 'handleNavbar', payload: isNavbar})
       }
     },
-    *signRoute({}, {call, put, select}){
-
-
-
+    *checkSignStatus({}, {call, put, select}){
       try{
         const signStatus = yield select(state => state.app.signStatus)
         console.log(signStatus)
