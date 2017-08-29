@@ -63,6 +63,10 @@ export async function fetch({url, params = null, method = 'get'}) {
     method,
     params,
   })
+    .catch((result) => {
+      signStatusCheck(result);
+      return result;
+    })
 }
 
 export async function fetchAndNotification({url, params = null, method = 'get', notifications = {}}) {
@@ -98,9 +102,8 @@ export async function fetchAndNotification({url, params = null, method = 'get', 
 
 const signStatusCheck = (result) => {
   if (result && result.response && result.response.status === 401) {
-    if (result.response.request.responseURL && result.response.request.responseURL.indexOf("auth") > 0) {
+    // if (result.response.request.responseURL && result.response.request.responseURL.indexOf("auth") > 0) {
       window.location.href = `${window.location.origin}/login`;
-    }
-
+    // }
   }
 };

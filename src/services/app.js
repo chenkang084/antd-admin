@@ -12,7 +12,7 @@ export async function login (params) {
 }
 
 export async function logout (params) {
-  return fetch({
+  return fetchAndNotification({
     url: "/auth/signOut",
     method: 'put',
     data: params,
