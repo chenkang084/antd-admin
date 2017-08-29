@@ -2,6 +2,7 @@ import {auth, logout} from '../services/app'
 import {routerRedux} from 'dva/router'
 import {parse} from 'qs'
 import {config} from '../utils'
+import {removeLocalStorage} from "../utils/dataUtils";
 const {prefix} = config
 
 export default {
@@ -58,9 +59,10 @@ export default {
                 payload,
               }, {call, put}) {
       const data = yield call(logout, parse(payload));
-      console.log(data)
       if (data.status === 200) {
-        yield put(routerRedux.push("/login"))
+        removeLocalStorage(`loadingStatus`);
+        console.log('..................')
+        yield put(routerRedux.push("/login"));
       } else {
         throw (data)
       }

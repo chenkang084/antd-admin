@@ -24,7 +24,7 @@ export default {
       yield put({type: 'hideLoginLoading'})
       if (result.data.type === 'success') {
         const from = queryURL('from')
-        yield put({type: 'app/setSignStatus', payload: {signStatus: true}});
+        yield put({type: 'app/setSignStatus', payload: true});
         if (from) {
           yield put(routerRedux.push(from))
         } else {

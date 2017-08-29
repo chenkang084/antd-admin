@@ -156,7 +156,7 @@ class HostPage extends React.Component {
         }
       ],
       fetchData: {
-        url: "v1/host",
+        url: "/host/list",
         params: null
       },
       errorMsg: "get host table error",
