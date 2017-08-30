@@ -10,10 +10,9 @@ export default {
   subscriptions: {
 
     setup ({dispatch}) {
-      // console.log("xxxxxxxxxxxxxxxxxxx")
-      // dispatch({type:'login'})
+      // reset signStatus
+      dispatch({type:'app/setSignStatus'})
     },
-
   },
   effects: {
     *login ({

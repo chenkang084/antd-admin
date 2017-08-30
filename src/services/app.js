@@ -21,7 +21,7 @@ export async function logout (params) {
 
 export async function auth (params) {
   return await fetch({
-    url: "/auth",
+    url: "/auth/auth",
     method: 'get',
     data: params,
   })

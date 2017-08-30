@@ -6,7 +6,6 @@ import qs from 'qs'
 import config from '../config'
 import {notification} from 'antd'
 
-
 let instance = axios.create({
   baseURL: config.uri.api,
   // withCredentials: true
@@ -65,7 +64,7 @@ export async function fetch({url, params = null, method = 'get'}) {
   })
     .catch((result) => {
       signStatusCheck(result);
-      return result;
+      return Promise.reject(result);
     })
 }
 
@@ -96,14 +95,13 @@ export async function fetchAndNotification({url, params = null, method = 'get', 
           type: 'error',
         });
       }
-      return result;
+      return Promise.reject(result);
     })
 }
 
 const signStatusCheck = (result) => {
   if (result && result.response && result.response.status === 401) {
-    // if (result.response.request.responseURL && result.response.request.responseURL.indexOf("auth") > 0) {
-      window.location.href = `${window.location.origin}/login`;
-    // }
+    localStorage.setItem(`loadingStatus`, false);
+    // window.location.href = `${window.location.origin}/login`;
   }
 };
