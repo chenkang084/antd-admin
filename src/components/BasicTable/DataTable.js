@@ -33,7 +33,7 @@ class DataTable extends React.Component {
           loading: false,
         })
       })
-      .catch(() => {
+      .catch((error) => {
         this.setState({loading: false})
         notification.open({
           message: this.props.errorMsg,

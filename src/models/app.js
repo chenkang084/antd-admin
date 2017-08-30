@@ -31,30 +31,12 @@ export default {
       history.listen(location => {
         // check sign status
         dispatch({type: 'checkSignStatus'})
+        // dispatch({type: 'test'})
       })
     },
 
   },
   effects: {
-    // *query ({
-    //           payload,
-    //         }, {call, put}) {
-    //   const data = yield call(query, parse(payload))
-    //   if (data.success && data.user) {
-    //     yield put({
-    //       type: 'querySuccess',
-    //       payload: data.user,
-    //     })
-    //     if (location.pathname === '/login') {
-    //       yield put(routerRedux.push('/dashboard'))
-    //     }
-    //   } else {
-    //     if (config.openPages && config.openPages.indexOf(location.pathname) < 0) {
-    //       let from = location.pathname
-    //       window.location = `${location.origin}/login?from=${from}`
-    //     }
-    //   }
-    // },
     *signOut ({
                 payload,
               }, {call, put}) {
@@ -78,18 +60,19 @@ export default {
     },
 
     *checkSignStatus({}, {call, put, select}){
+
+      const signStatus = yield select(state => state.app.signStatus)
       try {
-        const signStatus = yield select(state => state.app.signStatus)
         // not is login page and signStatus = false
         if (window.location.pathname !== "/login" && !signStatus) {
           const data = yield call(auth);
-          console.log(data)
+          // sign successfully
           yield put({type: 'setSignStatus', payload: true});
         }
       } catch (error) {
         // redirect to login page
-        yield put({type: 'setSignStatus', payload: false});
-        yield put(routerRedux.push("/login"))
+        console.log(error, "cccccccccccccc");
+        window.location.href = '/login'
       }
     }
   },
@@ -139,13 +122,11 @@ export default {
     },
 
     setSignStatus(state, {payload: signStatus}){
-      localStorage.setItem(`loadingStatus`,signStatus);
+      localStorage.setItem(`loadingStatus`, signStatus);
       return {
         ...state,
         signStatus
       }
     }
   },
-
-
 }
