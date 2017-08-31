@@ -11,7 +11,6 @@ import DropOption from "../../components/DropOption/DropOption";
 import BatchModal from "../../components/modals/BatchModal";
 import {fetchAndNotification} from "../../services/restfulService";
 import {ActionCollections} from "../../components/host/ActionCollections";
-import Mytest from './test.js'
 
 const confirm = Modal.confirm;
 
@@ -255,10 +254,6 @@ class HostPage extends React.Component {
 
     return (
       <div className="content-inner">
-        {/*<Mytest>*/}
-        {/*<div>hehe</div>*/}
-        {/*my*/}
-        {/*</Mytest>*/}
         <Row gutter={32}>
           <Col lg={24} md={24}>
             <Card title="远程数据">

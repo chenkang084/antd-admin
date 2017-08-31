@@ -31,7 +31,7 @@ export default {
       history.listen(location => {
         // check sign status
         dispatch({type: 'checkSignStatus'})
-        // dispatch({type: 'test'})
+
       })
     },
 

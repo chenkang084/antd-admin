@@ -30,7 +30,7 @@ export default {
           yield put(routerRedux.push('/dashboard'))
         }
       } else {
-        throw data
+        throw "用户名或者密码错误！"
       }
     },
   },
