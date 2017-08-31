@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Router } from "dva/router";
+import {Router} from "dva/router";
 import App from "./routes/app";
 
 const registerModel = (app, model) => {
@@ -11,7 +11,7 @@ const registerModel = (app, model) => {
   }
 };
 
-const Routers = function({ history, app }) {
+const Routers = function ({history, app}) {
   const routes = [
     {
       path: "/",
@@ -20,8 +20,10 @@ const Routers = function({ history, app }) {
         require.ensure(
           [],
           require => {
-            registerModel(app, require("./models/dashboard"));
-            cb(null, { component: require("./routes/dashboard/") });
+            // registerModel(app, require("./models/dashboard"));
+            // cb(null, { component: require("./routes/dashboard/") });
+            registerModel(app, require("./models/user.mgmt.model"));
+            cb(null, {component: require("./routes/userMgmt/index")});
           },
           "dashboard"
         );
@@ -239,6 +241,19 @@ const Routers = function({ history, app }) {
           }
         },
         {
+          path: "userMgmt",
+          getComponent(nextState, cb) {
+            require.ensure(
+              [],
+              require => {
+                registerModel(app, require("./models/user.mgmt.model"));
+                cb(null, require("./routes/userMgmt/index"));
+              },
+              "userMgmt"
+            );
+          }
+        },
+        {
           path: "*",
           getComponent(nextState, cb) {
             require.ensure(
@@ -254,7 +269,7 @@ const Routers = function({ history, app }) {
     }
   ];
 
-  return <Router history={history} routes={routes} />;
+  return <Router history={history} routes={routes}/>;
 };
 
 Routers.propTypes = {

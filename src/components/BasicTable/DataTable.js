@@ -28,8 +28,8 @@ class DataTable extends React.Component {
     fetch(fetchData)
       .then((result) => {
         this.setState({
-          dataSource: result.data.data,
-          dataSourceBack: lodash.cloneDeep(result.data.data),
+          dataSource: result.data.items,
+          dataSourceBack: lodash.cloneDeep(result.data.items),
           loading: false,
         })
       })

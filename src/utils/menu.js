@@ -165,6 +165,12 @@ module.exports = [
     name: 'Host Detail',
     router: '/host/:id',
   },
-
+  {
+    id: 625,
+    bpid: 1,
+    name: 'user management',
+    router: '/userMgmt',
+    icon: 'user',
+  },
 
 ]
