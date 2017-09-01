@@ -19,6 +19,10 @@ class DataTable extends React.Component {
   }
 
   componentDidMount() {
+    // this.getTableData()
+  }
+
+  componentWillMount() {
     this.getTableData()
   }
 
@@ -76,9 +80,11 @@ class DataTable extends React.Component {
   checkRefresh = () => {
     let refresh = this.state.refresh
     if (!refresh) {
+      // save basic model refresh count
       this.setState({refresh: this.props.refresh})
     } else {
       if (this.props.refresh !== refresh) {
+        // update state refresh count so that rerender component
         this.setState({refresh: this.props.refresh})
         this.getTableData()
       }
