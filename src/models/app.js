@@ -2,7 +2,7 @@ import {auth, logout} from '../services/app'
 import {routerRedux} from 'dva/router'
 import {parse} from 'qs'
 import {config} from '../utils'
-import {removeLocalStorage} from "../utils/dataUtils";
+import { removeSessionStorage} from "../utils/dataUtils";
 const {prefix} = config
 
 export default {
@@ -14,7 +14,7 @@ export default {
     darkTheme: localStorage.getItem(`${prefix}darkTheme`) === 'true',
     isNavbar: document.body.clientWidth < 769,
     navOpenKeys: JSON.parse(localStorage.getItem(`${prefix}navOpenKeys`)) || [],
-    signStatus: localStorage.getItem(`loadingStatus`) === "true"
+    signStatus: sessionStorage.getItem(`loadingStatus`) === "true"
   },
   subscriptions: {
 
@@ -42,7 +42,7 @@ export default {
               }, {call, put}) {
       const data = yield call(logout, parse(payload));
       if (data.status === 200) {
-        removeLocalStorage(`loadingStatus`);
+        removeSessionStorage(`loadingStatus`);
         console.log('..................')
         yield put(routerRedux.push("/login"));
       } else {
@@ -122,7 +122,7 @@ export default {
     },
 
     setSignStatus(state, {payload: signStatus}){
-      localStorage.setItem(`loadingStatus`, signStatus);
+      sessionStorage.setItem(`loadingStatus`, signStatus);
       return {
         ...state,
         signStatus

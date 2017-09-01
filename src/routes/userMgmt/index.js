@@ -4,10 +4,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "dva";
+import {Modal, Row, Col, Card, Button} from "antd";
 import DataTable from "../../components/BasicTable/DataTable";
 import DropOption from "../../components/DropOption/DropOption";
+import {ActionCollections} from "../../components/host/ActionCollections";
+import AddUserModal from "./modal/addUser";
 
 class UserMgmt extends React.Component {
+
+  refresh = () => {
+    this.props.dispatch({type: "userMgmt/refresh"});
+  };
 
   init = () => {
     this.tableDataProps = {
@@ -49,7 +56,7 @@ class UserMgmt extends React.Component {
         params: null
       },
       errorMsg: "get user table error",
-      refresh: this.props.modelProps.refresh,
+      refresh: this.props.modelProps.refresh,// basic model refresh count
       handleSelectItems: (selectedRowKeys, selectedItems) => {
         this.props.dispatch({
           type: "userMgmt/updateSelectItems",
@@ -60,14 +67,31 @@ class UserMgmt extends React.Component {
         });
       }
     };
+
+    this.AddUserModal = {
+      refresh: this.refresh
+    }
   };
+
 
   render() {
     this.init();
 
     return (
       <div className="content-inner">
-        <DataTable {...this.tableDataProps} />
+
+        <Row gutter={32}>
+          <Col lg={24} md={24}>
+            <Card title="用户管理">
+              <div className="action-btn-container">
+                <Button type="primary" onClick={this.refresh} icon="reload"/>
+                {/*list a sort of actions*/}
+                <AddUserModal {...this.AddUserModal}/>
+              </div>
+              <DataTable {...this.tableDataProps} />
+            </Card>
+          </Col>
+        </Row>
       </div>
     )
   }

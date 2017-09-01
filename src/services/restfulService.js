@@ -101,7 +101,7 @@ export async function fetchAndNotification({url, params = null, method = 'get', 
 
 const signStatusCheck = (result) => {
   if (result && result.response && result.response.status === 401) {
-    localStorage.setItem(`loadingStatus`, false);
+    sessionStorage.setItem(`loadingStatus`, false);
     window.location.href = `${window.location.origin}/login`;
   }
 };
