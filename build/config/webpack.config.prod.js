@@ -19,7 +19,7 @@ exports.default = function(args, appBuild, config, paths) {
     entry: (0, _getEntry2.default)(config, paths.appDirectory),
     output: {
       path: appBuild,
-      filename: "[name].js",
+      filename: "[name].[hash:8].js",
       publicPath: publicPath
     },
     resolve: {
@@ -148,7 +148,7 @@ exports.default = function(args, appBuild, config, paths) {
       }),
       new _webpack2.default.optimize.OccurrenceOrderPlugin(),
       new _webpack2.default.optimize.DedupePlugin(),
-      new _extractTextWebpackPlugin2.default("[name].css"),
+      new _extractTextWebpackPlugin2.default("[name].[hash:8].css"),
       new HtmlWebpackPlugin({
         filename: "./index.html",
         template: require('path').resolve(__dirname, "../../src/index.html") //packed js append to index.html,set index.html path

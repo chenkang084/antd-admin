@@ -26,7 +26,7 @@ class ModalForm extends BasicActionModalForm {
   }
 
   render() {
-    const {getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue} = this.props.form
+    const {getFieldDecorator, getFieldsError, getFieldError, isFieldTouched} = this.props.form
     return (
       <span>
         <Button
