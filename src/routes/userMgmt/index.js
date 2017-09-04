@@ -5,69 +5,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "dva";
 import {Select, Row, Col, Card, Button, Input, Icon} from "antd";
-
 import DataTable from "../../components/BasicTable/DataTable";
 import DropOption from "../../components/DropOption/DropOption";
-import AddUserModal from "./modal/addUser";
 import {fetchAndNotification} from "../../services/restfulService";
+import ModalForm from "../../components/modalForm/ModalForm";
 
 class UserMgmt extends React.Component {
 
-  refresh = () => {
-    this.props.dispatch({type: "userMgmt/refresh"});
-  };
-
-  init = () => {
-    this.tableDataProps = {
-      columns: [
-        {
-          title: "username",
-          dataIndex: "username",
-          key: "username",
-        },
-        {
-          title: "type",
-          dataIndex: "type",
-          key: "type",
-        },
-        {
-          title: "time",
-          dataIndex: "time",
-          key: "time",
-        },
-        {
-          title: "Operation",
-          key: "operation",
-          width: 100,
-          render: (text, record) => {
-            return (
-              <DropOption
-                onMenuClick={e => this.handleMenuClick(record, e)}
-                menuOptions={[
-                  {key: "1", name: "Update"},
-                  {key: "2", name: "Delete"}
-                ]}
-              />
-            );
-          }
-        }
-      ],
-      fetchData: {
-        url: "/user/users",
-        params: null
-      },
-      errorMsg: "get user table error",
-      refresh: this.props.modelProps.refresh,// basic model refresh count
-      handleSelectItems: (selectedRowKeys, selectedItems) => {
-        this.props.dispatch({
-          type: "userMgmt/updateSelectItems",
-          payload: {
-            selectedRowKeys,
-            selectedItems
-          }
-        });
-      }
-    };
+  componentWillMount() {
 
     this.AddUserModal = {
       refresh: this.refresh,
@@ -150,6 +95,7 @@ class UserMgmt extends React.Component {
       ],
       submit: {
         btnText: 'create',
+        // should use function instead of es6 =>{} ,make sure get modalForm's current this
         handleSubmit: function (values) {
           fetchAndNotification({
             url: 'user/user',
@@ -160,28 +106,106 @@ class UserMgmt extends React.Component {
               success: `创建${values.user_name} 操作成功！`,
               error: `创建${values.user_name} 操作失败！`,
             },
-          }).then((result) => {
-            //when the fetch successfully ,refresh the table
+          }).then(() => {
+            /*
+            * when the fetch successfully ,refresh the table
+            * current this is modalForm's runtime this
+            */
             this.props.form.resetFields();
             this.props.refresh()
           })
         }
-      }
-      ,
+      },
       modal: {
         title: 'Add User'
       }
-      ,
-      checkConfirmPassword: () => {
-        console.log()
-      }
     }
+  }
+
+  refresh = () => {
+    this.props.dispatch({type: "userMgmt/refresh"});
   };
 
+  /*
+   * if the props will update in sometimes, should write in init or render method
+   * if the props are constant, you can write it in componentWillMount
+  */
+  init = () => {
+    this.tableDataProps = {
+      columns: [
+        {
+          title: "username",
+          dataIndex: "username",
+          key: "username",
+        },
+        {
+          title: "type",
+          dataIndex: "type",
+          key: "type",
+        },
+        {
+          title: "time",
+          dataIndex: "time",
+          key: "time",
+        },
+        {
+          title: "Operation",
+          key: "operation",
+          width: 100,
+          render: (text, record) => {
+            return (
+              <DropOption
+                onMenuClick={e => {
+                  console.log()
+                  this.tableDataProps.handleMenuClick(record, e)
+                }}
+                menuOptions={[
+                  {key: "1", name: "Update"},
+                  {key: "2", name: "Delete"}
+                ]}
+              />
+            );
+          }
+        }
+      ],
+      fetchData: {
+        url: "/user/users",
+        params: null
+      },
+      errorMsg: "get user table error",
+      refresh: this.props.modelProps.refresh,// basic model refresh count
+      handleSelectItems: (selectedRowKeys, selectedItems) => {
+        this.props.dispatch({
+          type: "userMgmt/updateSelectItems",
+          payload: {
+            selectedRowKeys,
+            selectedItems
+          }
+        });
+      },
+      handleMenuClick: (record, e) => {
+        if (e.key === "1") {
+
+        } else if (e.key === "2") {
+          fetchAndNotification({
+            url: `user/userId/${record.id}`,
+            method: 'delete',
+            notifications: {
+              title: 'create Action',
+              success: `删除${record.username} 操作成功！`,
+              error: `删除${record.username} 操作失败！`,
+            }
+          })
+            .then(()=>{
+              this.refresh()
+            })
+        }
+      }
+    };
+  };
 
   render() {
     this.init();
-
     return (
       <div className="content-inner">
 
@@ -191,7 +215,7 @@ class UserMgmt extends React.Component {
               <div className="action-btn-container">
                 <Button type="primary" onClick={this.refresh} icon="reload"/>
                 {/*list a sort of actions*/}
-                <AddUserModal {...this.AddUserModal}/>
+                <ModalForm {...this.AddUserModal}/>
               </div>
               <DataTable {...this.tableDataProps} />
             </Card>

@@ -2,7 +2,7 @@
  * Created by chenkang1 on 2017/9/1.
  */
 import {Form, Button, Modal} from 'antd'
-import {BasicActionModalForm} from "../../../components/basic/BasicActionModalForm";
+import {BasicActionModalForm} from "../basic/BasicActionModalForm";
 
 const FormItem = Form.Item
 
@@ -10,7 +10,7 @@ function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field])
 }
 
-class AddUserModal extends BasicActionModalForm {
+class ModalForm extends BasicActionModalForm {
 
   constructor(props) {
     super(props);
@@ -85,4 +85,4 @@ class AddUserModal extends BasicActionModalForm {
   }
 }
 
-export default Form.create()(AddUserModal)
+export default Form.create()(ModalForm)
