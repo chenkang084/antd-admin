@@ -29,20 +29,24 @@ class ModalForm extends React.Component {
     this.props.form.validateFields()
   }
 
-  showModal = () => {
-    this.setState({visible: true})
-  };
-  handleCancel = () => {
-    this.setState({visible: false})
-    if (this.props.fetchData) {
-      // this.formData = null;
-    }
-  };
+  // showModal = () => {
+  //   this.setState({visible: true})
+  // };
+  // handleCancel = () => {
+  //   this.setState({visible: false})
+  //   if (this.props.fetchModalData) {
+  //     // this.formData = null;
+  //   }
+  // };
 
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
-      this.submitAction(err, values)
+      if (!err) {
+        console.log('Received values of form: ', values);
+        this.props.handleModalHide();
+        this.props.submit.handleSubmit.call(this, values)
+      }
     })
   };
 
@@ -69,10 +73,10 @@ class ModalForm extends React.Component {
 
   componentDidUpdate() {
     console.log("componentDidUpdate")
-    if (this.props.fetchData) {
+    if (this.props.fetchModalData) {
       if (!this.state.visible && !this.formData) {
         this.showModal()
-        this.queryModalData(this.props.fetchData)
+        this.queryModalData(this.props.fetchModalData)
       }
 
       // visible is false,and this.formData !=null ,that means user click the modal close btn manually ,so we need reset formData to null
@@ -90,7 +94,7 @@ class ModalForm extends React.Component {
       <span>
         {
           this.props.btnTextShow ? <Button
-            onClick={this.showModal}
+            onClick={this.props.handleModalShow}
             type="primary"
           >
             {this.props.btnText}
@@ -98,11 +102,11 @@ class ModalForm extends React.Component {
             : null
         }
         <Modal
-          visible={this.state.visible}
-          title={this.props.modal.title}
+          visible={this.props.modalVisible}
+          title={this.props.modalTitle}
           // okText="Create"
           footer={null}
-          onCancel={this.handleCancel}
+          onCancel={this.props.handleModalHide}
           // onOk={this.onCreate}
         >
           <Spin tip="Loading..." spinning={this.state.spinning}>
@@ -117,8 +121,8 @@ class ModalForm extends React.Component {
                     help={error || ''}
                   >
                     {getFieldDecorator(item.key, {
+                      initialValue: item.initialValue,
                       rules: item.rules.map(rule => {
-                        console.log()
                         if (rule.validator && typeof rule.validator === 'function') {
                           return rule.validator.bind(this)
                         }
