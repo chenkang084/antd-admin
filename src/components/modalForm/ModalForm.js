@@ -29,20 +29,24 @@ class ModalForm extends React.Component {
     this.props.form.validateFields()
   }
 
-  showModal = () => {
-    this.setState({visible: true})
-  };
-  handleCancel = () => {
-    this.setState({visible: false})
-    if (this.props.fetchModalData) {
-      // this.formData = null;
-    }
-  };
+  // showModal = () => {
+  //   this.setState({visible: true})
+  // };
+  // handleCancel = () => {
+  //   this.setState({visible: false})
+  //   if (this.props.fetchModalData) {
+  //     // this.formData = null;
+  //   }
+  // };
 
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
-      this.submitAction(err, values)
+      if (!err) {
+        console.log('Received values of form: ', values);
+        this.props.handleModalHide();
+        this.props.submit.handleSubmit.call(this, values)
+      }
     })
   };
 
@@ -90,7 +94,7 @@ class ModalForm extends React.Component {
       <span>
         {
           this.props.btnTextShow ? <Button
-            onClick={this.showModal}
+            onClick={this.props.handleModalShow}
             type="primary"
           >
             {this.props.btnText}
@@ -98,12 +102,11 @@ class ModalForm extends React.Component {
             : null
         }
         <Modal
-          // visible={this.state.visible}
           visible={this.props.modalVisible}
-          title={this.props.modal.title}
+          title={this.props.modalTitle}
           // okText="Create"
           footer={null}
-          onCancel={this.handleCancel}
+          onCancel={this.props.handleModalHide}
           // onOk={this.onCreate}
         >
           <Spin tip="Loading..." spinning={this.state.spinning}>
