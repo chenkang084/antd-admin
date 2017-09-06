@@ -17,7 +17,9 @@ class UserMgmt extends React.Component {
     super(props);
     this.state = {
       userUpdateModalvisible: false,
-      userUpdateFetchData:null
+      userUpdateFetchData: null,
+      addUserModal: null,
+      updateUserModal: null
     };
   }
 
@@ -36,7 +38,9 @@ class UserMgmt extends React.Component {
           name: 'user_name',
           key: 'user_name',
           rules: [
-            {required: true, message: 'Please input your username!'},
+            {
+              required: true, message: 'Please input your username!'
+            },
           ],
           render: function () {
             return (<Input prefix={<Icon type="user" style={{fontSize: 13}}/>} placeholder="Username"/>)
@@ -135,7 +139,9 @@ class UserMgmt extends React.Component {
       }
     }
 
-
+    // this.setState({
+    //   updateUserModal: this.updateUserModal
+    // })
   }
 
   refresh = () => {
@@ -201,16 +207,33 @@ class UserMgmt extends React.Component {
       },
       handleMenuClick: (record, e) => {
         if (e.key === "1") {
-          this.setState({
-              userUpdateFetchData: {
-                url: `user/userId/${record.id}`,
-                method: 'get',
-                notifications: {
-                  title: 'create Action',
-                  error: `获取用户${record.username}信息失败！`,
+          fetchAndNotification({
+            url: `user/userId/${record.id}`,
+            method: 'get',
+            notifications: {
+              title: 'create Action',
+              error: `获取用户${record.username}信息失败！`,
+            }
+          }).then((result) => {
+            if (result.data && result.data.type === "success") {
+              for (const key in result.data.items) {
+                for (let i = 0; i < this.updateUserModal.formItems.length; i++) {
+                  let _key = this.updateUserModal.formItems[i].key;
+                  if (key === _key) {
+                    this.updateUserModal.formItems[i].initialValue = result.data.items[key]
+                    console.log(this.updateUserModal)
+                    break;
+                  }
                 }
               }
+
+              this.updateUserModal.modalVisible = true;
+              this.setState({
+                updateUserModal: this.updateUserModal
+              })
+            }
           })
+
         } else if (e.key === "2") {
           fetchAndNotification({
             url: `user/userId/${record.id}`,
@@ -231,8 +254,7 @@ class UserMgmt extends React.Component {
     this.updateUserModal = {
 
       refresh: this.refresh,
-      // btnText: 'Add user',
-      modalVisible: this.state.userUpdateModalvisible,
+      modalVisible: false,
       btnTextShow: false,
       formItems: [
         {
@@ -340,16 +362,7 @@ class UserMgmt extends React.Component {
         this.setState({
           userUpdateModalvisible: false,
         })
-      },
-      // spinning:this.state.userUpdateSpinning
-      // fetchModalData: {
-      //   url: `user/userId/${record.id}`,
-      //   method: 'get',
-      //   notifications: {
-      //     title: 'create Action',
-      //     error: `获取用户${record.username}信息失败！`,
-      //   },
-      // }
+      }
     }
   }
   // this.updateUserModal.modalVisible = this.state.userUpdateModalvisible;
@@ -366,7 +379,8 @@ class UserMgmt extends React.Component {
                 <Button type="primary" onClick={this.refresh} icon="reload"/>
                 {/*list a sort of actions*/}
                 <ModalForm {...this.addUserModal}/>
-                <ModalForm {...this.updateUserModal} fetchData={this.state.userUpdateFetchData}/>
+                {this.state.updateUserModal ? <ModalForm {...this.state.updateUserModal} /> : null}
+                {/*<ModalForm {...this.updateUserModal} fetchModalData={this.state.userUpdateFetchData}/>*/}
 
                 {/*<LifeCycle {...this.lifeCycle} fetchData={this.state.userUpdateFetchData}/>*/}
               </div>
