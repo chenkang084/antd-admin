@@ -79,7 +79,7 @@ export async function fetchAndNotification({url, params = null, method = 'get', 
         notification.open({
           message: notifications.title,
           description: notifications.success,
-          duration: 0,
+          duration: 10,
           type: 'success',
         });
       }
@@ -91,7 +91,7 @@ export async function fetchAndNotification({url, params = null, method = 'get', 
         notification.open({
           message: notifications.title,
           description: notifications.error,
-          duration: 0,
+          duration: 10,
           type: 'error',
         });
       }

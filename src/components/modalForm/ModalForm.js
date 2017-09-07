@@ -2,7 +2,7 @@
  * Created by chenkang1 on 2017/9/1.
  */
 import {Form, Button, Modal, Spin} from 'antd'
-import {fetchAndNotification} from "../../services/restfulService";
+import {isundefined} from "../../utils/dataUtils";
 
 const FormItem = Form.Item
 
@@ -14,30 +14,15 @@ class ModalForm extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      visible: false,
-      spinning: false
-    };
+
   }
 
-  formData = null;
-  id = null;
-  // fecthFormDataOption = null;
+  prevValues = {};
 
   componentDidMount() {
     // To disabled submit button at the beginning.
     this.props.form.validateFields()
   }
-
-  // showModal = () => {
-  //   this.setState({visible: true})
-  // };
-  // handleCancel = () => {
-  //   this.setState({visible: false})
-  //   if (this.props.fetchModalData) {
-  //     // this.formData = null;
-  //   }
-  // };
 
   handleSubmit = (e) => {
     e.preventDefault()
@@ -59,33 +44,29 @@ class ModalForm extends React.Component {
     }
   }
 
-  queryModalData(options) {
-    this.setState({spinning: true})
-    fetchAndNotification(options).then((result) => {
-      this.formData = result;
-      this.setState({spinning: false})
-    })
-  }
-
   componentWillReceiveProps() {
-    console.log("componentWillReceiveProps")
+    // console.log("componentWillReceiveProps")
   }
 
   componentDidUpdate() {
-    console.log("componentDidUpdate")
-    if (this.props.fetchModalData) {
-      if (!this.state.visible && !this.formData) {
-        this.showModal()
-        this.queryModalData(this.props.fetchModalData)
-      }
+    // console.log("componentDidUpdate")
+    if (this.props.type === 'edit' && this.props.modalVisible && !this.props.spinning) {
+      console.log('...........')
 
-      // visible is false,and this.formData !=null ,that means user click the modal close btn manually ,so we need reset formData to null
-      if (!this.state.visible && this.formData) {
-        this.formData = null;
+      const values = this.props.form.getFieldsValue();
+      let updateValue = {};
+      for (const key in values) {
+        const val = values[key];
+
+        if (isundefined(val) && isundefined(this.props.formItems[key].updateValueFlag)) {
+          updateValue[key] = this.props.formItems[key].updateValue;
+          this.props.form.setFieldsValue({
+            [key]: this.props.formItems[key].updateValue,
+          });
+        }
       }
     }
   }
-
 
   render() {
     const {getFieldDecorator, getFieldsError, getFieldError, isFieldTouched} = this.props.form
@@ -109,10 +90,11 @@ class ModalForm extends React.Component {
           onCancel={this.props.handleModalHide}
           // onOk={this.onCreate}
         >
-          <Spin tip="Loading..." spinning={this.state.spinning}>
+          <Spin tip="Loading..." spinning={this.props.spinning}>
             <Form layout="vertical" onSubmit={this.handleSubmit}>
             {
-              this.props.formItems && this.props.formItems.map((item) => {
+              this.props.formItems && Object.keys(this.props.formItems).map((key) => {
+                const item = this.props.formItems[key];
                 const error = isFieldTouched(item.key) && getFieldError(item.key);
                 const element = item.render();
                 return (

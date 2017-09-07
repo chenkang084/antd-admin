@@ -1,7 +1,7 @@
 /**
  * Created by chenkang1 on 2017/6/29.
  */
-export function sortJsonArr (jsonArr, sortName, sortType, addition, additionOrder) {
+export function sortJsonArr(jsonArr, sortName, sortType, addition, additionOrder) {
   if (sortName && sortType && jsonArr != null && jsonArr.length > 0) {
     sortType = sortType.toUpperCase()
     let direction = 1
@@ -16,11 +16,11 @@ export function sortJsonArr (jsonArr, sortName, sortType, addition, additionOrde
       }
       // obj1[sortName] == obj2[sortName]
 
-        // if the two score equality, order by name , name order by sortType
+      // if the two score equality, order by name , name order by sortType
       if (addition && additionOrder && obj1[addition] && obj2[addition] && obj1[addition].toUpperCase() > obj2[addition].toUpperCase()) {
         return -1 * direction
       }
-          // obj1 addition is null
+      // obj1 addition is null
       if (!obj1[addition]) {
         return 1
       }
@@ -29,17 +29,17 @@ export function sortJsonArr (jsonArr, sortName, sortType, addition, additionOrde
   }
 }
 
-export function stateDelay (millisecond = 100) {
-  this.setState({ loading: true })
+export function stateDelay(millisecond = 100) {
+  this.setState({loading: true})
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve()
-      this.setState({ loading: false })
+      this.setState({loading: false})
     }, millisecond)
   })
 }
 
-export function delay (millisecond = 100) {
+export function delay(millisecond = 100) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve()
@@ -95,4 +95,8 @@ export const removeLocalStorage = (key) => {
 
 export const clearLocalStorage = () => {
   localStorage.clear()
+}
+
+export const isundefined = value => {
+  return typeof value === 'undefined'
 }
