@@ -54,15 +54,26 @@ class ModalForm extends React.Component {
       console.log('...........')
 
       const values = this.props.form.getFieldsValue();
-      let updateValue = {};
       for (const key in values) {
         const val = values[key];
-
-        if (isundefined(val) && isundefined(this.props.formItems[key].updateValueFlag)) {
-          updateValue[key] = this.props.formItems[key].updateValue;
-          this.props.form.setFieldsValue({
-            [key]: this.props.formItems[key].updateValue,
-          });
+        // val equals undefined
+        if (isundefined(val)) {
+          // need update value ,updateValueFlag default is undefined
+          if (isundefined(this.props.formItems[key].updateValueFlag)) {
+            this.prevValues[key] = this.props.formItems[key].updateValue;
+            this.props.form.setFieldsValue({
+              [key]: this.props.formItems[key].updateValue,
+            });
+          }
+        } else {
+            // need update, prev value is not equals current value ,so use current value
+            if (isundefined(this.props.formItems[key].updateValueFlag) && this.prevValues[key] !== this.props.formItems[key].updateValue) {
+              // update prev value
+              this.prevValues[key] = this.props.formItems[key].updateValue;
+              this.props.form.setFieldsValue({
+                [key]: this.props.formItems[key].updateValue,
+              });
+            }
         }
       }
     }
