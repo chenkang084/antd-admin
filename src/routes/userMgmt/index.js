@@ -31,14 +31,15 @@ class UserMgmt extends React.Component {
 
     this.setState({
       addUserModal: {
+        id: '',
         refresh: this.refresh,
         btnText: 'Add user',
         btnTextShow: true,
-        formItems: [
-          {
+        formItems: {
+          user_name: {
             name: 'user_name',
             key: 'user_name',
-            initialValue: 1,
+            // initialValue: 1,
             rules: [
               {
                 required: true, message: 'Please input your username!'
@@ -48,7 +49,7 @@ class UserMgmt extends React.Component {
               return (<Input prefix={<Icon type="user" style={{fontSize: 13}}/>} placeholder="Username"/>)
             }
           },
-          {
+          user_pwd: {
             name: 'user_pwd',
             key: 'user_pwd',
             rules: [
@@ -71,8 +72,8 @@ class UserMgmt extends React.Component {
                 <Input type="password" prefix={<Icon type="lock" style={{fontSize: 13}}/>} placeholder="new password"/>)
             }
           },
-          {
-            name: 'user_pwd',
+          user_pwd_twice: {
+            name: 'user_pwd_twice',
             key: 'user_pwd_twice',
             rules: [
               {required: true, message: 'Please input your password!'},
@@ -93,7 +94,7 @@ class UserMgmt extends React.Component {
                              placeholder="confirm password"/>)
             }
           },
-          {
+          type: {
             "name": "type",
             "key": "type",
             rules: [{required: true, message: 'Please select your gender!'}],
@@ -112,7 +113,7 @@ class UserMgmt extends React.Component {
               )
             }
           }
-        ],
+        },
         submit: {
           btnText: 'create',
           // should use function instead of es6 =>{} ,make sure get modalForm's current this
@@ -160,11 +161,12 @@ class UserMgmt extends React.Component {
       },
 
       updateUserModal: {
+        id: '',
         refresh: this.refresh,
         btnTextShow: false,
-        type:'edit',
-        formItems: [
-          {
+        type: 'edit',
+        formItems: {
+          user_name: {
             name: 'user_name',
             key: 'user_name',
             rules: [
@@ -176,9 +178,10 @@ class UserMgmt extends React.Component {
               return (<Input prefix={<Icon type="user" style={{fontSize: 13}}/>} placeholder="Username"/>)
             }
           },
-          {
+          user_pwd: {
             name: 'user_pwd',
             key: 'user_pwd',
+            updateValueFlag: false,
             rules: [
               {required: true, message: 'Please input your password!'},
               {
@@ -196,12 +199,14 @@ class UserMgmt extends React.Component {
             ],
             render: function () {
               return (
-                <Input type="password" prefix={<Icon type="lock" style={{fontSize: 13}}/>} placeholder="new password"/>)
+                <Input type="password" prefix={<Icon type="lock" style={{fontSize: 13}}/>}
+                       placeholder="new password"/>)
             }
           },
-          {
-            name: 'user_pwd',
+          user_pwd_twice: {
+            name: 'user_pwd_twice',
             key: 'user_pwd_twice',
+            updateValueFlag: false,
             rules: [
               {required: true, message: 'Please input your password!'},
               {
@@ -221,7 +226,7 @@ class UserMgmt extends React.Component {
                              placeholder="confirm password"/>)
             }
           },
-          {
+          type: {
             "name": "type",
             "key": "type",
             rules: [{required: true, message: 'Please select your gender!'}],
@@ -240,15 +245,18 @@ class UserMgmt extends React.Component {
               )
             }
           }
-        ],
+        },
         submit: {
           btnText: 'update',
           // should use function instead of es6 =>{} ,make sure get modalForm's current this
           handleSubmit: function (values) {
             fetchAndNotification({
               url: 'user/user',
-              method: 'post',
-              params: values,
+              method: 'put',
+              params: {
+                ...values,
+                id: this.props.id
+              },
               notifications: {
                 title: 'create Action',
                 success: `创建${values.user_name} 操作成功！`,
@@ -272,8 +280,6 @@ class UserMgmt extends React.Component {
             const updateUserModal = prevState.updateUserModal;
             updateUserModal.modalVisible = true;
             updateUserModal.spinning = true;
-
-            updateUserModal.formItems[0].initialValue = 100;
             return {
               updateUserModal
             }
@@ -367,17 +373,14 @@ class UserMgmt extends React.Component {
             .then((result) => {
               if (result.data && result.data.type === "success") {
                 this.setState(prevState => {
+                  const updateUserModal = prevState.updateUserModal;
                   for (const key in result.data.items) {
-                    for (let i = 0; i < prevState.updateUserModal.formItems.length; i++) {
-                      let _key = prevState.updateUserModal.formItems[i].key;
-                      if (key === _key) {
-                        prevState.updateUserModal.formItems[i].initialValue = result.data.items[key]
-                        // console.log(prevState.updateUserModal)
-                        break;
-                      }
+                    if (key in updateUserModal.formItems) {
+                      updateUserModal.formItems[key].updateValue = result.data.items[key];
                     }
                   }
                   prevState.updateUserModal.spinning = false;
+                  prevState.updateUserModal.id = record.id;
                   return {
                     updateUserModal: prevState.updateUserModal
                   };
@@ -412,7 +415,7 @@ class UserMgmt extends React.Component {
               <div className="action-btn-container">
                 <Button type="primary" onClick={this.refresh} icon="reload"/>
                 {/*list a sort of actions*/}
-                {/*<ModalForm {...this.state.addUserModal}/>*/}
+                <ModalForm {...this.state.addUserModal}/>
                 {/*{this.state.updateUserModal ? <ModalForm {...this.state.updateUserModal} /> : null}*/}
                 <ModalForm {...this.state.updateUserModal}/>
 
