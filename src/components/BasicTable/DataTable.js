@@ -58,24 +58,7 @@ class DataTable extends React.Component {
     })
   };
 
-  filterProps = {
-    onFilterChange: ({name: keyword}) => {
-      stateDelay.call(this).then(() => {
-        let result = []
-        let list = lodash.cloneDeep(this.state.dataSourceBack)
-        if (keyword) {
-          if (list && list.length > 0) {
-            result = list.filter((row) => {
-              return Object.values(row).filter(item => item && String(item).toLowerCase().indexOf(keyword.toLowerCase()) > -1).length > 0
-            })
-          }
-        } else {
-          result = this.state.dataSourceBack
-        }
-        this.setState({dataSource: result})
-      })
-    },
-  };
+
 
   checkRefresh = () => {
     let refresh = this.state.refresh
@@ -111,12 +94,34 @@ class DataTable extends React.Component {
       onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
         this.setState({selectedRowKeys, selectedRows})
-        this.props.handleSelectItems(selectedRowKeys,selectedRows)
+        this.props.handleSelectItems(selectedRowKeys, selectedRows)
       },
       getCheckboxProps: record => ({
         disabled: record.name === 'Disabled User',    // Column configuration not to be checked
       }),
-    }
+    };
+
+    this.filterProps = {
+      onFilterChange: ({name: keyword}) => {
+        stateDelay.call(this).then(() => {
+          let result = []
+          let list = lodash.cloneDeep(this.state.dataSourceBack)
+          if (keyword) {
+            if (list && list.length > 0) {
+              result = list.filter((row) => {
+                return Object.values(row).filter(item => {
+                    return item && String(JSON.stringify(item)).toLowerCase().indexOf(keyword.toLowerCase()) > -1
+                  }).length > 0
+              })
+            }
+          } else {
+            result = this.state.dataSourceBack
+          }
+          this.setState({dataSource: result})
+        })
+      },
+      refresh: this.props.refresh
+    };
   };
 
   render() {

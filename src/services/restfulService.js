@@ -7,11 +7,11 @@ import config from '../config'
 import {notification} from 'antd'
 
 const v1Instance = axiosFactory({api: config.uri.api.v1});
-const v2Instance = axiosFactory({api: config.uri.api.v2});
+const v2Instance = axiosFactory({api: config.uri.api.v2,header:{'X-Requested-With':'XMLHttpRequest'}});
 
-function request({method, url, params}) {
+function request({method, url, params,api}) {
   let instance = v1Instance;
-  if (params && params.api && params.api === 'v2') {
+  if (api && api === 'v2') {
     instance = v2Instance;
   }
 
@@ -39,11 +39,12 @@ function request({method, url, params}) {
   }
 }
 
-export async function fetch({url, params = null, method = 'get'}) {
+export async function fetch({url, params = null, method = 'get', api}) {
   return await request({
     url,
     method,
     params,
+    api
   })
     .catch((result) => {
       signStatusCheck(result);
@@ -51,11 +52,12 @@ export async function fetch({url, params = null, method = 'get'}) {
     })
 }
 
-export async function fetchAndNotification({url, params = null, method = 'get', notifications = {}}) {
+export async function fetchAndNotification({url, params = null, method = 'get', notifications = {}, api}) {
   return await request({
     url,
     method,
     params,
+    api
   })
     .then((result) => {
       if (notifications.success) {
