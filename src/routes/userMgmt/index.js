@@ -16,18 +16,12 @@ class UserMgmt extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userUpdateModalvisible: false,
-      userUpdateFetchData: null,
       addUserModal: null,
       updateUserModal: null
     };
   }
 
   componentWillMount() {
-
-    this.lifeCycle = {
-      test: this.state.test
-    };
 
     this.setState({
       addUserModal: {
@@ -348,7 +342,7 @@ class UserMgmt extends React.Component {
         url: "/user/users",
         params: null
       },
-      errorMsg: "get user table error",
+      // errorMsg: "get user table error",
       refresh: this.props.modelProps.refresh,// basic model refresh count
       handleSelectItems: (selectedRowKeys, selectedItems) => {
         this.props.dispatch({
@@ -416,10 +410,8 @@ class UserMgmt extends React.Component {
                 <Button type="primary" onClick={this.refresh} icon="reload"/>
                 {/*list a sort of actions*/}
                 <ModalForm {...this.state.addUserModal}/>
-                {/*{this.state.updateUserModal ? <ModalForm {...this.state.updateUserModal} /> : null}*/}
                 <ModalForm {...this.state.updateUserModal}/>
 
-                {/*<LifeCycle {...this.lifeCycle} fetchData={this.state.userUpdateFetchData}/>*/}
               </div>
               <DataTable {...this.tableDataProps} />
             </Card>

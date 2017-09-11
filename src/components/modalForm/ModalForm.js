@@ -2,7 +2,7 @@
  * Created by chenkang1 on 2017/9/1.
  */
 import {Form, Button, Modal, Spin} from 'antd'
-import {isundefined} from "../../utils/dataUtils";
+import {isUndefined} from "../../utils/dataUtils";
 
 const FormItem = Form.Item
 
@@ -57,9 +57,9 @@ class ModalForm extends React.Component {
       for (const key in values) {
         const val = values[key];
         // val equals undefined
-        if (isundefined(val)) {
+        if (isUndefined(val)) {
           // need update value ,updateValueFlag default is undefined
-          if (isundefined(this.props.formItems[key].updateValueFlag)) {
+          if (isUndefined(this.props.formItems[key].updateValueFlag)) {
             this.prevValues[key] = this.props.formItems[key].updateValue;
             this.props.form.setFieldsValue({
               [key]: this.props.formItems[key].updateValue,
@@ -67,7 +67,7 @@ class ModalForm extends React.Component {
           }
         } else {
             // need update, prev value is not equals current value ,so use current value
-            if (isundefined(this.props.formItems[key].updateValueFlag) && this.prevValues[key] !== this.props.formItems[key].updateValue) {
+            if (isUndefined(this.props.formItems[key].updateValueFlag) && this.prevValues[key] !== this.props.formItems[key].updateValue) {
               // update prev value
               this.prevValues[key] = this.props.formItems[key].updateValue;
               this.props.form.setFieldsValue({

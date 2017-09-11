@@ -1,37 +1,20 @@
 /**
  * Created by chenkang1 on 2017/6/29.
  */
-import axios from 'axios'
+import axiosFactory from './axios'
 import qs from 'qs'
 import config from '../config'
 import {notification} from 'antd'
 
-let instance = axios.create({
-  baseURL: config.uri.api,
-  // withCredentials: true
-  // timeout: 1000,
-  // headers: {'X-Custom-Header': 'foobar'}
-})
-
-// Add a request interceptor
-instance.interceptors.request.use((_config) => {
-  // Do something before request is sent
-  return _config
-}, (error) => {
-  // Do something with request error
-  return Promise.reject(error)
-})
-
-// Add a response interceptor
-instance.interceptors.response.use((response) => {
-  // Do something with response data
-  return response
-}, (error) => {
-  // Do something with response error
-  return Promise.reject(error)
-})
+const v1Instance = axiosFactory({api: config.uri.api.v1});
+const v2Instance = axiosFactory({api: config.uri.api.v2});
 
 function request({method, url, params}) {
+  let instance = v1Instance;
+  if (params && params.api && params.api === 'v2') {
+    instance = v2Instance;
+  }
+
   switch (method.toLowerCase()) {
     case 'get':
       return instance.get(url, {
