@@ -55,6 +55,7 @@ class HostPage extends React.Component {
     this.props.dispatch({type: "host/refresh"});
   };
 
+
   init = () => {
     this.modalProps = {
       visible: this.props.modelProps.modalVisible,
@@ -144,7 +145,7 @@ class HostPage extends React.Component {
           render: (text, record) => {
             return (
               <span>
-                <Button type="danger" icon="delete">delete</Button>
+                <Button type="danger" icon="delete" onClick={this.tableDataProps.showDeleteConfirm}>delete</Button>
                 <DropOption
                   onMenuClick={e => this.handleMenuClick(record, e)}
                   menuOptions={[
@@ -158,9 +159,26 @@ class HostPage extends React.Component {
         }
       ],
       fetchData: {
-        url: "ceph/clusters/1/servers/",
+        url: this.props.modelProps.defaultCluster ? `ceph/clusters/${this.props.modelProps.defaultCluster.id}/servers/` : '',
         params: null,
-        api:'v2'
+        api: 'v2'
+      },
+      // clusterList: this.props.modelProps.clusterList,
+      showDeleteConfirm() {
+        confirm({
+          title: 'Are you sure delete this host?',
+          // content: 'Some descriptions',
+          okText: 'Yes',
+          okType: 'danger',
+          cancelText: 'No',
+          onOk() {
+            console.log('OK');
+
+          },
+          onCancel() {
+            console.log('Cancel');
+          },
+        });
       },
       errorMsg: "get host table error",
       refresh: this.props.modelProps.refresh,
