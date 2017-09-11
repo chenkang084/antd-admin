@@ -4,12 +4,12 @@
 import axios from 'axios'
 import {isFunction, isUndefined} from "../utils/dataUtils";
 
-export default function axiosFactory({api, requestInterceptors, responseInterceptors}) {
+export default function axiosFactory({api, header, requestInterceptors, responseInterceptors}) {
   const instance = axios.create({
     baseURL: api,
     // withCredentials: true
     // timeout: 1000,
-    // headers: {'X-Custom-Header': 'foobar'}
+    headers: header
   })
 
   instance.interceptors.request.use((_config) => {

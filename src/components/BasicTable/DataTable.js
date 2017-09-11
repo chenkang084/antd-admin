@@ -66,7 +66,9 @@ class DataTable extends React.Component {
         if (keyword) {
           if (list && list.length > 0) {
             result = list.filter((row) => {
-              return Object.values(row).filter(item => item && String(item).toLowerCase().indexOf(keyword.toLowerCase()) > -1).length > 0
+              return Object.values(row).filter(item => {
+                  return item && String(JSON.stringify(item)).toLowerCase().indexOf(keyword.toLowerCase()) > -1
+                }).length > 0
             })
           }
         } else {

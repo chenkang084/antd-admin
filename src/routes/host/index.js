@@ -78,85 +78,89 @@ class HostPage extends React.Component {
     this.tableDataProps = {
       columns: [
         {
-          title: "Avatar",
-          dataIndex: "avatar",
-          key: "avatar",
+          title: "名称",
+          dataIndex: "hostname",
+          key: "hostname",
           // width: 64,
-          render: text => <img alt={"avatar"} width={24} src={text}/>
+          // render: text => <img alt={"avatar"} width={24} src={text}/>
         },
         {
-          title: "Name",
-          dataIndex: "name",
-          key: "name",
+          title: "机架",
+          dataIndex: "rack_name",
+          key: "rack_name",
           // width: 120,
-          render: (text, record) =>
-            <Link to={`host/${record.id}`}>
-              {text}
-            </Link>
+          // render: (text, record) =>
+          //   <Link to={`host/${record.id}`}>
+          //     {text}
+          //   </Link>
         },
         {
-          title: "NickName",
-          dataIndex: "nickName",
-          key: "nickName",
+          title: "状态",
+          dataIndex: "status",
+          key: "status",
           sorter: true
           // width: 100,
         },
         {
-          title: "Age",
-          dataIndex: "age",
-          key: "age",
+          title: "外网IP",
+          dataIndex: "publicip",
+          key: "publicip",
           sorter: true
           // width: 64,
         },
         {
-          title: "Gender",
-          dataIndex: "isMale",
-          key: "isMale",
-          render: text =>
-            <span>
-              {text ? "Male" : "Female"}
-            </span>
+          title: "监视器角色",
+          dataIndex: "mons[0].role",
+          key: "mons[0].role",
+          // render: mons =>
+          //   <span>
+          //     {mons.role}
+          //   </span>
         },
         {
-          title: "Phone",
-          dataIndex: "phone",
-          key: "phone"
+          title: "存储单元数量",
+          dataIndex: "osds_num",
+          key: "osds_num"
         },
         {
-          title: "Email",
-          dataIndex: "email",
-          key: "email"
+          title: "处理器使用率（%）",
+          dataIndex: "cpuUsage",
+          key: "cpuUsage"
         },
         {
-          title: "Address",
-          dataIndex: "address",
-          key: "address"
+          title: "内存使用率（%）",
+          dataIndex: "ramUsage",
+          key: "ramUsage"
         },
         {
-          title: "CreateTime",
-          dataIndex: "createTime",
-          key: "createTime"
+          title: "创建时间",
+          dataIndex: "created_at",
+          key: "created_at"
         },
         {
-          title: "Operation",
+          title: "操作",
           key: "operation",
-          width: 100,
+          // width: 100,
           render: (text, record) => {
             return (
-              <DropOption
-                onMenuClick={e => this.handleMenuClick(record, e)}
-                menuOptions={[
-                  {key: "1", name: "Update"},
-                  {key: "2", name: "Delete"}
-                ]}
-              />
+              <span>
+                <Button type="danger" icon="delete">delete</Button>
+                <DropOption
+                  onMenuClick={e => this.handleMenuClick(record, e)}
+                  menuOptions={[
+                    {key: "1", name: "Update"},
+                    {key: "2", name: "Delete"}
+                  ]}
+                />
+              </span>
             );
           }
         }
       ],
       fetchData: {
-        url: "/host/list",
-        params: null
+        url: "ceph/clusters/1/servers/",
+        params: null,
+        api:'v2'
       },
       errorMsg: "get host table error",
       refresh: this.props.modelProps.refresh,
