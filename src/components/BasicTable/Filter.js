@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, Button, Row, Col, Input, Icon} from 'antd'
 
-const Search = Input.Search
-
 const ColProps = {
   style: {
     marginBottom: 16,
@@ -15,6 +13,8 @@ const TwoColProps = {
 }
 
 class Filter extends React.Component {
+
+  refresh = this.props.refresh;
 
   componentWillMount() {
     this.state = {
@@ -38,6 +38,14 @@ class Filter extends React.Component {
     this.setState({
       input: ''
     })
+    this.handleSubmit();
+  }
+
+  componentWillUpdate(){
+    if (this.refresh !== this.props.refresh){
+      this.clearInput();
+      this.refresh = this.props.refresh;
+    }
   }
 
   render() {
@@ -62,18 +70,6 @@ class Filter extends React.Component {
                                                               onChange={this.onChangeUserName}
                                                               style={{width: '200px', 'margin-right': '10px'}}
             />)}
-            {/*<Input placeholder="Search" size="large"*/}
-                   {/*value={this.state.input}*/}
-                   {/*suffix={*/}
-                     {/*this.state.input.length > 0 ?*/}
-                       {/*<Icon style={{cursor: 'pointer'}} type="close"*/}
-                             {/*onClick={this.clearInput}/>*/}
-                       {/*: <Icon style={{cursor: 'pointer'}} type="search"/>*/}
-                   {/*}*/}
-                   {/*onPressEnter={this.handleSubmit}*/}
-                   {/*onChange={this.onChangeUserName}*/}
-                   {/*style={{width: '200px', 'margin-right': '10px'}}*/}
-            {/*/>*/}
             <Button type="primary" size="large" className="margin-right" onClick={this.handleSubmit}>Search</Button>
           </div>
         </Col>
