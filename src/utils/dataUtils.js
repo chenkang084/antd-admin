@@ -97,6 +97,10 @@ export const clearLocalStorage = () => {
   localStorage.clear()
 }
 
-export const isundefined = value => {
+export const isUndefined = value => {
   return typeof value === 'undefined'
+}
+
+export const isFunction = value => {
+  return typeof value === 'function'
 }
