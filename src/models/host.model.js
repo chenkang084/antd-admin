@@ -13,6 +13,10 @@ export default {
     modalVisible: false,
     batchModalVisible: false,
     createModalVisible: false,
+
+  },
+  subscriptions: {
+    ...model.subscriptions,
   },
 
   effects: {

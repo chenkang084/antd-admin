@@ -41,8 +41,8 @@ class Filter extends React.Component {
     this.handleSubmit();
   }
 
-  componentWillUpdate(){
-    if (this.refresh !== this.props.refresh){
+  componentWillUpdate() {
+    if (this.refresh !== this.props.refresh) {
       this.clearInput();
       this.refresh = this.props.refresh;
     }

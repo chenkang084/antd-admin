@@ -26,25 +26,33 @@ class DataTable extends React.Component {
     this.getTableData()
   }
 
+  componentDidUpdate() {
+    this.getTableData()
+  }
+
   getTableData = () => {
+
     const {fetchData} = this.props
-    this.setState({loading: true})
-    fetch(fetchData)
-      .then((result) => {
-        this.setState({
-          dataSource: result.data.items,
-          dataSourceBack: lodash.cloneDeep(result.data.items),
-          loading: false,
+
+    if (fetchData.url && this.state.loading && this.state.dataSourceBack.length === 0) {
+      // this.setState({loading: true})
+      fetch(fetchData)
+        .then((result) => {
+          this.setState({
+            dataSource: result.data.items,
+            dataSourceBack: lodash.cloneDeep(result.data.items),
+            loading: false,
+          })
         })
-      })
-      .catch((error) => {
-        this.setState({loading: false})
-        notification.open({
-          message: this.props.errorMsg,
-          duration: 0,
-          type: 'error',
+        .catch((error) => {
+          this.setState({loading: false})
+          notification.open({
+            message: this.props.errorMsg,
+            duration: 0,
+            type: 'error',
+          })
         })
-      })
+    }
   };
 
   handleTableChange = (pagination, filters, sorter) => {
@@ -57,7 +65,6 @@ class DataTable extends React.Component {
       setSessionStorage('pagination', {[window.location.pathname]: pagination.current})
     })
   };
-
 
 
   checkRefresh = () => {
