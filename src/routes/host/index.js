@@ -59,7 +59,7 @@ class HostPage extends React.Component {
 
   init = () => {
     this.modalProps = {
-      visible: this.props.modelProps.modalVisible,
+      visible: this.props.modalProps.modalVisible,
       maskClosable: true,
       title: "test",
       wrapClassName: "vertical-center-modal",
@@ -146,7 +146,8 @@ class HostPage extends React.Component {
           render: (text, record) => {
             return (
               <span>
-                <Button type="danger" icon="delete" onClick={this.tableDataProps.showDeleteConfirm}>delete</Button>
+                <Button type="danger" icon="delete"
+                        onClick={e => this.tableDataProps.showDeleteConfirm(record, e)}>delete</Button>
                 <DropOption
                   onMenuClick={e => this.handleMenuClick(record, e)}
                   menuOptions={[
@@ -160,21 +161,36 @@ class HostPage extends React.Component {
         }
       ],
       fetchData: {
-        url: this.props.modelProps.defaultCluster ? `ceph/clusters/${this.props.modelProps.defaultCluster.id}/servers/` : '',
+        url: this.props.modalProps.defaultCluster ? `ceph/clusters/${this.props.modalProps.defaultCluster.id}/servers/` : '',
         params: null,
         api: 'v2'
       },
-      // clusterList: this.props.modelProps.clusterList,
-      showDeleteConfirm() {
+      showDeleteConfirm: (record, e) => {
+        console.log(this)
         confirm({
           title: 'Are you sure delete this host?',
           // content: 'Some descriptions',
           okText: 'Yes',
           okType: 'danger',
           cancelText: 'No',
-          onOk() {
-            console.log('OK');
-
+          onOk: () => {
+            // console.log('OK');
+            console.log(record);
+            console.log(this);
+            console.log(this.props.modalProps.defaultCluster.id);
+            fetchAndNotification({
+              url: `ceph/clusters/${this.props.modalProps.defaultCluster.id}/servers/${record.id}`,
+              method: 'delete',
+              api: 'v2',
+              notifications: {
+                title: "Delete Host",
+                success: `删除主机 ${record.hostname} 操作成功！`,
+                error: `删除主机 ${record.hostname} 操作失败！`
+              }
+            })
+              .then(() => {
+                this.refresh();
+              })
           },
           onCancel() {
             console.log('Cancel');
@@ -182,7 +198,7 @@ class HostPage extends React.Component {
         });
       },
       errorMsg: "get host table error",
-      refresh: this.props.modelProps.refresh,
+      refresh: this.props.modalProps.refresh,
       handleSelectItems: (selectedRowKeys, selectedItems) => {
         this.props.dispatch({
           type: "host/updateSelectItems",
@@ -195,18 +211,18 @@ class HostPage extends React.Component {
     };
 
     this.batchModalProps = {
-      visible: this.props.modelProps.batchModalVisible,
+      visible: this.props.modalProps.batchModalVisible,
       maskClosable: true,
       title: "Batch Action Modal",
       wrapClassName: "vertical-center-modal",
-      selectedItems: this.props.modelProps.selectedItems,
+      selectedItems: this.props.modalProps.selectedItems,
       fetchData: {
         url: "host",
         method: "delete"
       },
       onOk: data => {
         this.batchModalProps.onCancel();
-        this.props.modelProps.selectedItems.forEach(item => {
+        this.props.modalProps.selectedItems.forEach(item => {
           fetchAndNotification({
             url: "host",
             method: "delete",
@@ -231,18 +247,18 @@ class HostPage extends React.Component {
     };
 
     this.createModalProps = {
-      visible: this.props.modelProps.createModalVisible,
+      visible: this.props.modalProps.createModalVisible,
       maskClosable: true,
       title: "Batch Action Modal",
       wrapClassName: "vertical-center-modal",
-      selectedItems: this.props.modelProps.selectedItems,
+      selectedItems: this.props.modalProps.selectedItems,
       fetchData: {
         url: "host",
         method: "delete"
       },
       onOk: data => {
         this.batchModalProps.onCancel();
-        this.props.modelProps.selectedItems.forEach(item => {
+        this.props.modalProps.selectedItems.forEach(item => {
           fetchAndNotification({
             url: "host",
             method: "delete",
@@ -267,14 +283,14 @@ class HostPage extends React.Component {
     };
 
     this.clusterListProps = {
-      clusterList: this.props.modelProps.clusterList,
-      defaultCluster: this.props.modelProps.defaultCluster,
+      clusterList: this.props.modalProps.clusterList,
+      defaultCluster: this.props.modalProps.defaultCluster,
       changeCluster: cluster => {
         console.log(cluster)
         let {dispatch} = this.props;
         dispatch({
           type: "host/updateDefaultCluster",
-          cluster:cluster[0]
+          cluster: cluster[0]
         });
         this.refresh();
       }
@@ -300,7 +316,7 @@ class HostPage extends React.Component {
                 <Button
                   type="primary"
                   onClick={this.showModal.bind(this, "batchModalVisible")}
-                  disabled={this.props.modelProps.selectedItems.length === 0}
+                  disabled={this.props.modalProps.selectedItems.length === 0}
                 >
                   Batch Action
                 </Button>
@@ -311,8 +327,8 @@ class HostPage extends React.Component {
             </Card>
           </Col>
         </Row>
-        {this.props.modelProps.modalVisible && <Modal {...this.modalProps} />}
-        {this.props.modelProps.batchModalVisible &&
+        {this.props.modalProps.modalVisible && <Modal {...this.modalProps} />}
+        {this.props.modalProps.batchModalVisible &&
         <BatchModal {...this.batchModalProps} />}
       </div>
     );
@@ -321,7 +337,7 @@ class HostPage extends React.Component {
 
 function mapStateToProps({host}) {
   return {
-    modelProps: host
+    modalProps: host
   };
 }
 
@@ -330,7 +346,7 @@ HostPage.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
-  modelProps: PropTypes.object
+  modalProps: PropTypes.object
 };
 
 export default connect(mapStateToProps)(HostPage);

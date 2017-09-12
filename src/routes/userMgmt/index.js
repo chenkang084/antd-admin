@@ -343,7 +343,7 @@ class UserMgmt extends React.Component {
         params: null
       },
       // errorMsg: "get user table error",
-      refresh: this.props.modelProps.refresh,// basic model refresh count
+      refresh: this.props.modalProps.refresh,// basic model refresh count
       handleSelectItems: (selectedRowKeys, selectedItems) => {
         this.props.dispatch({
           type: "userMgmt/updateSelectItems",
@@ -424,7 +424,7 @@ class UserMgmt extends React.Component {
 
 UserMgmt.propTypes = {
   loading: PropTypes.object,
-  modelProps: PropTypes.object
+  modalProps: PropTypes.object
 };
 
-export default connect(({userMgmt, loading}) => ({modelProps: userMgmt, loading}))(UserMgmt)
+export default connect(({userMgmt, loading}) => ({modalProps: userMgmt, loading}))(UserMgmt)
