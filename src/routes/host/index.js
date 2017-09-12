@@ -5,12 +5,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "dva";
 import DataTable from "../../components/BasicTable/DataTable";
-import {Modal, Row, Col, Card, Button} from "antd";
+import {Modal, Row, Col, Card, Button, Menu, Dropdown, Icon} from "antd";
 import {Link} from "dva/router";
 import DropOption from "../../components/DropOption/DropOption";
 import BatchModal from "../../components/modals/BatchModal";
 import {fetchAndNotification} from "../../services/restfulService";
 import {ActionCollections} from "../../components/host/ActionCollections";
+import {ClusterList} from "../../components/clusterList/ClusterList";
 
 const confirm = Modal.confirm;
 
@@ -264,6 +265,20 @@ class HostPage extends React.Component {
         });
       }
     };
+
+    this.clusterListProps = {
+      clusterList: this.props.modelProps.clusterList,
+      defaultCluster: this.props.modelProps.defaultCluster,
+      changeCluster: cluster => {
+        console.log(cluster)
+        let {dispatch} = this.props;
+        dispatch({
+          type: "host/updateDefaultCluster",
+          cluster:cluster[0]
+        });
+        this.refresh();
+      }
+    }
   };
 
   //define common props of actions btn
@@ -278,7 +293,8 @@ class HostPage extends React.Component {
       <div className="content-inner">
         <Row gutter={32}>
           <Col lg={24} md={24}>
-            <Card title="远程数据">
+            <Card title="主机列表">
+              <ClusterList {...this.clusterListProps}/>
               <div className="action-btn-container">
                 <Button type="primary" onClick={this.refresh} icon="reload"/>
                 <Button
