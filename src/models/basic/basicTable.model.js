@@ -32,10 +32,6 @@ export default {
       }
     },
 
-    // *updateDefaultCluster({cluster}, {put}){
-    //   yield put({type: 'setDefaultCluster', cluster})
-    //   // yield put({type: 'setDefaultCluster', cluster})
-    // }
 
   },
 
