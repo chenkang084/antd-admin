@@ -1,17 +1,14 @@
 /**
  * Created by chenkang1 on 2017/9/11.
  */
-import {Modal, Row, Col, Card, Button, Menu, Dropdown, Icon} from "antd";
+import {Button, Menu, Dropdown, Icon} from "antd";
 
 export const ClusterList = ({clusterList, defaultCluster, changeCluster}) => {
 
   function handleMenuClick(e) {
-    // message.info('Click on menu item.');
-    console.log('click', e);
-    const currentCluster = clusterList.filter(cluster => {
+    changeCluster(clusterList.filter(cluster => {
       return cluster.id + '' === e.key
-    })
-    changeCluster(currentCluster)
+    }))
   }
 
   const menu = (
