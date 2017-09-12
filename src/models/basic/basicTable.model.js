@@ -14,6 +14,12 @@ export default {
     defaultCluster: null
   },
 
+  subscriptions: {
+    setup ({dispatch}) {
+      dispatch({type: 'queryClusterList'})
+    },
+  },
+
   effects: {
     *queryClusterList({}, {call, put}){
       const clusters = yield fetchAndNotification({
@@ -24,15 +30,15 @@ export default {
       if (clusters && clusters.data && clusters.data.items) {
         yield put({type: 'updateClusters', clusters: clusters.data.items})
       }
-    }
-  },
-
-  subscriptions: {
-    setup ({dispatch}) {
-      dispatch({type: 'queryClusterList'})
     },
 
+    // *updateDefaultCluster({cluster}, {put}){
+    //   yield put({type: 'setDefaultCluster', cluster})
+    //   // yield put({type: 'setDefaultCluster', cluster})
+    // }
+
   },
+
 
   reducers: {
     showModal (state, {payload: {key}}) {
@@ -61,6 +67,12 @@ export default {
         ...state,
         clusterList: clusters,
         defaultCluster: clusters[0]
+      }
+    },
+    updateDefaultCluster(state, {cluster}){
+      return {
+        ...state,
+        defaultCluster: cluster
       }
     }
   },

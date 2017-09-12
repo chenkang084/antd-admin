@@ -34,8 +34,8 @@ class DataTable extends React.Component {
 
     const {fetchData} = this.props
 
-    if (fetchData.url && this.state.loading && this.state.dataSourceBack.length === 0) {
-      // this.setState({loading: true})
+    // if (fetchData.url && this.state.loading && this.state.dataSourceBack.length === 0) {
+    if (fetchData.url && this.state.loading ) {
       fetch(fetchData)
         .then((result) => {
           this.setState({
