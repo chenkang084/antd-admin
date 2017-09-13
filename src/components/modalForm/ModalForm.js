@@ -82,6 +82,11 @@ class ModalForm extends React.Component {
   render() {
     const {getFieldDecorator, getFieldsError, getFieldError, isFieldTouched} = this.props.form
 
+    const formItemLayout = {
+      labelCol: { span: 6 },
+      wrapperCol: { span: 14  },
+    };
+
     return (
       <span>
         {
@@ -102,7 +107,7 @@ class ModalForm extends React.Component {
           // onOk={this.onCreate}
         >
           <Spin tip="Loading..." spinning={this.props.spinning}>
-            <Form layout="vertical" onSubmit={this.handleSubmit}>
+            <Form layout="horizontal" onSubmit={this.handleSubmit}>
             {
               this.props.formItems && Object.keys(this.props.formItems).map((key) => {
                 const item = this.props.formItems[key];
@@ -110,8 +115,10 @@ class ModalForm extends React.Component {
                 const element = item.render();
                 return (
                   <FormItem
+                    {...formItemLayout}
                     validateStatus={error ? 'error' : ''}
                     help={error || ''}
+                    label={item.name}
                   >
                     {getFieldDecorator(item.key, {
                       initialValue: item.initialValue,
