@@ -115,3 +115,5 @@ export const isUndefined = value => {
 export const isFunction = value => {
   return typeof value === 'function'
 }
+
+

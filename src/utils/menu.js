@@ -156,7 +156,7 @@ module.exports = [
     bpid: 1,
     name: 'host',
     router: '/host',
-    icon: 'fa fa-address-book',
+    icon: 'fa fa-database',
     externalIcon: true
   },
   {

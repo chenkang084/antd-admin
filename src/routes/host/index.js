@@ -66,7 +66,6 @@ class HostPage extends React.Component {
         <Row gutter={32}>
           <Col lg={24} md={24}>
             <Card title="主机列表">
-              <i className="fa fa-address-book" aria-hidden="true"/>
               <ClusterList {...this.clusterListProps}/>
               <div className="action-btn-container">
                 <Button type="primary" onClick={this.refresh} icon="reload"/>
