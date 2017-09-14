@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Menu, Icon } from 'antd'
-import { Link } from 'dva/router'
-import { arrayToTree, queryArray } from '../../utils'
+import {Menu, Icon} from 'antd'
+import {Link} from 'dva/router'
+import {arrayToTree, queryArray} from '../../utils'
 import pathToRegexp from 'path-to-regexp'
 
-const Menus = ({ siderFold, darkTheme, location, handleClickNavMenu, navOpenKeys, changeOpenKeys, menu }) => {
+const Menus = ({siderFold, darkTheme, location, handleClickNavMenu, navOpenKeys, changeOpenKeys, menu}) => {
   // 生成树状
   const menuTree = arrayToTree(menu.filter(_ => _.mpid !== -1), 'id', 'mpid')
   const levelMap = {}
@@ -21,7 +21,7 @@ const Menus = ({ siderFold, darkTheme, location, handleClickNavMenu, navOpenKeys
           <Menu.SubMenu
             key={item.id}
             title={<span>
-              {item.icon && <Icon type={item.icon} />}
+              {item.icon && <Icon type={item.icon}/>}
               {(!siderFoldN || menuTree.indexOf(item) < 0) && item.name}
             </span>}
           >
@@ -32,7 +32,11 @@ const Menus = ({ siderFold, darkTheme, location, handleClickNavMenu, navOpenKeys
       return (
         <Menu.Item key={item.id}>
           <Link to={item.router}>
-            {item.icon && <Icon type={item.icon} />}
+            {
+              item.icon ?
+                item.externalIcon ? <i style={{'color':'#666','margin-right':'10px'}} className="fa fa-address-book" aria-hidden="true"/> : <Icon type={item.icon}/>
+                : null
+            }
             {(!siderFoldN || menuTree.indexOf(item) < 0) && item.name}
           </Link>
         </Menu.Item>
