@@ -18,9 +18,6 @@ class HostPage extends React.Component {
   // }
 
   componentWillMount() {
-
-
-
     this.setState({
       addHostModal: addHostModal.call(this)
     })
@@ -71,7 +68,7 @@ class HostPage extends React.Component {
             <Card title="主机列表">
               <ClusterList {...this.clusterListProps}/>
               <div className="action-btn-container">
-
+                <Button type="primary" onClick={this.refresh} icon="reload"/>
                 <ModalForm {...this.state.addHostModal}/>
               </div>
               <DataTable {...this.tableDataProps} />

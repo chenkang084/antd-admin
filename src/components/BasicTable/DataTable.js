@@ -15,6 +15,7 @@ class DataTable extends React.Component {
       current: getSessionStorage('pagination')[window.location.pathname],
       dataSourceBack: [],
       pageSize: 5,
+      keyword: null
     }
   }
 
@@ -27,10 +28,23 @@ class DataTable extends React.Component {
   }
 
   componentDidUpdate() {
-    const {fetchData} = this.props
+    const {fetchData} = this.props;
+
+    if (!!this.state.keyword) {
+      return;
+    }
 
     if (fetchData.url && this.state.loading) {
-      this.getTableData()
+      this.getTableData();
+      // if (this.state.dataSourceBack.length === 0) {
+      //   this.getTableData();
+      // } else {
+      //
+      //   if (!!this.state.keyword){
+      //     return;
+      //   }
+      //   this.getTableData();
+      // }
     }
 
 
@@ -39,9 +53,7 @@ class DataTable extends React.Component {
   getTableData = () => {
 
     const {fetchData} = this.props
-
     if (fetchData.url && this.state.loading) {
-      // this.setState({loading: true})
       fetch(fetchData)
         .then((result) => {
           this.setState({
@@ -116,7 +128,7 @@ class DataTable extends React.Component {
 
     this.filterProps = {
       onFilterChange: ({name: keyword}) => {
-        stateDelay.call(this).then(() => {
+        stateDelay.call(this, {keyword}).then(() => {
           let result = []
           let list = lodash.cloneDeep(this.state.dataSourceBack)
           if (keyword) {

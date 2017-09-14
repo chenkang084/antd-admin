@@ -66,14 +66,14 @@ class ModalForm extends React.Component {
             });
           }
         } else {
-            // need update, prev value is not equals current value ,so use current value
-            if (isUndefined(this.props.formItems[key].updateValueFlag) && this.prevValues[key] !== this.props.formItems[key].updateValue) {
-              // update prev value
-              this.prevValues[key] = this.props.formItems[key].updateValue;
-              this.props.form.setFieldsValue({
-                [key]: this.props.formItems[key].updateValue,
-              });
-            }
+          // need update, prev value is not equals current value ,so use current value
+          if (isUndefined(this.props.formItems[key].updateValueFlag) && this.prevValues[key] !== this.props.formItems[key].updateValue) {
+            // update prev value
+            this.prevValues[key] = this.props.formItems[key].updateValue;
+            this.props.form.setFieldsValue({
+              [key]: this.props.formItems[key].updateValue,
+            });
+          }
         }
       }
     }
@@ -83,8 +83,8 @@ class ModalForm extends React.Component {
     const {getFieldDecorator, getFieldsError, getFieldError, isFieldTouched} = this.props.form
 
     const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 14  },
+      labelCol: {span: 6},
+      wrapperCol: {span: 14},
     };
 
     return (
@@ -93,6 +93,7 @@ class ModalForm extends React.Component {
           this.props.btnTextShow ? <Button
             onClick={this.props.handleModalShow}
             type="primary"
+            disabled={this.props.disabled}
           >
             {this.props.btnText}
           </Button>
