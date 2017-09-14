@@ -4,7 +4,7 @@ import dva from 'dva'
 import createLoading from 'dva-loading'
 import {browserHistory} from 'dva/router'
 import {message} from 'antd'
-import {query} from "./services/app";
+import './style/index.less'
 
 // 1. Initialize
 const app = dva({
@@ -16,7 +16,7 @@ const app = dva({
     console.log(error.message);
     message.error(error.message)
   },
-})
+});
 
 // 2. Model
 app.model(require('./models/app'));
