@@ -29,11 +29,22 @@ export function sortJsonArr(jsonArr, sortName, sortType, addition, additionOrder
   }
 }
 
-export function stateDelay(millisecond = 100) {
-  this.setState({loading: true})
+export function stateDelay(options) {
+  const defaultSecond = 500;
+  // set default second
+  if (isUndefined(options)) {
+    options = {millisecond: defaultSecond};
+  }
+  // set default second
+  if (!isUndefined(options) && isUndefined(options.millisecond)) {
+    options.millisecond = defaultSecond;
+  }
+
+  let {millisecond, ...params} = options;
+  this.setState({loading: true, ...params});
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve()
+      resolve();
       this.setState({loading: false})
     }, millisecond)
   })
