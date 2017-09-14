@@ -117,23 +117,23 @@ class DataTable extends React.Component {
     };
 
     this.filterProps = {
-      onFilterChange: ({name: keyword}) => {
-        stateDelay.call(this, {keyword}).then(() => {
-          let result = []
-          let list = lodash.cloneDeep(this.state.dataSourceBack)
-          if (keyword) {
-            if (list && list.length > 0) {
-              result = list.filter((row) => {
-                return Object.values(row).filter(item => {
-                    return item && String(JSON.stringify(item)).toLowerCase().indexOf(keyword.toLowerCase()) > -1
-                  }).length > 0
-              })
-            }
-          } else {
-            result = this.state.dataSourceBack
+      onFilterChange: async ({name: keyword}) => {
+        let result = [];
+        if (!keyword) {
+          result = this.state.dataSourceBack
+        } else {
+          await stateDelay.call(this, {keyword});
+          let list = lodash.cloneDeep(this.state.dataSourceBack);
+          if (list && list.length > 0) {
+            result = list.filter((row) => {
+              return Object.values(row).filter(item => {
+                  return item && String(JSON.stringify(item)).toLowerCase().indexOf(keyword.toLowerCase()) > -1
+                }).length > 0
+            })
           }
-          this.setState({dataSource: result})
-        })
+        }
+
+        this.setState({dataSource: result})
       },
       refresh: this.props.refresh
     };

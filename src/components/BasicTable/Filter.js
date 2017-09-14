@@ -37,9 +37,9 @@ class Filter extends React.Component {
     this.props.form.resetFields();
     this.setState({
       input: ''
-    })
+    });
     this.handleSubmit();
-  }
+  };
 
   componentWillUpdate() {
     if (this.refresh !== this.props.refresh) {
