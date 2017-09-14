@@ -112,7 +112,7 @@ export default function addHostModal() {
       ],
       render: () => {
         return (
-          <Input type="text" prefix={<Icon type="user" style={{fontSize: 13}}/>}
+          <Input type="text"
                  placeholder="外网IP"/>)
 
       }
@@ -137,7 +137,7 @@ export default function addHostModal() {
       ],
       render: () => {
         return (
-          <Input type="text" prefix={<Icon type="user" style={{fontSize: 13}}/>}
+          <Input type="text"
                  placeholder="外网IP"/>)
 
       }

@@ -30,24 +30,14 @@ class DataTable extends React.Component {
   componentDidUpdate() {
     const {fetchData} = this.props;
 
+    // keyword is not null, don't send ajax request
     if (!!this.state.keyword) {
       return;
     }
 
     if (fetchData.url && this.state.loading) {
       this.getTableData();
-      // if (this.state.dataSourceBack.length === 0) {
-      //   this.getTableData();
-      // } else {
-      //
-      //   if (!!this.state.keyword){
-      //     return;
-      //   }
-      //   this.getTableData();
-      // }
     }
-
-
   }
 
   getTableData = () => {
