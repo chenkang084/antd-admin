@@ -31,7 +31,6 @@ class HostPage extends React.Component {
     this.setState({
       addHostModal: addHostModal.call(this)
     });
-    // console.log(111)
   }
 
   componentDidMount() {}
