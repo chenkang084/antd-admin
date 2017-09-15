@@ -160,7 +160,7 @@ export default function addHostModal() {
 
   return {
     id: '',
-    cluster: this.props.modalProps.defaultCluster,
+    cluster: this.props.model.defaultCluster,
     refresh: this.refresh,
     btnText: 'Add Host',
     btnTextShow: true,

@@ -3,8 +3,8 @@
  */
 export default function clusterListProps() {
   return {
-    clusterList: this.props.modalProps.clusterList,
-    defaultCluster: this.props.modalProps.defaultCluster,
+    clusterList: this.props.model.clusterList,
+    defaultCluster: this.props.model.defaultCluster,
     changeCluster: cluster => {
       let {dispatch} = this.props;
       dispatch({
