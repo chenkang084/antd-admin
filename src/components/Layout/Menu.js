@@ -34,7 +34,9 @@ const Menus = ({siderFold, darkTheme, location, handleClickNavMenu, navOpenKeys,
           <Link to={item.router}>
             {
               item.icon ?
-                item.externalIcon ? <i style={{'color':'#666','margin-right':'10px'}} className={item.icon} aria-hidden="true"/> : <Icon type={item.icon}/>
+                item.externalIcon ?
+                  <i style={{'color': '#666', 'margin-right': !siderFoldN ? '8px' : '0px', 'min-width': '14px'}}
+                     className={item.icon} aria-hidden="true"/> : <Icon type={item.icon}/>
                 : null
             }
             {(!siderFoldN || menuTree.indexOf(item) < 0) && item.name}

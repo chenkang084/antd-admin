@@ -3,11 +3,21 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "dva";
+import { connect } from "dva";
 import DataTable from "../../components/BasicTable/DataTable";
-import {Modal, Row, Col, Card, Button, Input, Select, Icon, Switch} from "antd";
+import {
+  Modal,
+  Row,
+  Col,
+  Card,
+  Button,
+  Input,
+  Select,
+  Icon,
+  Switch
+} from "antd";
 import ModalForm from "../../components/modalForm/ModalForm";
-import {ClusterList} from "../../components/clusterList/ClusterList";
+import { ClusterList } from "../../components/clusterList/ClusterList";
 import addHostModal from "./addHostModal";
 import tableDataProps from "./tableProps";
 import clusterListProps from "./clusterListProps";
@@ -20,17 +30,15 @@ class HostPage extends React.Component {
   componentWillMount() {
     this.setState({
       addHostModal: addHostModal.call(this)
-    })
+    });
+    // console.log(111)
   }
 
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
 
   refresh = () => {
-    this.props.dispatch({type: "host/refresh"});
+    this.props.dispatch({ type: "host/refresh" });
   };
-
 
   init = () => {
     this.modalProps = {
@@ -42,7 +50,7 @@ class HostPage extends React.Component {
         console.log(data);
       },
       onCancel: () => {
-        let {dispatch} = this.props;
+        let { dispatch } = this.props;
         dispatch({
           type: "host/hideModal",
           payload: {
@@ -57,7 +65,6 @@ class HostPage extends React.Component {
     this.clusterListProps = clusterListProps.call(this);
   };
 
-
   render() {
     this.init();
 
@@ -66,10 +73,10 @@ class HostPage extends React.Component {
         <Row gutter={32}>
           <Col lg={24} md={24}>
             <Card title="主机列表">
-              <ClusterList {...this.clusterListProps}/>
+              <ClusterList {...this.clusterListProps} />
               <div className="action-btn-container">
-                <Button type="primary" onClick={this.refresh} icon="reload"/>
-                <ModalForm {...this.state.addHostModal}/>
+                <Button type="primary" onClick={this.refresh} icon="reload" />
+                <ModalForm {...this.state.addHostModal} />
               </div>
               <DataTable {...this.tableDataProps} />
             </Card>
@@ -80,7 +87,7 @@ class HostPage extends React.Component {
   }
 }
 
-function mapStateToProps({host}) {
+function mapStateToProps({ host }) {
   return {
     modalProps: host
   };
