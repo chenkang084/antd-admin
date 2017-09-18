@@ -26,7 +26,7 @@ class HostPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addHostModalVisible: false
+      addHostModal: addHostModal.call(this),
     };
   }
 
@@ -69,7 +69,7 @@ class HostPage extends React.Component {
 
     this.clusterListProps = clusterListProps.call(this);
 
-    this.addHostModal = addHostModal.call(this);
+    // this.addHostModal = addHostModal.call(this);
   };
 
   render() {
@@ -83,7 +83,7 @@ class HostPage extends React.Component {
               <ClusterList {...this.clusterListProps} />
               <div className="action-btn-container">
                 <Button type="primary" onClick={this.refresh} icon="reload" />
-                <ModalForm {...this.addHostModal} />
+                <ModalForm {...this.state.addHostModal} />
               </div>
               <DataTable {...this.tableProps} />
             </Card>
