@@ -41,9 +41,10 @@ class DataTable extends React.Component {
     };
 
     this.tableProps = {
-      // ...this.state,
       columns: this.props.columns
     };
+
+    this.initTable = false;
   }
 
   componentDidMount() {
@@ -55,16 +56,24 @@ class DataTable extends React.Component {
   componentDidUpdate() {}
 
   componentWillReceiveProps(nextProps) {
+    // console.log(nextProps);
     if (nextProps.defaultCluster) {
-      this.getTableData(nextProps);
+      if (!this.checkRefresh(nextProps)) {
+        // initTable equals false indicates the first time query data
+        if (!this.initTable) {
+          this.getTableData(nextProps);
+          this.initTable = true;
+        }
+      }
     }
-
-    // this.checkRefresh();
   }
 
   getTableData = nextProps => {
     const { fetchData } = nextProps;
     if (fetchData.url) {
+      this.setState({
+        loading: true
+      });
       fetch(fetchData)
         .then(result => {
           this.setState({
@@ -100,17 +109,20 @@ class DataTable extends React.Component {
     });
   };
 
-  checkRefresh = () => {
+  checkRefresh = nextProps => {
     let refresh = this.state.refresh;
     if (!refresh) {
       // save basic model refresh count
       this.setState({ refresh: this.props.refresh });
+      return false; // no refresh
     } else {
-      if (this.props.refresh !== refresh) {
+      if (nextProps.refresh !== refresh) {
         // update state refresh count so that rerender component
-        this.setState({ refresh: this.props.refresh });
-        this.getTableData();
+        this.setState({ refresh: nextProps.refresh });
+        this.getTableData(nextProps);
+        return true;
       }
+      return false;
     }
   };
 
@@ -129,7 +141,7 @@ class DataTable extends React.Component {
     this.filterProps = {
       onFilterChange: async ({ name: keyword }) => {
         let result = [];
-        await stateDelay.call(this, { keyword });
+        await stateDelay.call(this, { keyword, millisecond: 400 });
         if (!keyword) {
           result = this.state.dataSourceBack;
         } else {

@@ -79,13 +79,13 @@ export default function tableDataProps() {
               <Button
                 type="danger"
                 icon="delete"
-                onClick={e => this.tableDataProps.showDeleteConfirm(record, e)}
+                onClick={e => this.tableProps.showDeleteConfirm(record, e)}
               >
                 delete
               </Button>
               <DropOption
                 onMenuClick={e =>
-                  this.tableDataProps.handleMenuClick(record, e)}
+                  this.tableProps.handleMenuClick(record, e)}
                 menuOptions={[
                   { key: "1", name: "Update" },
                   { key: "2", name: "Delete" }
@@ -106,10 +106,7 @@ export default function tableDataProps() {
       params: null,
       api: "v2"
     },
-    // dataSource: this.props.model.tableData,
-    // loading: this.props.model.tableLoading,
     showDeleteConfirm: (record, e) => {
-      // console.log(this)
       confirm({
         title: "Are you sure delete this host?",
         // content: 'Some descriptions',
