@@ -4,4 +4,5 @@ yarn.lock
 npm-debug.log
 .idea/*
 .vscode
+.history
 src/config/config.local.js

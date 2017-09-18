@@ -2,7 +2,7 @@
  * Created by chenkang1 on 2017/7/2.
  * the model supplies some basic and common state,reducers,effects
  */
-import {fetchAndNotification} from "../../services/restfulService";
+import { fetchAndNotification } from "../../services/restfulService";
 export default {
   state: {
     // the selected items of table
@@ -15,61 +15,62 @@ export default {
   },
 
   subscriptions: {
-    setup ({dispatch}) {
-      dispatch({type: 'queryClusterList'})
-    },
+    setup({ dispatch }) {
+      dispatch({ type: "queryClusterList" });
+    }
   },
 
   effects: {
-    *queryClusterList({}, {call, put}){
+    *queryClusterList({}, { call, put }) {
       const clusters = yield fetchAndNotification({
-        url: 'ceph/clusters/',
-        api: 'v2'
-      })
+        url: "ceph/clusters/",
+        api: "v2"
+      });
 
       if (clusters && clusters.data && clusters.data.items) {
-        yield put({type: 'updateClusters', clusters: clusters.data.items})
+        yield put({ type: "updateClusters", clusters: clusters.data.items });
+        // yield put({
+        //   type: "queryPageData",
+        //   defaultCluster: clusters.data.items[0]
+        // });
       }
-    },
-
-
+    }
   },
 
-
   reducers: {
-    showModal (state, {payload: {key}}) {
-      return {...state, [key]: true}
+    showModal(state, { payload: { key } }) {
+      return { ...state, [key]: true };
     },
-    hideModal (state, {payload: {key}}) {
-      return {...state, [key]: false}
+    hideModal(state, { payload: { key } }) {
+      return { ...state, [key]: false };
     },
     //update selected items of the table
-    updateSelectItems (state, {payload: {selectedRowKeys, selectedItems}}) {
+    updateSelectItems(state, { payload: { selectedRowKeys, selectedItems } }) {
       return {
         ...state,
         selectedItems,
         selectedRowKeys
-      }
+      };
     },
     //refresh the table data
-    refresh (state) {
+    refresh(state) {
       return {
         ...state,
-        refresh: ++state.refresh,
-      }
+        refresh: ++state.refresh
+      };
     },
-    updateClusters(state, {clusters}){
+    updateClusters(state, { clusters }) {
       return {
         ...state,
         clusterList: clusters,
         defaultCluster: clusters[0]
-      }
+      };
     },
-    updateDefaultCluster(state, {cluster}){
+    updateDefaultCluster(state, { cluster }) {
       return {
         ...state,
         defaultCluster: cluster
-      }
+      };
     }
-  },
-}
+  }
+};

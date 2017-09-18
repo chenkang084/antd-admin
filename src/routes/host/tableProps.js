@@ -1,9 +1,9 @@
 /**
  * Created by chenkang1 on 2017/9/13.
  */
-import {Button, Modal} from "antd";
+import { Button, Modal } from "antd";
 import DropOption from "../../components/DropOption/DropOption";
-import {fetchAndNotification} from "../../services/restfulService";
+import { fetchAndNotification } from "../../services/restfulService";
 export default function tableDataProps() {
   const confirm = Modal.confirm;
 
@@ -12,14 +12,14 @@ export default function tableDataProps() {
       {
         title: "名称",
         dataIndex: "hostname",
-        key: "hostname",
+        key: "hostname"
         // width: 64,
         // render: text => <img alt={"avatar"} width={24} src={text}/>
       },
       {
         title: "机架",
         dataIndex: "rack_name",
-        key: "rack_name",
+        key: "rack_name"
         // width: 120,
         // render: (text, record) =>
         //   <Link to={`host/${record.id}`}>
@@ -43,7 +43,7 @@ export default function tableDataProps() {
       {
         title: "监视器角色",
         dataIndex: "mons[0].role",
-        key: "mons[0].role",
+        key: "mons[0].role"
         // render: mons =>
         //   <span>
         //     {mons.role}
@@ -76,38 +76,52 @@ export default function tableDataProps() {
         render: (text, record) => {
           return (
             <span>
-                <Button type="danger" icon="delete"
-                        onClick={e => this.tableDataProps.showDeleteConfirm(record, e)}>delete</Button>
-                <DropOption
-                  onMenuClick={e => this.tableDataProps.handleMenuClick(record, e)}
-                  menuOptions={[
-                    {key: "1", name: "Update"},
-                    {key: "2", name: "Delete"}
-                  ]}
-                />
-              </span>
+              <Button
+                type="danger"
+                icon="delete"
+                onClick={e => this.tableDataProps.showDeleteConfirm(record, e)}
+              >
+                delete
+              </Button>
+              <DropOption
+                onMenuClick={e =>
+                  this.tableDataProps.handleMenuClick(record, e)}
+                menuOptions={[
+                  { key: "1", name: "Update" },
+                  { key: "2", name: "Delete" }
+                ]}
+              />
+            </span>
           );
         }
       }
     ],
+    errorMsg: "get host table error",
+    refresh: this.props.model.refresh,
+    defaultCluster: this.props.model.defaultCluster,
     fetchData: {
-      url: this.props.modalProps.defaultCluster ? `ceph/clusters/${this.props.modalProps.defaultCluster.id}/servers/` : '',
+      url: this.props.model.defaultCluster
+        ? `ceph/clusters/${this.props.model.defaultCluster.id}/servers/`
+        : "",
       params: null,
-      api: 'v2'
+      api: "v2"
     },
+    // dataSource: this.props.model.tableData,
+    // loading: this.props.model.tableLoading,
     showDeleteConfirm: (record, e) => {
       // console.log(this)
       confirm({
-        title: 'Are you sure delete this host?',
+        title: "Are you sure delete this host?",
         // content: 'Some descriptions',
-        okText: 'Yes',
-        okType: 'danger',
-        cancelText: 'No',
+        okText: "Yes",
+        okType: "danger",
+        cancelText: "No",
         onOk: async () => {
           await fetchAndNotification({
-            url: `ceph/clusters/${this.props.modalProps.defaultCluster.id}/servers/${record.id}`,
-            method: 'delete',
-            api: 'v2',
+            url: `ceph/clusters/${this.props.model.defaultCluster
+              .id}/servers/${record.id}`,
+            method: "delete",
+            api: "v2",
             notifications: {
               title: "Delete Host",
               success: `删除主机 ${record.hostname} 操作成功！`,
@@ -118,12 +132,10 @@ export default function tableDataProps() {
           this.refresh();
         },
         onCancel() {
-          console.log('Cancel');
-        },
+          console.log("Cancel");
+        }
       });
     },
-    errorMsg: "get host table error",
-    refresh: this.props.modalProps.refresh,
     handleSelectItems: (selectedRowKeys, selectedItems) => {
       this.props.dispatch({
         type: "host/updateSelectItems",
@@ -135,7 +147,7 @@ export default function tableDataProps() {
     },
     handleMenuClick: (record, e) => {
       if (e.key === "1") {
-        let {dispatch} = this.props;
+        let { dispatch } = this.props;
         dispatch({
           type: "host/showModal",
           payload: {
@@ -153,4 +165,3 @@ export default function tableDataProps() {
     }
   };
 }
-

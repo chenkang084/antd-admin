@@ -3,38 +3,52 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "dva";
+import { connect } from "dva";
 import DataTable from "../../components/BasicTable/DataTable";
-import {Modal, Row, Col, Card, Button, Input, Select, Icon, Switch} from "antd";
+import {
+  Modal,
+  Row,
+  Col,
+  Card,
+  Button,
+  Input,
+  Select,
+  Icon,
+  Switch
+} from "antd";
 import ModalForm from "../../components/modalForm/ModalForm";
-import {ClusterList} from "../../components/clusterList/ClusterList";
+import { ClusterList } from "../../components/clusterList/ClusterList";
 import addHostModal from "./addHostModal";
-import tableDataProps from "./tableProps";
+import tableProps from "./tableProps";
 import clusterListProps from "./clusterListProps";
 
 class HostPage extends React.Component {
-  // constructor (props) {
-  //   super(props)
-  // }
-
-  componentWillMount() {
-    this.setState({
-      addHostModal: addHostModal.call(this)
-    })
+  constructor(props) {
+    super(props);
+    this.state = {
+      // addHostModal: addHostModal.call(this),
+      keyword: ""
+    };
   }
 
-  componentDidMount() {
+  componentWillMount() {}
 
+  componentDidMount() {}
+
+  componentDidUpdate() {
+    console.log("componentDidUpdate");
   }
 
   refresh = () => {
-    this.props.dispatch({type: "host/refresh"});
+    this.props.dispatch({
+      type: "host/refresh",
+      // defaultCluster: this.props.model.defaultCluster
+    });
   };
-
 
   init = () => {
     this.modalProps = {
-      visible: this.props.modalProps.modalVisible,
+      visible: this.props.model.modalVisible,
       maskClosable: true,
       title: "test",
       wrapClassName: "vertical-center-modal",
@@ -42,7 +56,7 @@ class HostPage extends React.Component {
         console.log(data);
       },
       onCancel: () => {
-        let {dispatch} = this.props;
+        let { dispatch } = this.props;
         dispatch({
           type: "host/hideModal",
           payload: {
@@ -52,11 +66,10 @@ class HostPage extends React.Component {
       }
     };
 
-    this.tableDataProps = tableDataProps.call(this);
+    this.tableProps = tableProps.call(this);
 
     this.clusterListProps = clusterListProps.call(this);
   };
-
 
   render() {
     this.init();
@@ -66,12 +79,12 @@ class HostPage extends React.Component {
         <Row gutter={32}>
           <Col lg={24} md={24}>
             <Card title="主机列表">
-              <ClusterList {...this.clusterListProps}/>
+              <ClusterList {...this.clusterListProps} />
               <div className="action-btn-container">
-                <Button type="primary" onClick={this.refresh} icon="reload"/>
-                <ModalForm {...this.state.addHostModal}/>
+                <Button type="primary" onClick={this.refresh} icon="reload" />
+                {/* <ModalForm {...this.state.addHostModal} /> */}
               </div>
-              <DataTable {...this.tableDataProps} />
+              <DataTable {...this.tableProps} />
             </Card>
           </Col>
         </Row>
@@ -80,9 +93,9 @@ class HostPage extends React.Component {
   }
 }
 
-function mapStateToProps({host}) {
+function mapStateToProps({ host }) {
   return {
-    modalProps: host
+    model: host
   };
 }
 
@@ -91,7 +104,7 @@ HostPage.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
-  modalProps: PropTypes.object
+  model: PropTypes.object
 };
 
 export default connect(mapStateToProps)(HostPage);
