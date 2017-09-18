@@ -3,139 +3,156 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "dva";
-import {Select, Row, Col, Card, Button, Input, Icon} from "antd";
+import { connect } from "dva";
+import { Select, Row, Col, Card, Button, Input, Icon } from "antd";
 import DataTable from "../../components/BasicTable/DataTable";
 import DropOption from "../../components/DropOption/DropOption";
-import {fetchAndNotification} from "../../services/restfulService";
+import { fetchAndNotification } from "../../services/restfulService";
 import ModalForm from "../../components/modalForm/ModalForm";
 import LifeCycle from "./lifeCycle";
 
 class UserMgmt extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       addUserModal: null,
-      updateUserModal: null
+      updateUserModal: null,
+      lifeCycle: 1
     };
   }
 
   componentWillMount() {
-
     const formItems = {
       user_name: {
-        name: 'user_name',
-        key: 'user_name',
+        name: "user_name",
+        key: "user_name",
         rules: [
           {
-            required: true, message: 'Please input your username!'
-          },
+            required: true,
+            message: "Please input your username!"
+          }
         ],
-        render: function () {
-          return (<Input prefix={<Icon type="user" style={{fontSize: 13}}/>} placeholder="Username"/>)
+        render: function() {
+          return (
+            <Input
+              prefix={<Icon type="user" style={{ fontSize: 13 }} />}
+              placeholder="Username"
+            />
+          );
         }
       },
       user_pwd: {
-        name: 'user_pwd',
-        key: 'user_pwd',
+        name: "user_pwd",
+        key: "user_pwd",
         updateValueFlag: false,
         rules: [
-          {required: true, message: 'Please input your password!'},
+          { required: true, message: "Please input your password!" },
           {
             validator: function checkConfirmPassword(rule, value, callback) {
               // console.log(this)
               const form = this.props.form;
-              const pwd = form.getFieldValue('user_pwd_twice');
+              const pwd = form.getFieldValue("user_pwd_twice");
               if (value && pwd && value !== pwd) {
-                callback('Two passwords that you enter is inconsistent!');
+                callback("Two passwords that you enter is inconsistent!");
               } else {
                 callback();
               }
             }
           }
         ],
-        render: function () {
+        render: function() {
           return (
-            <Input type="password" prefix={<Icon type="lock" style={{fontSize: 13}}/>}
-                   placeholder="new password"/>)
+            <Input
+              type="password"
+              prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
+              placeholder="new password"
+            />
+          );
         }
       },
       user_pwd_twice: {
-        name: 'user_pwd_twice',
-        key: 'user_pwd_twice',
+        name: "user_pwd_twice",
+        key: "user_pwd_twice",
         updateValueFlag: false,
         rules: [
-          {required: true, message: 'Please input your password!'},
+          { required: true, message: "Please input your password!" },
           {
             validator: function checkConfirmPassword(rule, value, callback) {
               const form = this.props.form;
-              const pwd = form.getFieldValue('user_pwd');
+              const pwd = form.getFieldValue("user_pwd");
               if (value && pwd && value !== pwd) {
-                callback('Two passwords that you enter is inconsistent!');
+                callback("Two passwords that you enter is inconsistent!");
               } else {
                 callback();
               }
             }
           }
         ],
-        render: function () {
-          return (<Input type="password" prefix={<Icon type="lock" style={{fontSize: 13}}/>}
-                         placeholder="confirm password"/>)
+        render: function() {
+          return (
+            <Input
+              type="password"
+              prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
+              placeholder="confirm password"
+            />
+          );
         }
       },
       type: {
-        "name": "type",
-        "key": "type",
-        rules: [{required: true, message: 'Please select your gender!'}],
-        render: function () {
+        name: "type",
+        key: "type",
+        rules: [{ required: true, message: "Please select your gender!" }],
+        render: function() {
           return (
             <Select
               showSearch
-              style={{width: 200}}
+              style={{ width: 200 }}
               placeholder="Select user type"
               optionFilterProp="children"
-              filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              filterOption={(input, option) =>
+                option.props.children
+                  .toLowerCase()
+                  .indexOf(input.toLowerCase()) >= 0}
             >
               <Option value="10">admin</Option>
               <Option value="0">ordinary</Option>
             </Select>
-          )
+          );
         }
       }
     };
 
     this.setState({
       addUserModal: {
-        id: '',
+        id: "",
         refresh: this.refresh,
-        btnText: 'Add user',
+        btnText: "Add user",
         btnTextShow: true,
         formItems: formItems,
         submit: {
-          btnText: 'create',
+          btnText: "create",
           // should use function instead of es6 =>{} ,make sure get modalForm's current this
-          handleSubmit: function (values) {
+          handleSubmit: function(values) {
             fetchAndNotification({
-              url: 'user/user',
-              method: 'post',
+              url: "user/user",
+              method: "post",
               params: values,
               notifications: {
-                title: 'create Action',
+                title: "create Action",
                 success: `创建${values.user_name} 操作成功！`,
-                error: `创建${values.user_name} 操作失败！`,
-              },
-            }).then((result) => {
+                error: `创建${values.user_name} 操作失败！`
+              }
+            }).then(result => {
               /*
                * when the fetch successfully ,refresh the table
                * current this is modalForm's runtime this
                */
               this.props.form.resetFields();
               this.props.refresh();
-            })
+            });
           }
         },
-        modalTitle: 'Add User',
+        modalTitle: "Add User",
         modalVisible: false,
         spinning: false,
         handleModalShow: () => {
@@ -144,8 +161,8 @@ class UserMgmt extends React.Component {
             addUserModal.modalVisible = true;
             return {
               addUserModal
-            }
-          })
+            };
+          });
         },
         handleModalHide: () => {
           this.setState(prevState => {
@@ -153,44 +170,44 @@ class UserMgmt extends React.Component {
             addUserModal.modalVisible = false;
             return {
               addUserModal
-            }
-          })
+            };
+          });
         }
       },
 
       updateUserModal: {
-        id: '',
+        id: "",
         refresh: this.refresh,
         btnTextShow: false,
-        type: 'edit',
+        type: "edit",
         formItems: formItems,
         submit: {
-          btnText: 'update',
+          btnText: "update",
           // should use function instead of es6 =>{} ,make sure get modalForm's current this
-          handleSubmit: function (values) {
+          handleSubmit: function(values) {
             fetchAndNotification({
-              url: 'user/user',
-              method: 'put',
+              url: "user/user",
+              method: "put",
               params: {
                 ...values,
                 id: this.props.id
               },
               notifications: {
-                title: 'create Action',
+                title: "create Action",
                 success: `创建${values.user_name} 操作成功！`,
-                error: `创建${values.user_name} 操作失败！`,
-              },
-            }).then((result) => {
+                error: `创建${values.user_name} 操作失败！`
+              }
+            }).then(result => {
               /*
                * when the fetch successfully ,refresh the table
                * current this is modalForm's runtime this
                */
               this.props.form.resetFields();
               this.props.refresh();
-            })
+            });
           }
         },
-        modalTitle: 'Edit user',
+        modalTitle: "Edit user",
         modalVisible: false,
         spinning: false,
         handleModalShow: () => {
@@ -200,8 +217,8 @@ class UserMgmt extends React.Component {
             updateUserModal.spinning = true;
             return {
               updateUserModal
-            }
-          })
+            };
+          });
         },
         handleModalHide: () => {
           this.setState(prevState => {
@@ -209,15 +226,15 @@ class UserMgmt extends React.Component {
             updateUserModal.modalVisible = false;
             return {
               updateUserModal
-            }
-          })
+            };
+          });
         }
       }
-    })
+    });
   }
 
   refresh = () => {
-    this.props.dispatch({type: "userMgmt/refresh"});
+    this.props.dispatch({ type: "userMgmt/refresh" });
   };
 
   /*
@@ -230,17 +247,17 @@ class UserMgmt extends React.Component {
         {
           title: "username",
           dataIndex: "username",
-          key: "username",
+          key: "username"
         },
         {
           title: "type",
           dataIndex: "type",
-          key: "type",
+          key: "type"
         },
         {
           title: "time",
           dataIndex: "time",
-          key: "time",
+          key: "time"
         },
         {
           title: "Operation",
@@ -250,12 +267,12 @@ class UserMgmt extends React.Component {
             return (
               <DropOption
                 onMenuClick={e => {
-                  console.log()
-                  this.tableDataProps.handleMenuClick(record, e)
+                  console.log();
+                  this.tableDataProps.handleMenuClick(record, e);
                 }}
                 menuOptions={[
-                  {key: "1", name: "Update"},
-                  {key: "2", name: "Delete"}
+                  { key: "1", name: "Update" },
+                  { key: "2", name: "Delete" }
                 ]}
               />
             );
@@ -267,7 +284,7 @@ class UserMgmt extends React.Component {
         params: null
       },
       // errorMsg: "get user table error",
-      refresh: this.props.modalProps.refresh,// basic model refresh count
+      refresh: this.props.modalProps.refresh, // basic model refresh count
       handleSelectItems: (selectedRowKeys, selectedItems) => {
         this.props.dispatch({
           type: "userMgmt/updateSelectItems",
@@ -282,45 +299,52 @@ class UserMgmt extends React.Component {
           this.state.updateUserModal.handleModalShow();
           fetchAndNotification({
             url: `user/userId/${record.id}`,
-            method: 'get',
+            method: "get",
             notifications: {
-              title: 'create Action',
-              error: `获取用户${record.username}信息失败！`,
+              title: "create Action",
+              error: `获取用户${record.username}信息失败！`
             }
-          })
-            .then((result) => {
-              if (result.data && result.data.type === "success") {
-                this.setState(prevState => {
-                  const updateUserModal = prevState.updateUserModal;
-                  for (const key in result.data.items) {
-                    if (key in updateUserModal.formItems) {
-                      updateUserModal.formItems[key].updateValue = result.data.items[key];
-                    }
+          }).then(result => {
+            if (result.data && result.data.type === "success") {
+              this.setState(prevState => {
+                const updateUserModal = prevState.updateUserModal;
+                for (const key in result.data.items) {
+                  if (key in updateUserModal.formItems) {
+                    updateUserModal.formItems[key].updateValue =
+                      result.data.items[key];
                   }
-                  prevState.updateUserModal.spinning = false;
-                  prevState.updateUserModal.id = record.id;
-                  return {
-                    updateUserModal: prevState.updateUserModal
-                  };
-                })
-              }
-            })
+                }
+                prevState.updateUserModal.spinning = false;
+                prevState.updateUserModal.id = record.id;
+                return {
+                  updateUserModal: prevState.updateUserModal
+                };
+              });
+            }
+          });
         } else if (e.key === "2") {
           fetchAndNotification({
             url: `user/userId/${record.id}`,
-            method: 'delete',
+            method: "delete",
             notifications: {
-              title: 'create Action',
+              title: "create Action",
               success: `删除${record.username} 操作成功！`,
-              error: `删除${record.username} 操作失败！`,
+              error: `删除${record.username} 操作失败！`
             }
-          })
-            .then(() => {
-              this.refresh()
-            })
+          }).then(() => {
+            this.refresh();
+          });
         }
       }
     };
+  };
+
+  handleLife = () => {
+    this.setState((prevState, props) => {
+      return {
+        lifeCycle: prevState.lifeCycle + 1
+      };
+    });
   };
 
   render() {
@@ -331,18 +355,23 @@ class UserMgmt extends React.Component {
           <Col lg={24} md={24}>
             <Card title="用户管理">
               <div className="action-btn-container">
-                <Button type="primary" onClick={this.refresh} icon="reload"/>
+                <Button type="primary" onClick={this.refresh} icon="reload" />
                 {/*list a sort of actions*/}
-                <ModalForm {...this.state.addUserModal}/>
-                <ModalForm {...this.state.updateUserModal}/>
-
+                <ModalForm {...this.state.addUserModal} />
+                <ModalForm {...this.state.updateUserModal} />
               </div>
+
+              <LifeCycle
+                handleLife={this.handleLife}
+                count={this.state.lifeCycle}
+              />
+
               <DataTable {...this.tableDataProps} />
             </Card>
           </Col>
         </Row>
       </div>
-    )
+    );
   }
 }
 
@@ -351,4 +380,7 @@ UserMgmt.propTypes = {
   modalProps: PropTypes.object
 };
 
-export default connect(({userMgmt, loading}) => ({modalProps: userMgmt, loading}))(UserMgmt)
+export default connect(({ userMgmt, loading }) => ({
+  modalProps: userMgmt,
+  loading
+}))(UserMgmt);

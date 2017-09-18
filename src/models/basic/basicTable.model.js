@@ -29,10 +29,10 @@ export default {
 
       if (clusters && clusters.data && clusters.data.items) {
         yield put({ type: "updateClusters", clusters: clusters.data.items });
-        yield put({
-          type: "queryPageData",
-          defaultCluster: clusters.data.items[0]
-        });
+        // yield put({
+        //   type: "queryPageData",
+        //   defaultCluster: clusters.data.items[0]
+        // });
       }
     }
   },

@@ -26,8 +26,8 @@ class HostPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addHostModal: addHostModal.call(this)
-      // tableProps: tableProps.call(this)
+      // addHostModal: addHostModal.call(this),
+      keyword: ""
     };
   }
 
@@ -41,8 +41,8 @@ class HostPage extends React.Component {
 
   refresh = () => {
     this.props.dispatch({
-      type: "host/queryTableData",
-      defaultCluster: this.props.model.defaultCluster
+      type: "host/refresh",
+      // defaultCluster: this.props.model.defaultCluster
     });
   };
 
@@ -82,7 +82,7 @@ class HostPage extends React.Component {
               <ClusterList {...this.clusterListProps} />
               <div className="action-btn-container">
                 <Button type="primary" onClick={this.refresh} icon="reload" />
-                <ModalForm {...this.state.addHostModal} />
+                {/* <ModalForm {...this.state.addHostModal} /> */}
               </div>
               <DataTable {...this.tableProps} />
             </Card>

@@ -17,11 +17,32 @@ class DataTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // loading: true,
+      loading: true,
       current: getSessionStorage("pagination")[window.location.pathname],
       dataSourceBack: [],
+      dataSource: null,
       pageSize: 5,
       keyword: null
+    };
+
+    this.rowSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        console.log(
+          `selectedRowKeys: ${selectedRowKeys}`,
+          "selectedRows: ",
+          selectedRows
+        );
+        // this.setState({ selectedRowKeys, selectedRows });
+        this.props.handleSelectItems(selectedRowKeys, selectedRows);
+      },
+      getCheckboxProps: record => ({
+        disabled: record.name === "Disabled User" // Column configuration not to be checked
+      })
+    };
+
+    this.tableProps = {
+      // ...this.state,
+      columns: this.props.columns
     };
   }
 
@@ -29,44 +50,39 @@ class DataTable extends React.Component {
     // this.getTableData()
   }
 
-  componentWillMount() {
-    // this.getTableData();
-  }
+  componentWillMount() {}
 
-  componentDidUpdate() {
-    const { fetchData } = this.props;
+  componentDidUpdate() {}
 
-    // keyword is not null, don't send ajax request
-    if (!!this.state.keyword) {
-      return;
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.defaultCluster) {
+      this.getTableData(nextProps);
     }
 
-    // if (fetchData.url && this.state.loading) {
-    //   this.getTableData();
-    // }
+    // this.checkRefresh();
   }
 
-  // getTableData = () => {
-  //   const { fetchData } = this.props;
-  //   if (fetchData.url && this.state.loading) {
-  //     fetch(fetchData)
-  //       .then(result => {
-  //         this.setState({
-  //           dataSource: result.data.items,
-  //           dataSourceBack: lodash.cloneDeep(result.data.items),
-  //           loading: false
-  //         });
-  //       })
-  //       .catch(error => {
-  //         this.setState({ loading: false });
-  //         notification.open({
-  //           message: this.props.errorMsg,
-  //           duration: 0,
-  //           type: "error"
-  //         });
-  //       });
-  //   }
-  // };
+  getTableData = nextProps => {
+    const { fetchData } = nextProps;
+    if (fetchData.url) {
+      fetch(fetchData)
+        .then(result => {
+          this.setState({
+            dataSource: result.data.items,
+            dataSourceBack: lodash.cloneDeep(result.data.items),
+            loading: false
+          });
+        })
+        .catch(error => {
+          this.setState({ loading: false });
+          notification.open({
+            message: nextProps.errorMsg,
+            duration: 0,
+            type: "error"
+          });
+        });
+    }
+  };
 
   handleTableChange = (pagination, filters, sorter) => {
     stateDelay.call(this).then(() => {
@@ -99,12 +115,6 @@ class DataTable extends React.Component {
   };
 
   init = () => {
-    this.tableProps = {
-      ...this.state,
-      columns: this.props.columns,
-      dataSource: this.props.dataSource,
-      loading: this.props.loading
-    };
     this.pagination = {
       showSizeChanger: true,
       showQuickJumper: true,
@@ -114,21 +124,6 @@ class DataTable extends React.Component {
       defaultPageSize: 5,
       pageSizeOptions: ["5", "20", "30", "40"],
       current: this.state.current
-    };
-
-    this.rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        console.log(
-          `selectedRowKeys: ${selectedRowKeys}`,
-          "selectedRows: ",
-          selectedRows
-        );
-        this.setState({ selectedRowKeys, selectedRows });
-        this.props.handleSelectItems(selectedRowKeys, selectedRows);
-      },
-      getCheckboxProps: record => ({
-        disabled: record.name === "Disabled User" // Column configuration not to be checked
-      })
     };
 
     this.filterProps = {
@@ -157,8 +152,6 @@ class DataTable extends React.Component {
   };
 
   render() {
-    // this.checkRefresh();
-
     this.init();
 
     return (
@@ -166,6 +159,8 @@ class DataTable extends React.Component {
         <Filter {...this.filterProps} />
         <Table
           ref="DataTable"
+          dataSource={this.state.dataSource}
+          loading={this.state.loading}
           rowSelection={this.rowSelection}
           bordered
           onChange={this.handleTableChange}

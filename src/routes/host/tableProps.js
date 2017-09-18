@@ -98,8 +98,16 @@ export default function tableDataProps() {
     ],
     errorMsg: "get host table error",
     refresh: this.props.model.refresh,
-    dataSource: this.props.model.tableData,
-    loading: this.props.model.tableLoading,
+    defaultCluster: this.props.model.defaultCluster,
+    fetchData: {
+      url: this.props.model.defaultCluster
+        ? `ceph/clusters/${this.props.model.defaultCluster.id}/servers/`
+        : "",
+      params: null,
+      api: "v2"
+    },
+    // dataSource: this.props.model.tableData,
+    // loading: this.props.model.tableLoading,
     showDeleteConfirm: (record, e) => {
       // console.log(this)
       confirm({

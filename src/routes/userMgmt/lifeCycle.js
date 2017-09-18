@@ -4,38 +4,50 @@
 import React from "react";
 
 export default class LifeCycle extends React.Component {
-
   constructor(props) {
     super(props);
+    this.state = {
+      privateCount: this.props.count
+    };
+    console.log(props);
   }
 
-  componentWillMount(){
-    console.log("willMount")
+  componentWillMount() {
+    console.log("willMount");
   }
 
-  componentDidMount(){
-    console.log("componentDidMount")
+  componentDidMount() {
+    console.log("componentDidMount");
   }
 
-  componentWillReceiveProps(){
-    console.log("componentWillReceiveProps")
+  componentWillReceiveProps(nextProps) {
+    console.log("componentWillReceiveProps");
   }
 
-  componentWillUpdate(){
-    console.log("componentWillUpdate")
+  componentWillUpdate() {
+    console.log("componentWillUpdate");
   }
 
-  componentDidUpdate(){
-    console.log("componentDidUpdate")
+  componentDidUpdate() {
+    console.log("componentDidUpdate");
   }
 
+  handleLife = () => {
+    this.setState((prevState, props) => {
+      return {
+        privateCount: prevState.privateCount + 1
+      };
+    });
+  };
 
-  render(){
+  render() {
     return (
       <div>
-        {this.props.test}
+        {this.props.count}
         test
+        <button onClick={this.handleLife}>click</button>
+        privateCount:{this.state.privateCount}
       </div>
-    )
+    );
   }
 }
