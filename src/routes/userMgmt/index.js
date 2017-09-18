@@ -342,7 +342,8 @@ class UserMgmt extends React.Component {
   handleLife = () => {
     this.setState((prevState, props) => {
       return {
-        lifeCycle: prevState.lifeCycle + 1
+        // lifeCycle: prevState.lifeCycle + 1
+        lifeCycle2: 1
       };
     });
   };

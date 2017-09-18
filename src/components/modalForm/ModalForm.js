@@ -44,12 +44,12 @@ class ModalForm extends React.Component {
     }
   }
 
-  componentWillReceiveProps() {
-    // console.log("componentWillReceiveProps")
+  componentWillReceiveProps(nextProps) {
+    console.log("componentWillReceiveProps")
   }
 
   componentDidUpdate() {
-    // console.log("componentDidUpdate")
+    console.log("componentDidUpdate")
     if (this.props.type === 'edit' && this.props.modalVisible && !this.props.spinning) {
       console.log('...........')
 

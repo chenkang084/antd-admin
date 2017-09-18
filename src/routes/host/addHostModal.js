@@ -198,7 +198,7 @@ export default function addHostModal() {
       this.setState(prevState => {
         const addHostModal = prevState.addHostModal;
         addHostModal.modalVisible = true;
-        addHostModal.cluster = this.props.modalProps.defaultCluster;
+        addHostModal.cluster = this.props.model.defaultCluster;
         return {
           addHostModal
         }
@@ -206,11 +206,11 @@ export default function addHostModal() {
 
       const result = await Promise.all([
         fetchAndNotification({
-          url: `ceph/clusters/${this.props.modalProps.defaultCluster.id}/groups/`,
+          url: `ceph/clusters/${this.props.model.defaultCluster.id}/groups/`,
           api: 'v2'
         }),
         fetchAndNotification({
-          url: `ceph/clusters/${this.props.modalProps.defaultCluster.id}/racks`,
+          url: `ceph/clusters/${this.props.model.defaultCluster.id}/racks`,
           api: 'v2'
         })
       ]);
