@@ -172,6 +172,7 @@ export default function addHostModal() {
     btnText: "Add Host",
     modalTitle: "Add User",
     btnTextShow: true,
+    btnDisabled: this.props.model.defaultCluster ? false : true,
     formItems: formItems,
     submit: {
       btnText: "create",

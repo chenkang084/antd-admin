@@ -25,6 +25,9 @@ class DataTable extends React.Component {
       keyword: null
     };
 
+    this.initTable = false;
+    this.refresh = this.props.refresh;
+
     if (!this.hasOwnProperty("defaultCluster")) {
       // initTable equals false indicates the first time query data
       if (!this.initTable) {
@@ -51,8 +54,6 @@ class DataTable extends React.Component {
     this.tableProps = {
       columns: this.props.columns
     };
-
-    this.initTable = false;
   }
 
   componentDidMount() {
@@ -64,16 +65,18 @@ class DataTable extends React.Component {
   componentDidUpdate() {}
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.defaultCluster) {
-      if (!this.checkRefresh(nextProps)) {
-        // initTable equals false indicates the first time query data
-        if (!this.initTable) {
-          this.getTableData(nextProps);
-          this.initTable = true;
-        }
-      }
-    }
-    // this.props.willReceiveProps.call(this, nextProps);
+    this.checkRefresh(nextProps);
+    // if (nextProps.defaultCluster) {
+    //   if (!this.checkRefresh(nextProps)) {
+    //     // initTable equals false indicates the first time query data
+    //     if (!this.initTable) {
+    //       this.getTableData(nextProps);
+    //       this.initTable = true;
+    //     }
+    //   }
+    // }
+    this.props.willReceiveProps &&
+      this.props.willReceiveProps.call(this, nextProps);
   }
 
   getTableData = nextProps => {
@@ -119,20 +122,12 @@ class DataTable extends React.Component {
   };
 
   checkRefresh = nextProps => {
-    let refresh = this.state.refresh;
-    if (!refresh) {
-      // save basic model refresh count
-      this.setState({ refresh: this.props.refresh });
-      return false; // no refresh
-    } else {
-      if (nextProps.refresh !== refresh) {
-        // update state refresh count so that rerender component
-        this.setState({ refresh: nextProps.refresh });
-        this.getTableData(nextProps);
-        return true;
-      }
-      return false;
+    if (nextProps.refresh !== this.refresh) {
+      this.refresh = nextProps.refresh;
+      this.getTableData(nextProps);
+      return true;
     }
+    return false;
   };
 
   init = () => {

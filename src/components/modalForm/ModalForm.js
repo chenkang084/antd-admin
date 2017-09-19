@@ -51,19 +51,18 @@ class ModalForm extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     console.log("componentWillReceiveProps");
-
   }
 
   componentDidUpdate() {
     console.log("componentDidUpdate");
 
-    if (this.state.setFields) {
-      for (const field in this.state.setFields) {
-        this.props.form.setFieldsValue({
-          [field]: this.props.formItems[field].updateValue
-        });
-      }
-    }
+    // if (this.state.setFields) {
+    //   for (const field in this.state.setFields) {
+    //     this.props.form.setFieldsValue({
+    //       [field]: this.props.formItems[field].updateValue
+    //     });
+    //   }
+    // }
 
     // if (
     //   this.props.type === "edit" &&
@@ -136,7 +135,7 @@ class ModalForm extends React.Component {
           <Button
             onClick={this.handleModalShow}
             type="primary"
-            disabled={!this.props.defaultCluster}
+            disabled={this.props.btnDisabled}
           >
             {this.props.btnText}
           </Button>
