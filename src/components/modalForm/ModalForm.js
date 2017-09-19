@@ -14,7 +14,9 @@ class ModalForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      setFields: null
+      setFields: null,
+      modalVisible: false,
+      spinning: true
     };
 
     this.initData = false;
@@ -50,10 +52,6 @@ class ModalForm extends React.Component {
   componentWillReceiveProps(nextProps) {
     console.log("componentWillReceiveProps");
 
-    if (nextProps.modalVisible && !this.initData) {
-      this.initData = true;
-      this.props.fetchDataFn.call(this);
-    }
   }
 
   componentDidUpdate() {
@@ -103,9 +101,20 @@ class ModalForm extends React.Component {
     // }
   }
 
+  handleModalShow = () => {
+    this.setState({
+      modalVisible: true
+    });
+
+    this.props.handleModalShow && this.props.handleModalShow.call(this);
+  };
+
   handleModalHide = () => {
     this.initData = false;
-    this.props.handleModalHide();
+    this.setState({
+      modalVisible: false
+    });
+    this.props.handleModalHide && this.props.handleModalHide.call(this);
   };
 
   render() {
@@ -125,7 +134,7 @@ class ModalForm extends React.Component {
       <span>
         {this.props.btnTextShow ? (
           <Button
-            onClick={this.props.handleModalShow}
+            onClick={this.handleModalShow}
             type="primary"
             disabled={!this.props.defaultCluster}
           >
@@ -133,14 +142,14 @@ class ModalForm extends React.Component {
           </Button>
         ) : null}
         <Modal
-          visible={this.props.modalVisible}
+          visible={this.state.modalVisible}
           title={this.props.modalTitle}
           // okText="Create"
           footer={null}
           onCancel={this.handleModalHide}
           // onOk={this.onCreate}
         >
-          <Spin tip="Loading..." spinning={this.props.spinning}>
+          <Spin tip="Loading..." spinning={this.state.spinning}>
             <Form layout="horizontal" onSubmit={this.handleSubmit}>
               {this.props.formItems &&
                 Object.keys(this.props.formItems).map(key => {

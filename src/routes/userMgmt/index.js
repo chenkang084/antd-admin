@@ -16,8 +16,8 @@ class UserMgmt extends React.Component {
     super(props);
     this.state = {
       addUserModal: null,
-      updateUserModal: null,
-      lifeCycle: 1
+      updateUserModal: null
+      // lifeCycle: 1
     };
   }
 
@@ -243,6 +243,7 @@ class UserMgmt extends React.Component {
    */
   init = () => {
     this.tableDataProps = {
+      // defaultCluster:
       columns: [
         {
           title: "username",
@@ -283,8 +284,14 @@ class UserMgmt extends React.Component {
         url: "/user/users",
         params: null
       },
-      // errorMsg: "get user table error",
+      errorMsg: "get user table error",
       refresh: this.props.modalProps.refresh, // basic model refresh count
+      willReceiveProps: function(nextProps) {
+        if (!this.initTable) {
+          this.getTableData(nextProps);
+          this.initTable = true;
+        }
+      },
       handleSelectItems: (selectedRowKeys, selectedItems) => {
         this.props.dispatch({
           type: "userMgmt/updateSelectItems",
@@ -339,14 +346,14 @@ class UserMgmt extends React.Component {
     };
   };
 
-  handleLife = () => {
-    this.setState((prevState, props) => {
-      return {
-        // lifeCycle: prevState.lifeCycle + 1
-        lifeCycle2: 1
-      };
-    });
-  };
+  // handleLife = () => {
+  //   this.setState((prevState, props) => {
+  //     return {
+  //       // lifeCycle: prevState.lifeCycle + 1
+  //       lifeCycle2: 1
+  //     };
+  //   });
+  // };
 
   render() {
     this.init();
@@ -362,10 +369,10 @@ class UserMgmt extends React.Component {
                 <ModalForm {...this.state.updateUserModal} />
               </div>
 
-              <LifeCycle
+              {/* <LifeCycle
                 handleLife={this.handleLife}
                 count={this.state.lifeCycle}
-              />
+              /> */}
 
               <DataTable {...this.tableDataProps} />
             </Card>
