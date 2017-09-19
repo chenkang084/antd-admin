@@ -10,14 +10,13 @@ import DropOption from "../../components/DropOption/DropOption";
 import { fetchAndNotification } from "../../services/restfulService";
 import ModalForm from "../../components/modalForm/ModalForm";
 import LifeCycle from "./lifeCycle";
+import addUserModal from "./addUserModal";
 
 class UserMgmt extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addUserModal: null,
       updateUserModal: null
-      // lifeCycle: 1
     };
   }
 
@@ -123,58 +122,6 @@ class UserMgmt extends React.Component {
     };
 
     this.setState({
-      addUserModal: {
-        id: "",
-        refresh: this.refresh,
-        btnText: "Add user",
-        btnTextShow: true,
-        formItems: formItems,
-        submit: {
-          btnText: "create",
-          // should use function instead of es6 =>{} ,make sure get modalForm's current this
-          handleSubmit: function(values) {
-            fetchAndNotification({
-              url: "user/user",
-              method: "post",
-              params: values,
-              notifications: {
-                title: "create Action",
-                success: `创建${values.user_name} 操作成功！`,
-                error: `创建${values.user_name} 操作失败！`
-              }
-            }).then(result => {
-              /*
-               * when the fetch successfully ,refresh the table
-               * current this is modalForm's runtime this
-               */
-              this.props.form.resetFields();
-              this.props.refresh();
-            });
-          }
-        },
-        modalTitle: "Add User",
-        modalVisible: false,
-        spinning: false,
-        handleModalShow: () => {
-          this.setState(prevState => {
-            const addUserModal = prevState.addUserModal;
-            addUserModal.modalVisible = true;
-            return {
-              addUserModal
-            };
-          });
-        },
-        handleModalHide: () => {
-          this.setState(prevState => {
-            const addUserModal = prevState.addUserModal;
-            addUserModal.modalVisible = false;
-            return {
-              addUserModal
-            };
-          });
-        }
-      },
-
       updateUserModal: {
         id: "",
         refresh: this.refresh,
@@ -243,7 +190,6 @@ class UserMgmt extends React.Component {
    */
   init = () => {
     this.tableDataProps = {
-      // defaultCluster:
       columns: [
         {
           title: "username",
@@ -285,13 +231,13 @@ class UserMgmt extends React.Component {
         params: null
       },
       errorMsg: "get user table error",
-      refresh: this.props.modalProps.refresh, // basic model refresh count
-      willReceiveProps: function(nextProps) {
-        if (!this.initTable) {
-          this.getTableData(nextProps);
-          this.initTable = true;
-        }
-      },
+      refresh: this.props.model.refresh, // basic model refresh count
+      // willReceiveProps: function(nextProps) {
+      //   if (!this.initTable) {
+      //     this.getTableData(nextProps);
+      //     this.initTable = true;
+      //   }
+      // },
       handleSelectItems: (selectedRowKeys, selectedItems) => {
         this.props.dispatch({
           type: "userMgmt/updateSelectItems",
@@ -344,6 +290,8 @@ class UserMgmt extends React.Component {
         }
       }
     };
+
+    this.addUserModal = addUserModal.call(this);
   };
 
   // handleLife = () => {
@@ -365,7 +313,7 @@ class UserMgmt extends React.Component {
               <div className="action-btn-container">
                 <Button type="primary" onClick={this.refresh} icon="reload" />
                 {/*list a sort of actions*/}
-                <ModalForm {...this.state.addUserModal} />
+                <ModalForm {...this.addUserModal} />
                 <ModalForm {...this.state.updateUserModal} />
               </div>
 
@@ -385,10 +333,10 @@ class UserMgmt extends React.Component {
 
 UserMgmt.propTypes = {
   loading: PropTypes.object,
-  modalProps: PropTypes.object
+  model: PropTypes.object
 };
 
 export default connect(({ userMgmt, loading }) => ({
-  modalProps: userMgmt,
+  model: userMgmt,
   loading
 }))(UserMgmt);
