@@ -25,6 +25,14 @@ class DataTable extends React.Component {
       keyword: null
     };
 
+    if (!this.hasOwnProperty("defaultCluster")) {
+      // initTable equals false indicates the first time query data
+      if (!this.initTable) {
+        this.getTableData();
+        this.initTable = true;
+      }
+    }
+
     this.rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         console.log(
@@ -56,7 +64,6 @@ class DataTable extends React.Component {
   componentDidUpdate() {}
 
   componentWillReceiveProps(nextProps) {
-    // console.log(nextProps);
     if (nextProps.defaultCluster) {
       if (!this.checkRefresh(nextProps)) {
         // initTable equals false indicates the first time query data
@@ -66,9 +73,11 @@ class DataTable extends React.Component {
         }
       }
     }
+    // this.props.willReceiveProps.call(this, nextProps);
   }
 
   getTableData = nextProps => {
+    nextProps = nextProps || this.props;
     const { fetchData } = nextProps;
     if (fetchData.url) {
       this.setState({

@@ -84,8 +84,7 @@ export default function tableDataProps() {
                 delete
               </Button>
               <DropOption
-                onMenuClick={e =>
-                  this.tableProps.handleMenuClick(record, e)}
+                onMenuClick={e => this.tableProps.handleMenuClick(record, e)}
                 menuOptions={[
                   { key: "1", name: "Update" },
                   { key: "2", name: "Delete" }
@@ -159,6 +158,9 @@ export default function tableDataProps() {
           }
         });
       }
+    },
+    willReceiveProps: function(nextProps) {
+      
     }
   };
 }

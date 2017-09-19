@@ -170,6 +170,7 @@ export default function addHostModal() {
     defaultCluster: this.props.model.defaultCluster,
     refresh: this.refresh,
     btnText: "Add Host",
+    modalTitle: "Add User",
     btnTextShow: true,
     formItems: formItems,
     submit: {
@@ -195,13 +196,7 @@ export default function addHostModal() {
         this.props.refresh();
       }
     },
-    modalTitle: "Add User",
-    modalVisible: this.state.addHostModalVisible,
-    spinning: false,
-    // hostGroup: [],
-    // hostRacks: [],
-    fetchDataFn: async function() {
-      console.log(this);
+    handleModalShow: async function() {
       const result = await Promise.all([
         fetchAndNotification({
           url: `ceph/clusters/${this.props.defaultCluster.id}/groups/`,
@@ -214,44 +209,15 @@ export default function addHostModal() {
       ]);
 
       this.setState({
+        spinning: false,
         hostGroup: result[0].data.items,
         hostRacks: result[1].data.items
       });
-    },
-    handleModalShow: () => {
-      this.setState({
-        addHostModalVisible: true
-      });
-
-      // this.setState(prevState => {
-      //   const addHostModal = prevState.addHostModal;
-      //   addHostModal.modalVisible = true;
-      //   addHostModal.cluster = this.props.model.defaultCluster;
-      //   return {
-      //     addHostModal
-      //   };
-      // });
-
-      // this.setState(prevState => {
-      //   const addHostModal = prevState.addHostModal;
-      //   addHostModal.hostGroup = result[0].data.items;
-      //   addHostModal.hostRacks = result[1].data.items;
-      //   return {
-      //     addHostModal: prevState.addHostModal
-      //   };
-      // });
-    },
-    handleModalHide: () => {
-      this.setState({
-        addHostModalVisible: false
-      });
-      // this.setState(prevState => {
-      //   const addHostModal = prevState.addHostModal;
-      //   addHostModal.modalVisible = false;
-      //   return {
-      //     addHostModal
-      //   };
-      // });
     }
+    // handleModalHide: () => {
+    //   this.setState({
+    //     addHostModalVisible: false
+    //   });
+    // }
   };
 }
