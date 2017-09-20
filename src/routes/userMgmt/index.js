@@ -6,10 +6,9 @@ import PropTypes from "prop-types";
 import { connect } from "dva";
 import { Select, Row, Col, Card, Button, Input, Icon } from "antd";
 import DataTable from "../../components/BasicTable/DataTable";
-import DropOption from "../../components/DropOption/DropOption";
-import { fetchAndNotification } from "../../services/restfulService";
 import ModalForm from "../../components/modalForm/ModalForm";
 import LifeCycle from "./lifeCycle";
+import tableProps from "./tableProps";
 import addUserModal from "./addUserModal";
 import updateUserModal from "./updateUserModal";
 
@@ -35,81 +34,7 @@ class UserMgmt extends React.Component {
    * if the props are constant, you can write it in componentWillMount
    */
   init = () => {
-    this.tableDataProps = {
-      columns: [
-        {
-          title: "username",
-          dataIndex: "username",
-          key: "username"
-        },
-        {
-          title: "type",
-          dataIndex: "type",
-          key: "type"
-        },
-        {
-          title: "time",
-          dataIndex: "time",
-          key: "time"
-        },
-        {
-          title: "Operation",
-          key: "operation",
-          width: 100,
-          render: (text, record) => {
-            return (
-              <DropOption
-                onMenuClick={e => {
-                  console.log();
-                  this.tableDataProps.handleMenuClick(record, e);
-                }}
-                menuOptions={[
-                  { key: "1", name: "Update" },
-                  { key: "2", name: "Delete" }
-                ]}
-              />
-            );
-          }
-        }
-      ],
-      fetchData: {
-        url: "/user/users",
-        params: null
-      },
-      errorMsg: "get user table error",
-      refresh: this.props.model.refresh, // basic model refresh count
-      handleSelectItems: (selectedRowKeys, selectedItems) => {
-        this.props.dispatch({
-          type: "userMgmt/updateSelectItems",
-          payload: {
-            selectedRowKeys,
-            selectedItems
-          }
-        });
-      },
-      handleMenuClick: (record, e) => {
-        if (e.key === "1") {
-          this.setState({
-            updateUserModal: {
-              modalVisible: true,
-              record
-            }
-          });
-        } else if (e.key === "2") {
-          fetchAndNotification({
-            url: `user/userId/${record.id}`,
-            method: "delete",
-            notifications: {
-              title: "create Action",
-              success: `删除${record.username} 操作成功！`,
-              error: `删除${record.username} 操作失败！`
-            }
-          }).then(() => {
-            this.refresh();
-          });
-        }
-      }
-    };
+    this.tableDataProps = tableProps.call(this);
 
     this.addUserModal = addUserModal.call(this);
     this.updateUserModal = updateUserModal.call(this);
