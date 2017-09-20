@@ -14,107 +14,38 @@ class ModalForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      setFields: null,
-      modalVisible: false,
       spinning: true
     };
-
-    this.initData = false;
   }
-
-  prevValues = {};
 
   componentDidMount() {
     // To disabled submit button at the beginning.
     this.props.form.validateFields();
+    this.props.componentDidMountCb && this.props.componentDidMountCb.call(this);
   }
+
+  // componentWillUnmount() {
+  //   console.log("componentWillUnmount");
+  // }
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        this.handleModalHide();
+        this.props.handleModalHide();
         this.props.submit.handleSubmit.call(this, values);
       }
     });
   };
 
-  submitAction(err, values) {
-    if (!err) {
-      console.log("Received values of form: ", values);
-      this.handleCancel();
-
-      this.props.submit.handleSubmit.call(this, values);
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     console.log("componentWillReceiveProps");
   }
 
-  componentDidUpdate() {
-    console.log("componentDidUpdate");
-
-    // if (this.state.setFields) {
-    //   for (const field in this.state.setFields) {
-    //     this.props.form.setFieldsValue({
-    //       [field]: this.props.formItems[field].updateValue
-    //     });
-    //   }
-    // }
-
-    // if (
-    //   this.props.type === "edit" &&
-    //   this.props.modalVisible &&
-    //   !this.props.spinning
-    // ) {
-    //   console.log("...........");
-
-    //   const values = this.props.form.getFieldsValue();
-    //   for (const key in values) {
-    //     const val = values[key];
-    //     // val equals undefined
-    //     if (isUndefined(val)) {
-    //       // need update value ,updateValueFlag default is undefined
-    //       if (isUndefined(this.props.formItems[key].updateValueFlag)) {
-    //         this.prevValues[key] = this.props.formItems[key].updateValue;
-    //         this.props.form.setFieldsValue({
-    //           [key]: this.props.formItems[key].updateValue
-    //         });
-    //       }
-    //     } else {
-    //       // need update, prev value is not equals current value ,so use current value
-    //       if (
-    //         isUndefined(this.props.formItems[key].updateValueFlag) &&
-    //         this.prevValues[key] !== this.props.formItems[key].updateValue
-    //       ) {
-    //         // update prev value
-    //         this.prevValues[key] = this.props.formItems[key].updateValue;
-    //         this.props.form.setFieldsValue({
-    //           [key]: this.props.formItems[key].updateValue
-    //         });
-    //       }
-    //     }
-    //   }
-    // }
-  }
-
-  handleModalShow = () => {
-    this.setState({
-      modalVisible: true
-    });
-
-    this.props.handleModalShow && this.props.handleModalShow.call(this);
-  };
-
-  handleModalHide = () => {
-    this.initData = false;
-    this.setState({
-      modalVisible: false
-    });
-    this.props.handleModalHide && this.props.handleModalHide.call(this);
-  };
+  // componentDidUpdate() {
+  //   console.log("componentDidUpdate");
+  // }
 
   render() {
     const {
@@ -133,7 +64,7 @@ class ModalForm extends React.Component {
       <span>
         {this.props.btnTextShow ? (
           <Button
-            onClick={this.handleModalShow}
+            onClick={this.props.handleModalShow}
             type="primary"
             disabled={this.props.btnDisabled}
           >
@@ -141,11 +72,11 @@ class ModalForm extends React.Component {
           </Button>
         ) : null}
         <Modal
-          visible={this.state.modalVisible}
+          visible={this.props.modalVisible}
           title={this.props.modalTitle}
           // okText="Create"
           footer={null}
-          onCancel={this.handleModalHide}
+          onCancel={this.props.handleModalHide}
           // onOk={this.onCreate}
         >
           <Spin tip="Loading..." spinning={this.state.spinning}>
@@ -156,6 +87,7 @@ class ModalForm extends React.Component {
                   const error =
                     isFieldTouched(item.key) && getFieldError(item.key);
                   const element = item.render.call(this);
+
                   return (
                     <FormItem
                       {...formItemLayout}
@@ -195,4 +127,4 @@ class ModalForm extends React.Component {
   }
 }
 
-export default Form.create()(ModalForm);
+export default Form.create({})(ModalForm);

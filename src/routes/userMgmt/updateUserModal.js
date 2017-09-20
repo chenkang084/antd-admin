@@ -3,7 +3,8 @@
  */
 import { Select, Row, Col, Card, Button, Input, Icon } from "antd";
 import { fetchAndNotification } from "../../services/restfulService";
-export const formItems = {
+import { isUndefined } from "../../utils/dataUtils";
+const formItems = {
   user_name: {
     name: "user_name",
     key: "user_name",
@@ -102,23 +103,26 @@ export const formItems = {
   }
 };
 
-export default function addUserModal() {
+export default function updateUserModal() {
   return {
-    id: "",
+    record: this.state.updateUserModal.record,
     refresh: this.refresh,
-    btnText: "Add user",
-    modalTitle: "Add User",
-    btnTextShow: true,
-    modalVisible: this.state.addUserModal.modalVisible,
+    btnTextShow: false,
+    type: "edit",
+    modalTitle: "Edit user",
     formItems: formItems,
+    modalVisible: this.state.updateUserModal.modalVisible,
     submit: {
-      btnText: "create",
+      btnText: "update",
       // should use function instead of es6 =>{} ,make sure get modalForm's current this
       handleSubmit: async function(values) {
         await fetchAndNotification({
           url: "user/user",
-          method: "post",
-          params: values,
+          method: "put",
+          params: {
+            ...values,
+            id: this.props.record.id
+          },
           notifications: {
             title: "create Action",
             success: `创建${values.user_name} 操作成功！`,
@@ -126,25 +130,39 @@ export default function addUserModal() {
           }
         });
 
+        /*
+           * when the fetch successfully ,refresh the table
+           * current this is modalForm's runtime this
+           */
         this.props.form.resetFields();
         this.props.refresh();
       }
     },
-    handleModalShow: () => {
-      this.setState({
-        addUserModal: {
-          modalVisible: true
-        }
-      });
-    },
+    handleModalShow: () => {},
     handleModalHide: () => {
       this.setState({
-        addUserModal: {
+        updateUserModal: {
           modalVisible: false
         }
       });
     },
-    componentDidMountCb: function() {
+    componentDidMountCb: async function() {
+      const result = await fetchAndNotification({
+        url: `user/userId/${this.props.record.id}`,
+        notifications: {
+          title: "create Action",
+          error: `获取用户${this.props.record.username}信息失败！`
+        }
+      });
+
+      Object.keys(this.props.formItems).forEach(key => {
+        if (isUndefined(this.props.formItems[key].updateValueFlag)) {
+          this.props.form.setFieldsValue({
+            [key]: result.data.items[key]
+          });
+        }
+      });
+
       this.setState({
         spinning: false
       });
