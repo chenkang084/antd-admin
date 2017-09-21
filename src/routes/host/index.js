@@ -31,7 +31,6 @@ class HostPage extends React.Component {
     };
   }
 
-  componentWillMount() {}
 
   componentDidMount() {}
 

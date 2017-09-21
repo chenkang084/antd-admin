@@ -74,7 +74,8 @@ export async function fetchAndNotification({
   params = null,
   method = "get",
   notifications = {},
-  api
+  api,
+  progress = true
 }) {
   progress && NProgress.start();
   return await request({
