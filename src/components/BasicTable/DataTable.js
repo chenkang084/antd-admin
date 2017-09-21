@@ -181,6 +181,7 @@ class DataTable extends React.Component {
           onChange={this.handleTableChange}
           {...this.tableProps}
           pagination={this.pagination}
+          scroll={{ x: 600 }}
         />
       </div>
     );
