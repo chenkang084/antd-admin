@@ -60,7 +60,7 @@ class ModalForm extends React.Component {
 
     return (
       <span>
-        {this.props.btnTextShow ? (
+        {this.props.btnShow ? (
           <Button
             onClick={this.props.handleModalShow.bind(this)}
             type="primary"

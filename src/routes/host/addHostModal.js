@@ -172,7 +172,7 @@ export default function addHostModal() {
     refresh: this.refresh,
     btnText: "Add Host",
     modalTitle: "Add User",
-    btnTextShow: true,
+    btnShow: true,
     btnDisabled: this.props.model.defaultCluster ? false : true,
     modalVisible: this.state.addHostModal.modalVisible,
     formItems: formItems,
