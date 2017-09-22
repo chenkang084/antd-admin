@@ -108,7 +108,7 @@ export default function addUserModal() {
     refresh: this.refresh,
     btnText: "Add user",
     modalTitle: "Add User",
-    btnTextShow: true,
+    btnShow: true,
     modalVisible: this.state.addUserModal.modalVisible,
     formItems: formItems,
     submit: {

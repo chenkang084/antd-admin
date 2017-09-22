@@ -166,14 +166,20 @@ export default function addHostModal() {
   };
 
   return {
+    parentThis: this,
     record: "",
     defaultCluster: this.props.model.defaultCluster,
     refresh: this.refresh,
     btnText: "Add Host",
     modalTitle: "Add User",
-    btnTextShow: true,
+    btnShow: true,
     btnDisabled: this.props.model.defaultCluster ? false : true,
+    modalVisible: this.state.addHostModal.modalVisible,
     formItems: formItems,
+    state: {
+      hostGroup: [],
+      hostRacks: []
+    },
     submit: {
       btnText: "create",
       // should use function instead of es6 =>{} ,make sure get modalForm's current this
@@ -198,6 +204,11 @@ export default function addHostModal() {
       }
     },
     handleModalShow: async function() {
+      this.props.parentThis.setState({
+        addHostModal: {
+          modalVisible: true
+        }
+      });
       const result = await Promise.all([
         fetchAndNotification({
           url: `ceph/clusters/${this.props.defaultCluster.id}/groups/`,
@@ -210,15 +221,17 @@ export default function addHostModal() {
       ]);
 
       this.setState({
-        spinning: false,
         hostGroup: result[0].data.items,
-        hostRacks: result[1].data.items
+        hostRacks: result[1].data.items,
+        spinning: false
+      });
+    },
+    handleModalHide: () => {
+      this.setState({
+        addHostModal: {
+          modalVisible: false
+        }
       });
     }
-    // handleModalHide: () => {
-    //   this.setState({
-    //     addHostModalVisible: false
-    //   });
-    // }
   };
 }

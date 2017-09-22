@@ -19,6 +19,7 @@ import {
 import ModalForm from "../../components/modalForm/ModalForm";
 import { ClusterList } from "../../components/clusterList/ClusterList";
 import addHostModal from "./addHostModal";
+import updateHostModal from "./updateHostModal";
 import tableProps from "./tableProps";
 import clusterListProps from "./clusterListProps";
 
@@ -26,17 +27,16 @@ class HostPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // addHostModal: addHostModal.call(this),
-      // addHostModalVisible: false
+      addHostModal: {
+        modalVisible: false
+      },
+      updateHostModal: {
+        modalVisible: false
+      }
     };
   }
 
-
   componentDidMount() {}
-
-  componentDidUpdate() {
-    console.log("componentDidUpdate");
-  }
 
   refresh = () => {
     this.props.dispatch({
@@ -69,6 +69,7 @@ class HostPage extends React.Component {
     this.clusterListProps = clusterListProps.call(this);
 
     this.addHostModal = addHostModal.call(this);
+    this.updateHostModal = updateHostModal.call(this);
   };
 
   render() {
@@ -83,6 +84,9 @@ class HostPage extends React.Component {
               <div className="action-btn-container">
                 <Button type="primary" onClick={this.refresh} icon="reload" />
                 <ModalForm {...this.addHostModal} />
+                {this.state.updateHostModal.modalVisible && (
+                  <ModalForm {...this.updateHostModal} />
+                )}
               </div>
               <DataTable {...this.tableProps} />
             </Card>

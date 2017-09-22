@@ -143,11 +143,10 @@ export default function tableDataProps() {
     },
     handleMenuClick: (record, e) => {
       if (e.key === "1") {
-        let { dispatch } = this.props;
-        dispatch({
-          type: "host/showModal",
-          payload: {
-            key: "modalVisible"
+        this.setState({
+          updateHostModal: {
+            modalVisible: true,
+            record:record
           }
         });
       } else if (e.key === "2") {
@@ -159,8 +158,6 @@ export default function tableDataProps() {
         });
       }
     },
-    willReceiveProps: function(nextProps) {
-      
-    }
+    willReceiveProps: function(nextProps) {}
   };
 }

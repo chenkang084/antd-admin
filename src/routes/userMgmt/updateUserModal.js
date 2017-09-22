@@ -107,7 +107,7 @@ export default function updateUserModal() {
   return {
     record: this.state.updateUserModal.record,
     refresh: this.refresh,
-    btnTextShow: false,
+    btnShow: false,
     type: "edit",
     modalTitle: "Edit user",
     formItems: formItems,
