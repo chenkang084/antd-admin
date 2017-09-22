@@ -25,15 +25,17 @@ class DataTable extends React.Component {
       keyword: null
     };
 
-    this.initTable = false;
+    // this.initTable = false;
     this.refresh = this.props.refresh;
 
     if (!this.props.hasOwnProperty("defaultCluster")) {
       // initTable equals false indicates the first time query data
-      if (!this.initTable) {
+      // if (!this.initTable) {
         this.getTableData();
-        this.initTable = true;
-      }
+        // this.initTable = true;
+      // }
+    } else {
+      this.props.defaultCluster && this.getTableData();
     }
 
     this.rowSelection = {
@@ -68,10 +70,10 @@ class DataTable extends React.Component {
     if (!this.checkRefresh(nextProps)) {
       if (nextProps.defaultCluster) {
         // initTable equals false indicates the first time query data
-        if (!this.initTable) {
+        // if (!this.initTable) {
           this.getTableData(nextProps);
-          this.initTable = true;
-        }
+          // this.initTable = true;
+        // }
       }
     }
     this.props.willReceiveProps &&
