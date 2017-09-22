@@ -26,17 +26,14 @@ class HostPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // addHostModal: addHostModal.call(this),
-      // addHostModalVisible: false
+      addHostModal: {
+        modalVisible: false
+      }
     };
   }
 
-
   componentDidMount() {}
 
-  componentDidUpdate() {
-    console.log("componentDidUpdate");
-  }
 
   refresh = () => {
     this.props.dispatch({

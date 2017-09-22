@@ -13,7 +13,11 @@ function hasErrors(fieldsError) {
 class ModalForm extends React.Component {
   constructor(props) {
     super(props);
+
+    const state = this.props.state || {};
+
     this.state = {
+      ...state,
       spinning: true
     };
   }
@@ -23,10 +27,6 @@ class ModalForm extends React.Component {
     this.props.form.validateFields();
     this.props.componentDidMountCb && this.props.componentDidMountCb.call(this);
   }
-
-  // componentWillUnmount() {
-  //   console.log("componentWillUnmount");
-  // }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -41,11 +41,9 @@ class ModalForm extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     console.log("componentWillReceiveProps");
+    this.props.componentWillReceivePropsCb &&
+      this.props.componentWillReceivePropsCb.call(this);
   }
-
-  // componentDidUpdate() {
-  //   console.log("componentDidUpdate");
-  // }
 
   render() {
     const {
@@ -64,7 +62,7 @@ class ModalForm extends React.Component {
       <span>
         {this.props.btnTextShow ? (
           <Button
-            onClick={this.props.handleModalShow}
+            onClick={this.props.handleModalShow.bind(this)}
             type="primary"
             disabled={this.props.btnDisabled}
           >
