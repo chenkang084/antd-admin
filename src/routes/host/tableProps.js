@@ -1,6 +1,7 @@
 /**
  * Created by chenkang1 on 2017/9/13.
  */
+import { Link } from "react-router";
 import { Button, Modal } from "antd";
 import DropOption from "../../components/DropOption/DropOption";
 import { fetchAndNotification } from "../../services/restfulService";
@@ -12,9 +13,9 @@ export default function tableDataProps() {
       {
         title: "名称",
         dataIndex: "hostname",
-        key: "hostname"
+        key: "hostname",
         // width: 64,
-        // render: text => <img alt={"avatar"} width={24} src={text}/>
+        render: (text, record) => <Link to={`host/detail?hostId=${record.id}`}>{text}</Link>
       },
       {
         title: "机架",
@@ -146,7 +147,7 @@ export default function tableDataProps() {
         this.setState({
           updateHostModal: {
             modalVisible: true,
-            record:record
+            record: record
           }
         });
       } else if (e.key === "2") {

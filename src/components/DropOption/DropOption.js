@@ -27,10 +27,18 @@ class DropOption extends React.Component {
     }
   };
 
-  handleShow = () => {
+  handleDropDown = () => {
     this.setState(prevState => {
       return {
-        visible: true
+        visible: !prevState.visible
+      };
+    });
+  };
+
+  hideDropDown = () => {
+    this.setState(prevState => {
+      return {
+        visible: false
       };
     });
   };
@@ -47,7 +55,11 @@ class DropOption extends React.Component {
         {...dropdownProps}
         visible={this.state.visible}
       >
-        <Button style={{ ...buttonStyle }} onClick={this.handleShow}>
+        <Button
+          style={{ ...buttonStyle }}
+          onClick={this.handleDropDown}
+          onBlur={this.hideDropDown}
+        >
           <Icon style={{ marginRight: 2 }} type="bars" />
           <Icon type="down" />
         </Button>
