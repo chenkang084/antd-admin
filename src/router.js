@@ -228,7 +228,7 @@ const Routers = function ({history, app}) {
           }
         },
         {
-          path: "host/:id",
+          path: "host/detail",
           getComponent(nextState, cb) {
             require.ensure(
               [],
