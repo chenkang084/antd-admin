@@ -1,6 +1,11 @@
 /**
  * Created by chenkang1 on 2017/6/29.
  */
+import qs from "qs";
+
+/**
+  * sort json array by filed
+  */
 export function sortJsonArr(
   jsonArr,
   sortName,
@@ -41,6 +46,10 @@ export function sortJsonArr(
   }
 }
 
+/**
+ * delay some time by promise
+ * @param {*} options 
+ */
 export function stateDelay(options) {
   const defaultSecond = 200;
   // set default second
@@ -149,6 +158,11 @@ export const comparator = (obj, text) => {
   return ("" + obj).toLowerCase().indexOf(text) > -1;
 };
 
+/**
+ * recurring search keyword from an object
+ * @param {*} obj 
+ * @param {*} text 
+ */
 export const searchKeyword = (obj, text) => {
   if (typeof text == "string" && text.charAt(0) === "!") {
     return !searchKeyword(obj, text.substr(1));
@@ -181,4 +195,11 @@ export const searchKeyword = (obj, text) => {
     default:
       return false;
   }
+};
+
+export const parseUrlParams = searchStr => {
+  if (!searchStr) {
+    throw new Error("searchStr can't be Undefined");
+  }
+  return qs.parse(searchStr, { ignoreQueryPrefix: true });
 };
