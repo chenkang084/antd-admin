@@ -6,29 +6,32 @@ import React from "react";
 import { connect } from "dva";
 import { Spin } from "antd";
 import { fetchAndNotification } from "../../services/restfulService";
+import { parseUrlParams } from "../../utils/dataUtils";
 
 class HostDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      spinning: true,
-      data: null,
-      id: window.location.pathname
-        ? window.location.pathname.substr(
-            window.location.pathname.lastIndexOf("/") + 1
-          )
-        : ""
+      spinning: true
+      // data: null,
+      // id: window.location.pathname
+      //   ? window.location.pathname.substr(
+      //       window.location.pathname.lastIndexOf("/") + 1
+      //     )
+      //   : ""
     };
   }
 
   componentDidMount() {
-    this.fetchDetail();
+    const params = parseUrlParams(window.location.search);
+    this.fetchDetail(params);
   }
 
-  fetchDetail = () => {
+  fetchDetail = params => {
     fetchAndNotification({
-      url: `host/${this.state.id}`,
+      url: `ceph/clusters/${params.clusterId}/servers/${params.hostId}`,
       method: "get",
+      api: "v2",
       notifications: {
         error: `获取数据失败！`
       }

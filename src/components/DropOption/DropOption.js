@@ -43,6 +43,17 @@ class DropOption extends React.Component {
     });
   };
 
+  handleOnBlur = () => {
+    // add 100ms delay, so that onMenuClick fire before then hide the drop menu
+    setTimeout(() => {
+      this.setState(prevState => {
+        return {
+          visible: false
+        };
+      });
+    }, 100);
+  };
+
   render() {
     const { menuOptions, dropdownProps, buttonStyle } = this.props;
 
@@ -54,12 +65,9 @@ class DropOption extends React.Component {
         overlay={<Menu onClick={this.onMenuClick}>{menu}</Menu>}
         {...dropdownProps}
         visible={this.state.visible}
+        onBlur={this.handleOnBlur}
       >
-        <Button
-          style={{ ...buttonStyle }}
-          onClick={this.handleDropDown}
-          onBlur={this.hideDropDown}
-        >
+        <Button style={{ ...buttonStyle }} onClick={this.handleDropDown}>
           <Icon style={{ marginRight: 2 }} type="bars" />
           <Icon type="down" />
         </Button>

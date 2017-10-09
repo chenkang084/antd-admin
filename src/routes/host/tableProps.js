@@ -15,7 +15,23 @@ export default function tableDataProps() {
         dataIndex: "hostname",
         key: "hostname",
         // width: 64,
-        render: (text, record) => <Link to={`host/detail?hostId=${record.id}`}>{text}</Link>
+        render: (text, record) => {
+          console.log(this.props.model.defaultCluster);
+          console.log(
+            `host/detail?clusterId=${this.props.model.defaultCluster
+              .id}&hostId=${record.id}`
+          );
+          return this.props.model.defaultCluster ? (
+            <Link
+              to={`host/detail?clusterId=${this.props.model.defaultCluster
+                .id}&hostId=${record.id}`}
+            >
+              {text}
+            </Link>
+          ) : (
+            { text }
+          );
+        }
       },
       {
         title: "机架",
