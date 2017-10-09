@@ -203,3 +203,10 @@ export const parseUrlParams = searchStr => {
   }
   return qs.parse(searchStr, { ignoreQueryPrefix: true });
 };
+
+/**
+ * check the current device whether is mobile 
+ */
+export const isMobileDevice = () => {
+  return !!window.navigator.userAgent.match(/AppleWebKit.*Mobile.*/);
+};
