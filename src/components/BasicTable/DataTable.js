@@ -8,10 +8,11 @@ import {
   stateDelay,
   getSessionStorage,
   setSessionStorage,
+  isUndefined,
   sortJsonArr
 } from "../../utils/dataUtils";
 import Filter from "./Filter";
-import { searchKeyword } from "../../utils/dataUtils";
+import { searchKeyword, isMobileDevice } from "../../utils/dataUtils";
 
 class DataTable extends React.Component {
   constructor(props) {
@@ -31,8 +32,8 @@ class DataTable extends React.Component {
     if (!this.props.hasOwnProperty("defaultCluster")) {
       // initTable equals false indicates the first time query data
       // if (!this.initTable) {
-        this.getTableData();
-        // this.initTable = true;
+      this.getTableData();
+      // this.initTable = true;
       // }
     } else {
       this.props.defaultCluster && this.getTableData();
@@ -60,25 +61,43 @@ class DataTable extends React.Component {
 
   componentDidMount() {
     // this.getTableData()
+    console.log("componentDidMount");
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    console.log("componentWillMount");
+  }
 
-  componentDidUpdate() {}
+  componentDidUpdate() {
+    console.log("componentDidUpdate");
+  }
 
   componentWillReceiveProps(nextProps) {
     if (!this.checkRefresh(nextProps)) {
       if (nextProps.defaultCluster) {
-        // initTable equals false indicates the first time query data
-        // if (!this.initTable) {
-          this.getTableData(nextProps);
-          // this.initTable = true;
-        // }
+        this.getTableData(nextProps);
       }
     }
     this.props.willReceiveProps &&
       this.props.willReceiveProps.call(this, nextProps);
   }
+
+  calculateScrollWidth = () => {
+    this.scrollWidth = 0;
+    const xRemainScrollWidth = isUndefined(this.props.xRemainScrollWidth)
+      ? 150
+      : this.props.xRemainScrollWidth;
+    if (this.props.columns && this.props.columns.length > 0) {
+      this.props.columns.forEach(element => {
+        if (!isUndefined(element.width)) {
+          this.scrollWidth += element.width;
+        }
+      }, this);
+
+      console.log(this.scrollWidth);
+      return this.scrollWidth + xRemainScrollWidth;
+    }
+  };
 
   getTableData = nextProps => {
     nextProps = nextProps || this.props;
@@ -178,12 +197,12 @@ class DataTable extends React.Component {
           ref="DataTable"
           dataSource={this.state.dataSource}
           loading={this.state.loading}
-          rowSelection={this.rowSelection}
+          rowSelection={isMobileDevice() ? null : this.rowSelection}
           bordered
           onChange={this.handleTableChange}
           {...this.tableProps}
           pagination={this.pagination}
-          scroll={{ x: 600 }}
+          scroll={{ x: this.calculateScrollWidth() }}
         />
       </div>
     );

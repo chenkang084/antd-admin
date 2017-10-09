@@ -47,6 +47,7 @@ export default function tableProps() {
         }
       }
     ],
+    xRemainScrollWidth: 150,
     fetchData: {
       url: "/user/users",
       params: null
