@@ -16,11 +16,6 @@ export default function tableDataProps() {
         key: "hostname",
         // width: 64,
         render: (text, record) => {
-          console.log(this.props.model.defaultCluster);
-          console.log(
-            `host/detail?clusterId=${this.props.model.defaultCluster
-              .id}&hostId=${record.id}`
-          );
           return this.props.model.defaultCluster ? (
             <Link
               to={`host/detail?clusterId=${this.props.model.defaultCluster

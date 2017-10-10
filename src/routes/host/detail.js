@@ -5,21 +5,16 @@
 import React from "react";
 import { connect } from "dva";
 import { Spin, Card } from "antd";
+import { Link } from "dva/router";
 import { fetchAndNotification } from "../../services/restfulService";
 import { parseUrlParams } from "../../utils/dataUtils";
-import { DetailPage } from "../../components/DetailPage";
+import { DetailPage } from "../../components/DetailPage/DetailPage";
 
 class HostDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       spinning: true
-      // data: null,
-      // id: window.location.pathname
-      //   ? window.location.pathname.substr(
-      //       window.location.pathname.lastIndexOf("/") + 1
-      //     )
-      //   : ""
     };
   }
 
@@ -39,15 +34,56 @@ class HostDetail extends React.Component {
     }).then(result => {
       this.setState({
         spinning: false,
-        data: result.data
+        data: this.convertDetailData(result.data)
       });
     });
+  };
+
+  convertDetailData = data => {
+    console.log(data);
+    let detailData = [];
+
+    let card1 = {
+      title: "基本信息",
+      rows: [
+        {
+          key: "名称",
+          value: data.hostname
+        },
+        {
+          key: "外部IP",
+          value: data.publicip
+        }
+      ]
+    };
+
+    detailData.push(card1);
+
+    let card2 = {
+      title: "主机组信息",
+      rows: [
+        {
+          key: "主机组",
+          value: data.group_name
+        },
+        {
+          key: "存储介质",
+          render: () => {
+            return <Link to="/userMgmt">test</Link>;
+          }
+        }
+      ]
+    };
+
+    detailData.push(card2);
+
+    return detailData;
   };
 
   render() {
     return (
       <div>
-        <DetailPage />
+        <DetailPage spinning={this.state.spinning} data={this.state.data} />
       </div>
     );
   }
