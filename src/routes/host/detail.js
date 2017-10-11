@@ -40,8 +40,9 @@ class HostDetail extends React.Component {
   };
 
   convertDetailData = data => {
-    console.log(data);
-    let detailData = [];
+    let detailData = {},
+      content0 = [];
+    const tabs = ["信息"];
 
     let card1 = {
       title: "基本信息",
@@ -57,7 +58,7 @@ class HostDetail extends React.Component {
       ]
     };
 
-    detailData.push(card1);
+    content0.push(card1);
 
     let card2 = {
       title: "主机组信息",
@@ -75,7 +76,15 @@ class HostDetail extends React.Component {
       ]
     };
 
-    detailData.push(card2);
+    content0.push(card2);
+
+    detailData = {
+      tabs: tabs,
+      contents: {
+        [tabs[0]]: content0
+      }
+      // contents: content0
+    };
 
     return detailData;
   };
