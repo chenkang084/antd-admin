@@ -23,36 +23,36 @@ export default {
 
   effects: {
     ...model.effects,
-    *queryPageData({ defaultCluster }, { call, put }) {
-      yield put({ type: "queryTableData", defaultCluster });
-    },
-    *queryTableData({ defaultCluster }, { call, put }) {
-      yield put({ type: "tableLoading", tableLoading: true });
+    // *queryPageData({ defaultCluster }, { call, put }) {
+    //   yield put({ type: "queryTableData", defaultCluster });
+    // },
+    // *queryTableData({ defaultCluster }, { call, put }) {
+    //   yield put({ type: "tableLoading", tableLoading: true });
 
-      const tableData = yield fetchAndNotification({
-        url: `ceph/clusters/${defaultCluster.id}/servers/`,
-        params: null,
-        api: "v2"
-      });
-      console.log(tableData);
-      yield put({ type: "setTableData", tableData: tableData.data.items });
-    }
+    //   const tableData = yield fetchAndNotification({
+    //     url: `ceph/clusters/${defaultCluster.id}/servers/`,
+    //     params: null,
+    //     api: "v2"
+    //   });
+    //   console.log(tableData);
+    //   yield put({ type: "setTableData", tableData: tableData.data.items });
+    // }
   },
 
   reducers: {
     ...model.reducers,
-    setTableData(state, { tableData }) {
-      return {
-        ...state,
-        tableLoading: false,
-        tableData
-      };
-    },
-    tableLoading(state, { tableLoading }) {
-      return {
-        ...state,
-        tableLoading
-      };
-    }
+    // setTableData(state, { tableData }) {
+    //   return {
+    //     ...state,
+    //     tableLoading: false,
+    //     tableData
+    //   };
+    // },
+    // tableLoading(state, { tableLoading }) {
+    //   return {
+    //     ...state,
+    //     tableLoading
+    //   };
+    // }
   }
 };
