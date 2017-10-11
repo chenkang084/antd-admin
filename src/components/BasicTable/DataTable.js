@@ -26,15 +26,14 @@ class DataTable extends React.Component {
       keyword: null
     };
 
-    // this.initTable = false;
+    this.initTable = false;
     this.refresh = this.props.refresh;
 
     if (!this.props.hasOwnProperty("defaultCluster")) {
       // initTable equals false indicates the first time query data
-      // if (!this.initTable) {
-      this.getTableData();
-      // this.initTable = true;
-      // }
+      if (!this.initTable) {
+        this.getTableData();
+      }
     } else {
       this.props.defaultCluster && this.getTableData();
     }
@@ -74,7 +73,8 @@ class DataTable extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (!this.checkRefresh(nextProps)) {
-      if (nextProps.defaultCluster) {
+      // not manually refresh 
+      if (nextProps.defaultCluster && !this.initTable) {
         this.getTableData(nextProps);
       }
     }
@@ -108,6 +108,7 @@ class DataTable extends React.Component {
       });
       fetch(fetchData)
         .then(result => {
+          this.initTable = true;
           this.setState({
             dataSource: result.data.items,
             dataSourceBack: lodash.cloneDeep(result.data.items),
@@ -115,6 +116,7 @@ class DataTable extends React.Component {
           });
         })
         .catch(error => {
+          this.initTable = true;
           this.setState({ loading: false });
           notification.open({
             message: nextProps.errorMsg,

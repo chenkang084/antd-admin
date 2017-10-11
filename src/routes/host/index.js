@@ -65,9 +65,7 @@ class HostPage extends React.Component {
     };
 
     this.tableProps = tableProps.call(this);
-
     this.clusterListProps = clusterListProps.call(this);
-
     this.addHostModal = addHostModal.call(this);
     this.updateHostModal = updateHostModal.call(this);
   };
