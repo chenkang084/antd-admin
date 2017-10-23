@@ -119,14 +119,14 @@ module.exports = {
       template: rootPath + "/src/index.html", //html模板路径
       hash: true //为静态资源生成hash值
     }),
-    // new webpack.DllReferencePlugin({
-    //   context: rootPath,
-    //   name: "vendor",
-    //   manifest: require(path.resolve(
-    //     rootPath,
-    //     "./src/public/library/vendor-manifest.json"
-    //   ))
-    // }),
+    new webpack.DllReferencePlugin({
+      context: rootPath,
+      name: "vendor",
+      manifest: require(path.resolve(
+        rootPath,
+        "./public/library/vendor-manifest.json"
+      ))
+    }),
     new webpack.DefinePlugin({
       "process.env": "'" + env + "'"
     })

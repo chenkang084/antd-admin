@@ -82,6 +82,8 @@
     "build": "node ./build/build.js",
     "build:dll": "npm run clean && roadhog buildDll",
     "clean": "rimraf ./node_modules/roadhog-dlls/*",
-    "dev": "cross-env NODE_ENV=dev webpack-dev-server --progress --color"
+    "dev": "cross-env NODE_ENV=dev webpack-dev-server --progress --color",
+    "dll":
+      "webpack --colors --profile --display-modules --config webpack.dll.config.js "
   }
 }
