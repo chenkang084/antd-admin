@@ -1,5 +1,4 @@
 "use strict";
-
 const ExtractTextPlugin = require("extract-text-webpack-plugin"),
   HtmlWebpackPlugin = require("html-webpack-plugin"),
   webpack = require("webpack"),
@@ -8,7 +7,10 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin"),
   CleanWebpackPlugin = require("clean-webpack-plugin"),
   path = require("path"),
   CopyWebpackPlugin = require("copy-webpack-plugin"),
-  rootPath = path.resolve(__dirname);
+  rootPath = path.resolve(__dirname),
+  theme = require("./theme.config.js")();
+
+console.log(theme);
 
 module.exports = {
   devtool: "module-source-map",
@@ -68,7 +70,7 @@ module.exports = {
               loader:
                 "css-loader?modules&sourceMap&importLoaders=1&localIdentName=[hash:base64:5]!postcss-loader"
             },
-            "less-loader"
+            `less-loader`
           ]
         })
       },
@@ -81,7 +83,7 @@ module.exports = {
   devServer: {
     contentBase: rootPath + "/public/", //本地服务器所加载的页面所在的目录
     host: "0.0.0.0",
-    port: 9000,
+    port: 8000,
     historyApiFallback: true, //不跳转
     inline: true, //实时刷新
     proxy: {
@@ -114,7 +116,6 @@ module.exports = {
       }
     }),
     new HtmlWebpackPlugin({
-      //根据模板插入css/js等生成最终HTML
       filename: "./index.html", //生成的html存放路径，相对于 path
       template: rootPath + "/src/index.html", //html模板路径
       hash: true //为静态资源生成hash值

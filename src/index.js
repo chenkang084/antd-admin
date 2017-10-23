@@ -4,6 +4,7 @@ import dva from "dva";
 import createLoading from "dva-loading";
 import { browserHistory } from "dva/router";
 import { message } from "antd";
+// import "./themes/default.less";
 import "./style/index.less";
 
 // 1. Initialize
