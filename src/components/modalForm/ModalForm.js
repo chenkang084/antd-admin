@@ -1,6 +1,8 @@
 /**
  * Created by chenkang1 on 2017/9/1.
  */
+import React from "react";
+import ReactDOM from "react-dom";
 import { Form, Button, Modal, Spin } from "antd";
 import { isUndefined } from "../../utils/dataUtils";
 

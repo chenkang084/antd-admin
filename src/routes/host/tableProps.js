@@ -1,6 +1,8 @@
 /**
  * Created by chenkang1 on 2017/9/13.
  */
+import React from "react";
+import ReactDOM from "react-dom";
 import { Link } from "react-router";
 import { Button, Modal } from "antd";
 import DropOption from "../../components/DropOption/DropOption";

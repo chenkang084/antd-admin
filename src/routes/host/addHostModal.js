@@ -1,6 +1,8 @@
 /**
  * Created by chenkang1 on 2017/9/13.
  */
+import React from "react";
+import ReactDOM from "react-dom";
 import { Input, Icon, Select, Switch } from "antd";
 import { fetchAndNotification } from "../../services/restfulService";
 export default function addHostModal() {
