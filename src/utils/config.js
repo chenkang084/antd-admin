@@ -4,9 +4,9 @@ const APINEW = '/apinew'
 
 module.exports = {
   pageSize: 4,
-  name: 'AntD Admin',
+  name: 'Performance Tuning',
   prefix: 'antdAdmin',
-  footerText: 'Ant Design Admin  © 2017 zuiidea',
+  footerText: 'Performance Tuning  © 2017 Lenovo',
   logo: '/logo.png',
   iconFontCSS: '/iconfont.css',
   iconFontJS: '/iconfont.js',

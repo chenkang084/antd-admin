@@ -9,6 +9,7 @@ import { Link } from "dva/router";
 import { fetchAndNotification } from "../../services/restfulService";
 import { parseUrlParams } from "../../utils/dataUtils";
 import { DetailPage } from "../../components/DetailPage/DetailPage";
+import Highcharts from "../../services/highcharts";
 
 class HostDetail extends React.Component {
   constructor(props) {
@@ -16,6 +17,67 @@ class HostDetail extends React.Component {
     this.state = {
       spinning: true
     };
+  }
+
+  initChart(element) {
+    Highcharts.chart(element, {
+      chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: "pie"
+      },
+      title: {
+        text: "Browser market shares January, 2015 to May, 2015"
+      },
+      tooltip: {
+        pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>"
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: "pointer",
+          dataLabels: {
+            enabled: false
+          },
+          showInLegend: true
+        }
+      },
+      series: [
+        {
+          name: "Brands",
+          colorByPoint: true,
+          data: [
+            {
+              name: "Microsoft Internet Explorer",
+              y: 56.33
+            },
+            {
+              name: "Chrome",
+              y: 24.03,
+              sliced: true,
+              selected: true
+            },
+            {
+              name: "Firefox",
+              y: 10.38
+            },
+            {
+              name: "Safari",
+              y: 4.77
+            },
+            {
+              name: "Opera",
+              y: 0.91
+            },
+            {
+              name: "Proprietary or Undetectable",
+              y: 0.2
+            }
+          ]
+        }
+      ]
+    });
   }
 
   componentDidMount() {
@@ -93,6 +155,7 @@ class HostDetail extends React.Component {
     return (
       <div>
         <DetailPage spinning={this.state.spinning} data={this.state.data} />
+        <div ref={this.initChart} />
       </div>
     );
   }

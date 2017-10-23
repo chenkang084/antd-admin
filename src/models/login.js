@@ -1,50 +1,47 @@
-import {login} from '../services/login'
-import {routerRedux} from 'dva/router'
-import {queryURL} from '../utils'
+import { login } from "../services/login";
+import { routerRedux } from "dva/router";
+import { queryURL } from "../utils";
 
 export default {
-  namespace: 'login',
+  namespace: "login",
   state: {
-    loginLoading: false,
+    loginLoading: false
   },
   subscriptions: {
-
-    setup ({dispatch}) {
+    setup({ dispatch }) {
       // reset signStatus
-      dispatch({type:'app/setSignStatus'})
-    },
+      dispatch({ type: "app/setSignStatus" });
+    }
   },
   effects: {
-    *login ({
-              payload,
-            }, {put, call}) {
-      yield put({type: 'showLoginLoading'})
-      const result = yield call(login, payload)
-      yield put({type: 'hideLoginLoading'})
-      if (result.data.type === 'success') {
-        const from = queryURL('from')
+    *login({ payload }, { put, call }) {
+      yield put({ type: "showLoginLoading" });
+      const result = yield call(login, payload);
+      yield put({ type: "hideLoginLoading" });
+      if (result.data.type === "success") {
+        const from = queryURL("from");
         if (from) {
-          yield put(routerRedux.push(from))
+          yield put(routerRedux.push(from));
         } else {
-          yield put(routerRedux.push('/dashboard'))
+          yield put(routerRedux.push("/host"));
         }
       } else {
-        throw "用户名或者密码错误！"
+        throw "用户名或者密码错误！";
       }
-    },
+    }
   },
   reducers: {
-    showLoginLoading (state) {
+    showLoginLoading(state) {
       return {
         ...state,
-        loginLoading: true,
-      }
+        loginLoading: true
+      };
     },
-    hideLoginLoading (state) {
+    hideLoginLoading(state) {
       return {
         ...state,
-        loginLoading: false,
-      }
-    },
-  },
-}
+        loginLoading: false
+      };
+    }
+  }
+};

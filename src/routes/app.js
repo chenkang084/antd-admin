@@ -103,12 +103,12 @@ class App extends React.Component {
       );
     }
 
-    const { iconFontJS, iconFontCSS, logo } = config;
+    const { iconFontJS, iconFontCSS, logo, name } = config;
 
     return (
       <div>
         <Helmet>
-          <title>ANTD ADMIN</title>
+          <title>{name}</title>
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"
