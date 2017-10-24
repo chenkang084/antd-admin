@@ -1,6 +1,8 @@
 /**
  * Created by chenkang1 on 2017/9/18.
  */
+import React from "react";
+import ReactDOM from "react-dom";
 import { Select, Row, Col, Card, Button, Input, Icon } from "antd";
 import { fetchAndNotification } from "../../services/restfulService";
 export const formItems = {

@@ -61,6 +61,10 @@ module.exports = {
       },
       {
         test: /\.less$/,
+        include: [
+          path.resolve(rootPath, "./src/components/"),
+          path.resolve(rootPath, "./src/routes/")
+        ],
         use: ExtractTextPlugin.extract({
           fallback: "style-loader",
           use: [
@@ -73,8 +77,20 @@ module.exports = {
         })
       },
       {
-        test: /\.(svg)$/i,
-        use: "svg-sprite-loader"
+        test: /\.less$/,
+        include: [path.resolve(rootPath, "./src/style/"),path.resolve(rootPath, "./src/themes/")],
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: [
+            // {
+            //   loader:
+            //     "css-loader!"
+            // },
+            "css-loader",
+            "postcss-loader",
+            "less-loader"
+          ]
+        })
       }
     ]
   },

@@ -1,6 +1,8 @@
 /**
  * Created by chenkang1 on 2017/9/18.
  */
+import React from "react";
+import ReactDOM from "react-dom";
 import DropOption from "../../components/DropOption/DropOption";
 import { fetchAndNotification } from "../../services/restfulService";
 export default function tableProps() {

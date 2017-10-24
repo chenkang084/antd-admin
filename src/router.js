@@ -16,26 +16,18 @@ const Routers = function({ history, app }) {
     {
       path: "/",
       component: App,
-      getIndexRoute(nextState, cb) {
-        require.ensure(
-          [],
-          require => {
-            // registerModel(app, require("./models/dashboard"));
-            // cb(null, { component: require("./routes/dashboard/") });
-            Promise.all([
-              System.import("./models/user.mgmt.model"),
-              System.import("./routes/userMgmt/index")
-              // .then(loadRoute(cb))
-              // .catch(errorLoading)
-            ]).then(([modal, route]) => {
-              registerModel(app, modal);
-              cb(null, route.default || route);
-            });
-            // registerModel(app, require("./models/user.mgmt.model"));
-            // cb(null, {component: require("./routes/userMgmt/index")});
-          },
-          "dashboard"
-        );
+      indexRoute: {
+        getComponent(nextState, cb) {
+          Promise.all([
+            System.import("./models/user.mgmt.model"),
+            System.import("./routes/userMgmt/index")
+            // .then(loadRoute(cb))
+            // .catch(errorLoading)
+          ]).then(([modal, route]) => {
+            registerModel(app, modal);
+            cb(null, route.default || route);
+          });
+        }
       },
       childRoutes: [
         // {
