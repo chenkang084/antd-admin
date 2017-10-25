@@ -11,6 +11,9 @@ import LifeCycle from "./lifeCycle";
 import tableProps from "./tableProps";
 import addUserModal from "./addUserModal";
 import updateUserModal from "./updateUserModal";
+import socketService from "../../services/socketService";
+
+// socketService();
 
 class UserMgmt extends React.Component {
   constructor(props) {

@@ -12,7 +12,7 @@ export default {
   // 接口代理示例
   "proxy": {
     "/api": {
-      "target": "http://10.104.209.111:8888/",
+      "target": "http://10.104.209.82:8888/",
       // "target": "http://10.96.207.231:8888/",
       // "target": "http://10.96.207.217:8888/",
       // "target": "http://localhost:8888/",
